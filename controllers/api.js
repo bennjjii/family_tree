@@ -10,3 +10,11 @@ exports.get_fam = function (req, res) {
     res.json(familymembers);
   });
 };
+
+exports.create_family_account = function (req, res) {
+  const acc_name = req.body["acc_name"];
+  return models.family_account
+    .create({ family_account_name: acc_name })
+    .then(res.json("Family account created!"))
+    .catch((err) => res.status(400).json("Error:" + err));
+};
