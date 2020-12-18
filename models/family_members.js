@@ -22,18 +22,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      photo: {
-        type: DataTypes.STRING(200),
-        allowNull: true,
-      },
+
       notes: {
         type: DataTypes.STRING(500),
         allowNull: true,
       },
-      // uuid_family_account: {
-      //     type: DataTypes.UUID,
-      //     allowNull: false,
-      // },
+
       gender: {
         type: DataTypes.STRING(10),
         allowNull: false,
@@ -47,6 +41,8 @@ module.exports = (sequelize, DataTypes) => {
       ],
     }
   );
+
+  //family accounts
 
   family_member.associate = (models) => {
     family_member.belongsTo(models.family_account, {
@@ -69,6 +65,39 @@ module.exports = (sequelize, DataTypes) => {
         name: "child",
         allowNull: false,
       },
+    });
+
+    //deaths
+
+    family_member.hasOne(models.death, {
+      foreignKey: {
+        name: "died",
+        allowNull: false,
+      },
+    });
+
+    //marriage
+
+    family_member.hasMany(models.marriage, {
+      name: "bride",
+      allowNull: false,
+    });
+
+    family_member.hasMany(models.marriage, {
+      name: "groom",
+      allowNull: false,
+    });
+
+    //divorce
+
+    family_member.hasMany(models.divorce, {
+      name: "female",
+      allowNull: false,
+    });
+
+    family_member.hasMany(models.divorce, {
+      name: "male",
+      allowNull: false,
     });
   };
 

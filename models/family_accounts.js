@@ -14,20 +14,57 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  //family_members
+
   family_account.associate = (models) => {
+    //users
+
+    family_account.hasMany(models.user, {
+      foreignKey: {
+        name: "uuid_family_account",
+        allowNull: false,
+      },
+    });
+
+    //family members
+
     family_account.hasMany(models.family_member, {
       foreignKey: {
         name: "uuid_family_account",
         allowNull: false,
       },
     });
+
+    //births
+
     family_account.hasMany(models.birth, {
       foreignKey: {
         name: "uuid_family_account",
         allowNull: false,
       },
     });
+
+    //deaths
+
     family_account.hasMany(models.death, {
+      foreignKey: {
+        name: "uuid_family_account",
+        allowNull: false,
+      },
+    });
+
+    //marriages
+
+    family_account.hasMany(models.marriage, {
+      foreignKey: {
+        name: "uuid_family_account",
+        allowNull: false,
+      },
+    });
+
+    //divorces
+
+    family_account.hasMany(models.divorce, {
       foreignKey: {
         name: "uuid_family_account",
         allowNull: false,
