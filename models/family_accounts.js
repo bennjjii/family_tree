@@ -21,6 +21,18 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
+    family_account.hasMany(models.birth, {
+      foreignKey: {
+        name: "uuid_family_account",
+        allowNull: false,
+      },
+    });
+    family_account.hasMany(models.death, {
+      foreignKey: {
+        name: "uuid_family_account",
+        allowNull: false,
+      },
+    });
   };
 
   return family_account;

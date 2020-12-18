@@ -1,4 +1,4 @@
-"user strict";
+"use strict";
 
 module.exports = (sequelize, DataTypes) => {
   var birth = sequelize.define("birth", {
@@ -24,6 +24,12 @@ module.exports = (sequelize, DataTypes) => {
     birth.belongsTo(models.family_member, {
       foreignKey: {
         name: "child",
+        allowNull: false,
+      },
+    });
+    birth.belongsTo(models.family_account, {
+      foreignKey: {
+        name: "uuid_family_account",
         allowNull: false,
       },
     });
