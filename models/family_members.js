@@ -79,25 +79,33 @@ module.exports = (sequelize, DataTypes) => {
     //marriage
 
     family_member.hasMany(models.marriage, {
-      name: "bride",
-      allowNull: false,
+      foreignKey: {
+        name: "bride",
+        allowNull: false,
+      },
     });
 
     family_member.hasMany(models.marriage, {
-      name: "groom",
-      allowNull: false,
+      foreignKey: {
+        name: "groom",
+        allowNull: false,
+      },
     });
 
     //divorce
 
     family_member.hasMany(models.divorce, {
-      name: "female",
-      allowNull: false,
+      foreignKey: {
+        name: "female",
+        allowNull: false,
+      },
     });
 
     family_member.hasMany(models.divorce, {
-      name: "male",
-      allowNull: false,
+      foreignKey: {
+        name: "male",
+        allowNull: false,
+      },
     });
   };
 

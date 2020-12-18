@@ -14,8 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  //family_members
-
   family_account.associate = (models) => {
     //users
 

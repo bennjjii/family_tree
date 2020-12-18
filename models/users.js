@@ -30,8 +30,10 @@ module.exports = (sequelize, DataTypes) => {
 
   user.associate = (models) => {
     user.belongsTo(models.family_account, {
-      name: uuid_family_account,
-      allowNull: false,
+      foreignKey: {
+        name: "uuid_family_account",
+        allowNull: false,
+      },
     });
   };
 

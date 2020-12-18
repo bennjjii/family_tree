@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-  var marriage = sequelize.define("divorce", {
+  var divorce = sequelize.define("divorce", {
     uuid_divorce: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
