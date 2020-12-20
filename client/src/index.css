@@ -1,13 +1,42 @@
+:root {
+  --blue1: #1c1e24;
+  --blue2: #6189fa;
+  --blue3: #24262d;
+  --blue4: #213359;
+  --blue5: #3e66f9;
+  --white1: #d3d6da;
+  --purple1: #b791fb;
+  --orange1: #f08430;
+  --blue6: #57ccee;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  align-content: center;
+  background: var(--white1) !important;
+  height: 100vh;
+}
+
+#id {
+  height: 100%;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.loginForm {
+  margin-top: auto;
+  margin-bottom: auto;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }

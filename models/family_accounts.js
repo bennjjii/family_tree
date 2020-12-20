@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   family_account.associate = (models) => {
     //users
 
-    family_account.hasMany(models.user, {
+    family_account.belongsTo(models.user, {
       foreignKey: {
         name: "uuid_family_account",
         allowNull: false,
