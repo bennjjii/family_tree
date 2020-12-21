@@ -1,0 +1,77 @@
+.IdCard {
+  position: relative;
+  /* top: 50%;
+  left: 50%; */
+  /* -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
+  text-align: left;
+  border: grey;
+  border-width: 3px;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: var(--blue2);
+  border-radius: 15px;
+  box-shadow: 3px 3px 5px;
+}
+
+.IdCard h4 {
+  padding-top: 20px;
+}
+
+.married_box {
+  border: grey;
+  border-width: 3px;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 5px;
+  vertical-align: middle;
+  background-color: var(--blue5);
+  margin-bottom: 20px;
+}
+
+.married_box:last-child {
+  margin-bottom: 0px;
+}
+
+.plus_button {
+  float: right;
+  color: whitesmoke;
+  text-align: center;
+  width: 35px;
+  padding: 4px;
+  border-style: solid;
+  border-color: grey;
+  border-radius: 5px;
+  border-width: 1px;
+  box-shadow: 1px 1px 3px #333333;
+  transform: translate(0, -5px);
+}
+
+.family_image {
+  box-shadow: 3px 3px 5px;
+  border-radius: 20px;
+  display: inline-block;
+  float: left;
+  margin-right: 15px;
+}
+
+.family_image img {
+  border-radius: 20px;
+}
+
+.person_details {
+  display: inline-block;
+  float: left;
+  border: grey;
+  border-width: 3px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 5px;
+  vertical-align: middle;
+  background-color: var(--blue5);
+  padding-left: 10px;
+}
+
+.top_sect {
+  display: flex;
+  margin-bottom: 15px;
+}
