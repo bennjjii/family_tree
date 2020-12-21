@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 
 export class Login extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       email: "",
       password: "",
       rememberMe: false,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   handleChange(event) {
@@ -16,11 +17,23 @@ export class Login extends Component {
     type === "checkbox"
       ? this.setState({ [name]: checked })
       : this.setState({ [name]: value });
+    console.log(event.target.value);
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    const loginDetails = {
+      email: this.state.email,
+      password: this.state.password,
+      rememberMe: this.state.rememberMe,
+    };
+
+    console.log(loginDetails);
   }
 
   render() {
     return (
-      <form action="/action_page.php" className="loginForm">
+      <form onSubmit={this.onSubmit} className="loginForm">
         <div className="form-group">
           <label>Email address:</label>
           <input
@@ -30,7 +43,6 @@ export class Login extends Component {
             onChange={this.handleChange}
             className="form-control"
             id="email"
-            name="email"
           />
         </div>
         <div className="form-group">
