@@ -8,51 +8,29 @@
   border: grey;
   border-width: 3px;
   margin-top: 20px;
-  padding: 10px;
+  padding: 2.5px;
   background-color: var(--blue2);
   border-radius: 15px;
   box-shadow: 3px 3px 5px;
 }
 
 .IdCard h4 {
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
-.married_box {
-  border: grey;
-  border-width: 3px;
-  padding: 10px;
-  border-radius: 15px;
-  box-shadow: 3px 3px 5px;
-  vertical-align: middle;
-  background-color: var(--blue5);
-  margin-bottom: 20px;
-}
-
-.married_box:last-child {
-  margin-bottom: 0px;
-}
-
-.plus_button {
-  float: right;
-  color: whitesmoke;
-  text-align: center;
-  width: 35px;
-  padding: 4px;
-  border-style: solid;
-  border-color: grey;
-  border-radius: 5px;
-  border-width: 1px;
-  box-shadow: 1px 1px 3px #333333;
-  transform: translate(0, -5px);
+.top_sect {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .family_image {
   box-shadow: 3px 3px 5px;
   border-radius: 20px;
-  display: inline-block;
-  float: left;
-  margin-right: 15px;
+  /* display: inline-block; */
+
+  margin: 5px;
+  flex-shrink: 0;
 }
 
 .family_image img {
@@ -60,7 +38,8 @@
 }
 
 .person_details {
-  display: inline-block;
+  /* display: inline-block; */
+  margin: 5px;
   float: left;
   border: grey;
   border-width: 3px;
@@ -69,9 +48,55 @@
   vertical-align: middle;
   background-color: var(--blue5);
   padding-left: 10px;
+  flex-grow: 1;
 }
 
-.top_sect {
+.btm_sect {
   display: flex;
-  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.married_box {
+  margin: 5px;
+  border: grey;
+  border-width: 3px;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 5px;
+
+  background-color: var(--blue5);
+
+  flex-grow: 1;
+}
+
+.children_box {
+  margin: 5px;
+  border: grey;
+  border-width: 3px;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 5px;
+
+  background-color: var(--blue5);
+  flex-grow: 1;
+}
+
+/* .married_box:last-child {
+  margin-bottom: 0px;
+} */
+
+.plus_button {
+  color: var(--blue3);
+  background-color: yellowgreen;
+  text-align: center;
+  width: 35px;
+  padding: 4px;
+  /* border-style: solid;
+  border-color: grey; */
+  margin-top: 5px;
+  border-radius: 5px;
+  border-width: 1px;
+  box-shadow: 1px 1px 3px #333333;
+  transform: translate(0, -5px);
+  float: right;
 }
