@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    death.belongsTo(models.family_account, {
+    death.belongsTo(models.family_tree, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_family_tree",
         allowNull: false,
       },
     });

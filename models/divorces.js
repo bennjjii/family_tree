@@ -35,9 +35,9 @@ module.exports = (sequelize, DataTypes) => {
 
     //family account
 
-    divorce.belongsTo(models.family_account, {
+    divorce.belongsTo(models.family_tree, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_family_tree",
         allowNull: false,
       },
     });

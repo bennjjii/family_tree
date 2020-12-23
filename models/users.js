@@ -38,9 +38,9 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   user.associate = (models) => {
-    user.hasMany(models.family_account, {
+    user.hasMany(models.family_tree, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_user",
         allowNull: false,
       },
     });

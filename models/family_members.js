@@ -49,9 +49,9 @@ module.exports = (sequelize, DataTypes) => {
   //family accounts
 
   family_member.associate = (models) => {
-    family_member.belongsTo(models.family_account, {
+    family_member.belongsTo(models.family_tree, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_family_tree",
         allowNull: false,
       },
     });

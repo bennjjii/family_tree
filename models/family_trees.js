@@ -1,74 +1,74 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-  var family_account = sequelize.define("family_account", {
-    uuid_family_account: {
+  var family_tree = sequelize.define("family_tree", {
+    uuid_family_tree: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },
-    family_account_name: {
+    family_tree_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   });
 
-  family_account.associate = (models) => {
+  family_tree.associate = (models) => {
     //users
 
-    family_account.belongsTo(models.user, {
+    family_tree.belongsTo(models.user, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_user",
         allowNull: false,
       },
     });
 
     //family members
 
-    family_account.hasMany(models.family_member, {
+    family_tree.hasMany(models.family_member, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_family_tree",
         allowNull: false,
       },
     });
 
     //births
 
-    family_account.hasMany(models.birth, {
+    family_tree.hasMany(models.birth, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_family_tree",
         allowNull: false,
       },
     });
 
     //deaths
 
-    family_account.hasMany(models.death, {
+    family_tree.hasMany(models.death, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_family_tree",
         allowNull: false,
       },
     });
 
     //marriages
 
-    family_account.hasMany(models.marriage, {
+    family_tree.hasMany(models.marriage, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_family_tree",
         allowNull: false,
       },
     });
 
     //divorces
 
-    family_account.hasMany(models.divorce, {
+    family_tree.hasMany(models.divorce, {
       foreignKey: {
-        name: "uuid_family_account",
+        name: "uuid_family_tree",
         allowNull: false,
       },
     });
   };
 
-  return family_account;
+  return family_tree;
 };
