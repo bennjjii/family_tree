@@ -14,34 +14,55 @@ export class IdCard extends Component {
       mother: "",
       father: "",
       birthday: "",
-      target_marriages: [],
-      target_death: "",
-      target_children: [],
+      marriages: [],
+      death: "",
+      children: [],
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.apiCall = this.apiCall.bind(this);
+    this.getPerson = this.getPerson.bind(this);
   }
 
   handleClick() {
     console.log("Clicked");
   }
 
+  getPerson(uuid) {
+    return new Promise((resolve, reject) => {
+      const names = {
+        first: "",
+        middle: "",
+        last: "",
+      };
+      axios
+        .get("http://localhost:5000/get_family_member/" + uuid)
+        .then((res) => {
+          names.first = res.data.first_name;
+          names.middle = res.data.middle_name || "";
+          names.last = res.data.last_name;
+          resolve(names);
+          return;
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
   apiCall() {
     //get target data
 
-    axios
-      .get("http://localhost:5000/get_family_member/" + this.state.uuid_target)
+    this.getPerson(this.state.uuid_target)
       .then((res) => {
-        console.log(res);
         this.setState({
-          firstname: res.data.first_name,
-          middlename: res.data.middle_name,
-          lastname: res.data.last_name,
+          firstname: res.first,
+          middlename: res.middle,
+          lastname: res.last,
         });
       })
-      .catch((reason) => console.log(reason));
+      .catch((err) => console.log(err));
 
     //get target birthday
 
@@ -49,13 +70,33 @@ export class IdCard extends Component {
       .get("http://localhost:5000/get_birth/" + this.state.uuid_target)
       .then((res) => {
         console.log(res);
-        // this.setState({
-        //   firstname: res.data.first_name,
-        //   middlename: res.data.middle_name,
-        //   lastname: res.data.last_name,
-        // });
+        const { mother, father, d_o_b } = res.data || {};
+
+        //get father name if in DB
+
+        if (father) {
+          this.getPerson(father).then((res) => {
+            this.setState({
+              father: `${res.first} ${res.middle} ${res.last}`,
+            });
+          });
+        } else {
+          this.setState({ father: "" });
+        }
+
+        //get mother's name if in DB
+
+        if (mother) {
+          this.getPerson(mother).then((res) => {
+            this.setState({
+              mother: `${res.first} ${res.middle} ${res.last}`,
+            });
+          });
+        } else {
+          this.setState({ mother: "" });
+        }
       })
-      .catch((reason) => console.log(reason));
+      .catch((reason) => console.log(reason + "lower"));
   }
 
   handleSubmit(e) {
@@ -68,7 +109,6 @@ export class IdCard extends Component {
     this.setState({
       [name]: value,
     });
-    console.log(this.state.uuid_target);
   }
 
   componentDidMount() {
@@ -92,10 +132,10 @@ export class IdCard extends Component {
           <div className="parent_details">
             <h5>Parents: </h5>
             <div className="person_box">
-              <h5>Grandpa Scott</h5>
+              <h5>{this.state.father}</h5>
             </div>
             <div className="person_box">
-              <h5>Grandma Scott</h5>
+              <h5>{this.state.mother}</h5>
             </div>
           </div>
         </div>

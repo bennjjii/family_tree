@@ -24,6 +24,32 @@ exports.get_family_member = function (req, res) {
     });
 };
 
+exports.get_data = function (req, res) {
+  const dataChunk = {
+    fullName: "",
+    gender: "",
+    d_o_b: null,
+    d_o_d: null,
+    motherName: null,
+    fatherName: null,
+    children: [{ childName: null, born: null }],
+    marriages: [
+      { spouse: null, startDate: null, endDate: null, location: null },
+    ],
+  };
+  return models.family_member
+    .findOne({
+      where: {
+        uuid_family_member: req.params.id,
+      },
+    })
+    .then((family_member) => {
+      console.log(family_member);
+      res.json(family_member);
+    })
+    .catch((err) => res.json(err));
+};
+
 exports.get_birth = function (req, res) {
   return models.birth
     .findOne({
