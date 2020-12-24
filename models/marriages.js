@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
+    d_o_div: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
     place: {
       type: DataTypes.STRING,
       allowNull: true,

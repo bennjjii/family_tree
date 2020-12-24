@@ -59,15 +59,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-
-    //divorces
-
-    family_tree.hasMany(models.divorce, {
-      foreignKey: {
-        name: "uuid_family_tree",
-        allowNull: false,
-      },
-    });
   };
 
   return family_tree;

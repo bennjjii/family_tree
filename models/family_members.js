@@ -95,22 +95,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-
-    //divorce
-
-    family_member.hasMany(models.divorce, {
-      foreignKey: {
-        name: "female",
-        allowNull: false,
-      },
-    });
-
-    family_member.hasMany(models.divorce, {
-      foreignKey: {
-        name: "male",
-        allowNull: false,
-      },
-    });
   };
 
   return family_member;

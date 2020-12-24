@@ -1,5 +1,6 @@
 const models = require("../models");
 const { Op } = require("sequelize");
+const { response } = require("express");
 
 exports.get_home = function (req, res) {
   res.render("index", { title: "Express" });
@@ -50,9 +51,9 @@ exports.get_data = function (req, res) {
         uuid_family_member: req.params.id,
       },
     })
-    .then((res) => {
+    .then((resp) => {
       const { uuid_family_member, first_name, middle_name, last_name, gender } =
-        res.dataValues || {};
+        resp.dataValues || {};
       dataChunk.uuid = uuid_family_member;
       dataChunk.firstName = first_name;
       dataChunk.middleName = middle_name;
@@ -68,8 +69,8 @@ exports.get_data = function (req, res) {
         child: req.params.id,
       },
     })
-    .then((res) => {
-      const { d_o_b, mother, father } = res.dataValues || {};
+    .then((resp) => {
+      const { d_o_b, mother, father } = resp.dataValues || {};
       dataChunk.d_o_b = d_o_b;
       if (mother) {
         models.family_member
@@ -78,13 +79,13 @@ exports.get_data = function (req, res) {
               uuid_family_member: mother,
             },
           })
-          .then((res) => {
+          .then((resp) => {
             //console.log(res.dataValues);
             dataChunk.motherName = [
-              res.dataValues.first_name,
-              res.dataValues.middle_name,
-              res.dataValues.last_name,
-              res.dataValues.uuid_family_member,
+              resp.dataValues.first_name,
+              resp.dataValues.middle_name,
+              resp.dataValues.last_name,
+              resp.dataValues.uuid_family_member,
             ];
           });
       }
@@ -96,12 +97,12 @@ exports.get_data = function (req, res) {
               uuid_family_member: father,
             },
           })
-          .then((res) => {
+          .then((resp) => {
             dataChunk.fatherName = [
-              res.dataValues.first_name,
-              res.dataValues.middle_name,
-              res.dataValues.last_name,
-              res.dataValues.uuid_family_member,
+              resp.dataValues.first_name,
+              resp.dataValues.middle_name,
+              resp.dataValues.last_name,
+              resp.dataValues.uuid_family_member,
             ];
           });
       }
@@ -115,8 +116,8 @@ exports.get_data = function (req, res) {
         [Op.or]: [{ bride: req.params.id }, { groom: req.params.id }],
       },
     })
-    .then((res) => {
-      res.map((item, index) => {
+    .then((resp) => {
+      resp.map((item, index) => {
         const { d_o_mar, place, bride, groom } = item.dataValues;
         models.family_member
           .findOne({
@@ -124,16 +125,15 @@ exports.get_data = function (req, res) {
               uuid_family_member: bride == req.params.id ? groom : bride,
             },
           })
-          .then((res) => {
+          .then((resp) => {
             dataChunk.marriages[index].spouse = [
-              res.dataValues.first_name,
-              res.dataValues.middle_name,
-              res.dataValues.last_name,
-              res.dataValues.uuid_family_member,
+              resp.dataValues.first_name,
+              resp.dataValues.middle_name,
+              resp.dataValues.last_name,
+              resp.dataValues.uuid_family_member,
             ];
-            console.log(dataChunk.marriages[index]);
           });
-        //console.log(item.dataValues);
+        res.json(dataChunk);
       });
     });
 };
@@ -143,32 +143,54 @@ exports.get_data = function (req, res) {
 /////////////////////////////////////////////////////
 
 exports.get_birth = function (req, res) {
-  let birth_response = {};
+  const birth_response = {};
   models.birth
     .findOne({
       where: {
         child: req.params.id,
       },
     })
-    .then((res) => {
-      const { d_o_b, mother, father } = res.dataValues;
-
+    .then((resp) => {
+      const { d_o_b, mother, father } = resp.dataValues;
       birth_response.d_o_b = d_o_b;
-
-      models.family_member
-        .findOne({
-          where: {
-            uuid_family_member: mother,
-          },
-        })
-        .then((res) => {
-          console.log(res);
+      const motherQuery = models.family_member.findOne({
+        where: {
+          uuid_family_member: mother,
+        },
+      });
+      const fatherQuery = models.family_member.findOne({
+        where: {
+          uuid_family_member: father,
+        },
+      });
+      Promise.all([motherQuery, fatherQuery]).then((responses) => {
+        responses.map((item, index) => {
+          const {
+            first_name,
+            middle_name,
+            last_name,
+            uuid_family_member,
+          } = item.dataValues;
+          if (index == 0) {
+            birth_response.mother = [
+              first_name,
+              middle_name,
+              last_name,
+              uuid_family_member,
+            ];
+          } else {
+            birth_response.father = [
+              first_name,
+              middle_name,
+              last_name,
+              uuid_family_member,
+            ];
+          }
         });
-      birth_response.mother = res.dataValues.first_name;
-      console.log(birth_response);
-    });
 
-  console.log(birth_response);
+        res.json(birth_response);
+      });
+    });
 };
 
 exports.create_family_account = function (req, res) {
