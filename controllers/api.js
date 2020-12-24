@@ -74,6 +74,34 @@ exports.get_birth = function (req, res) {
     });
 };
 
+exports.get_children = function (req, res) {
+  const children_res = [];
+  return models.birth
+    .findAll({
+      where: {
+        [Op.or]: [{ father: req.params.id }, { mother: req.params.id }],
+      },
+      include: ["family_member"],
+    })
+    .then((resp) => {
+      resp.map((item, index) => {
+        const {
+          first_name,
+          middle_name,
+          last_name,
+          uuid_family_member,
+        } = item.dataValues.family_member;
+        children_res[index] = [
+          first_name,
+          middle_name,
+          last_name,
+          uuid_family_member,
+        ];
+      });
+      res.json(children_res);
+    });
+};
+
 exports.create_family_account = function (req, res) {
   const acc_name = req.body["acc_name"];
   return models.family_account

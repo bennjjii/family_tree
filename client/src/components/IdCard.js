@@ -5,6 +5,7 @@ import "./IdCard.css";
 import ParentsBox from "./ParentsBox";
 import ChildrenBox from "./ChildrenBox";
 import MarriedBox from "./MarriedBox";
+import TargetBox from "./TargetBox";
 import validator from "validator";
 
 export class IdCard extends Component {
@@ -38,35 +39,35 @@ export class IdCard extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.uuid_target !== prevState.uuid_target) {
-      this.setState(
-        {
-          target_name: ["", "", ""],
-        },
-        () => {
-          if (validator.isUUID(this.state.uuid_target)) {
-            axios
-              .get(
-                "http://localhost:5000/get_family_member/" +
-                  this.state.uuid_target
-              )
-              .then((res) => {
-                const targetnames = [
-                  res.data.first_name,
-                  res.data.middle_name,
-                  res.data.last_name,
-                ];
-                this.setState({
-                  target_name: targetnames,
-                });
-              })
-              .catch((reason) => console.log(reason));
-          }
-        }
-      );
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (this.state.uuid_target !== prevState.uuid_target) {
+  //     this.setState(
+  //       {
+  //         target_name: ["", "", ""],
+  //       },
+  //       () => {
+  //         if (validator.isUUID(this.state.uuid_target)) {
+  //           axios
+  //             .get(
+  //               "http://localhost:5000/get_family_member/" +
+  //                 this.state.uuid_target
+  //             )
+  //             .then((res) => {
+  //               const targetnames = [
+  //                 res.data.first_name,
+  //                 res.data.middle_name,
+  //                 res.data.last_name,
+  //               ];
+  //               this.setState({
+  //                 target_name: targetnames,
+  //               });
+  //             })
+  //             .catch((reason) => console.log(reason));
+  //         }
+  //       }
+  //     );
+  //   }
+  // }
 
   render() {
     return (
@@ -78,10 +79,8 @@ export class IdCard extends Component {
           <div className="family_image">
             <img src={harold} alt="picture" />
           </div>
-          <div className="person_details">
-            <h4>{this.state.target_name.join(" ")}</h4>
-            <h6>Born: 14 Aug 1913</h6>
-            <h6></h6>
+          <TargetBox uuid_target={this.state.uuid_target} />
+          <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>
               <input
                 type="text"
@@ -95,7 +94,7 @@ export class IdCard extends Component {
         </div>
         <div className="btm_sect">
           <MarriedBox />
-          <ChildrenBox />
+          <ChildrenBox uuid_target={this.state.uuid_target} />
         </div>
       </div>
     );
