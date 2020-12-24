@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import harold from "./harold.png";
 import "./IdCard.css";
 import axios from "axios";
+import ParentsBox from "./ParentsBox";
 
 export class IdCard extends Component {
   constructor() {
@@ -129,15 +130,11 @@ export class IdCard extends Component {
     return (
       <div className="IdCard">
         <div className="top_sect">
-          <div className="parent_details">
-            <h5>Parents: </h5>
-            <div className="person_box">
-              <h5>{this.state.father}</h5>
-            </div>
-            <div className="person_box">
-              <h5>{this.state.mother}</h5>
-            </div>
-          </div>
+          <ParentsBox
+            uuid_target={this.state.uuid_target}
+            mother={this.state.mother}
+            father={this.state.father}
+          />
         </div>
         <div className="mid_sect">
           <div className="family_image">
