@@ -103,13 +103,6 @@ exports.get_children = function (req, res) {
 };
 
 exports.get_marriage = function (req, res) {
-  const marriage_res = [
-    {
-      spouse: ["", "", ""],
-      uuid: "",
-      d_o_mar: null,
-    },
-  ];
   return models.marriage
     .findAll({
       where: {
@@ -128,14 +121,22 @@ exports.get_marriage = function (req, res) {
     })
     .then((resp) => {
       marriage_resp = resp.map((item) => {
+        const grombrid =
+          req.params.id == item.dataValues.bride ? "grom" : "brid";
+        const {
+          first_name,
+          middle_name,
+          last_name,
+          uuid_family_member,
+        } = item.dataValues[grombrid];
         return {
-          spouse:
-            req.params.id == item.dataValues.bride
-              ? item.dataValues.grom.first_name
-              : item.dataValues.brid.first_name,
+          spouse: [first_name, middle_name, last_name],
+          uuid: uuid_family_member,
+          d_o_mar: item.dataValues.d_o_mar,
         };
       });
       console.log(marriage_resp);
+      res.json(marriage_resp);
     });
 };
 
