@@ -6,7 +6,7 @@ export class ChildrenBox extends Component {
   constructor(props) {
     super();
     this.state = {
-      children: [],
+      children: [{ name: [], uuid: "" }],
     };
   }
 
@@ -23,9 +23,17 @@ export class ChildrenBox extends Component {
                 "http://localhost:5000/get_children/" + this.props.uuid_target
               )
               .then((resp) => {
+                let children_resp = [];
+                children_resp = resp.data.map((child, index) => {
+                  return {
+                    name: child.name,
+                    d_o_b: child.d_o_b,
+                    uuid: child.uuid,
+                  };
+                });
                 this.setState(
                   {
-                    children: resp.data,
+                    children: children_resp,
                   },
                   () => console.log(this.state.children)
                 );
@@ -41,29 +49,19 @@ export class ChildrenBox extends Component {
       <div className="children_box">
         <button className="plus_button">+</button>
         <h5>Children:</h5>
-        <div className="person_box">
-          <h5>Howard Scott</h5>
-        </div>
-        <br />
-        <div className="person_box">
-          <h5>Daryll Scott</h5>
-        </div>
-        <br />
-        <div className="person_box">
-          <h5>Cherry Scott</h5>
-        </div>
-        <br />
-        <div className="person_box">
-          <h5>Penelope Scott</h5>
-        </div>
-        <br />
-        <div className="person_box">
-          <h5>Vicky Scott</h5>
-        </div>
-        <br />
-        <div className="person_box">
-          <h5>{this.props.uuid_target}</h5>
-        </div>
+        {this.state.children.map((child) => {
+          return (
+            <>
+              <div className="person_box" key={child.uuid}>
+                <h5>
+                  {child.name.join(" ")}
+                  <br /> {child.d_o_b}
+                </h5>
+              </div>
+              <br />
+            </>
+          );
+        })}
       </div>
     );
   }

@@ -91,14 +91,51 @@ exports.get_children = function (req, res) {
           last_name,
           uuid_family_member,
         } = item.dataValues.family_member;
-        children_res[index] = [
-          first_name,
-          middle_name,
-          last_name,
-          uuid_family_member,
-        ];
+        const { d_o_b } = item.dataValues;
+        children_res[index] = {
+          name: [first_name, middle_name, last_name],
+          d_o_b: d_o_b,
+          uuid: uuid_family_member,
+        };
       });
       res.json(children_res);
+    });
+};
+
+exports.get_marriage = function (req, res) {
+  const marriage_res = [
+    {
+      spouse: ["", "", ""],
+      uuid: "",
+      d_o_mar: null,
+    },
+  ];
+  return models.marriage
+    .findAll({
+      where: {
+        [Op.or]: [{ bride: req.params.id }, { groom: req.params.id }],
+      },
+      include: [
+        {
+          model: models.family_member,
+          as: "brid",
+        },
+        {
+          model: models.family_member,
+          as: "grom",
+        },
+      ],
+    })
+    .then((resp) => {
+      marriage_resp = resp.map((item) => {
+        return {
+          spouse:
+            req.params.id == item.dataValues.bride
+              ? item.dataValues.grom.first_name
+              : item.dataValues.brid.first_name,
+        };
+      });
+      console.log(marriage_resp);
     });
 };
 
