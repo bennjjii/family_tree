@@ -23,7 +23,8 @@ export class ParentsBox extends Component {
   handleUpdate(e) {
     e.preventDefault();
     console.log("Clicked");
-    this.props.handleUpd(this.state.father.uuid);
+    console.log(e.target.name);
+    this.props.handleUpd(this.state[e.target.name].uuid);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -66,13 +67,21 @@ export class ParentsBox extends Component {
     return (
       <div className="parent_details">
         <h5>Parents: </h5>
-        <div className="person_box">
-          <a href="#" onClick={this.handleUpdate}>
-            <h5>{this.state.father.name.join(" ")}</h5>
-          </a>
-        </div>
-        <div className="person_box">
-          <h5>{this.state.mother.name.join(" ")}</h5>
+        <div>
+          <button
+            className="parents-btn"
+            name="father"
+            onClick={this.handleUpdate}
+          >
+            {this.state.father.name.join(" ")}
+          </button>
+          <button
+            className="parents-btn"
+            name="mother"
+            onClick={this.handleUpdate}
+          >
+            {this.state.mother.name.join(" ")}
+          </button>
         </div>
       </div>
     );

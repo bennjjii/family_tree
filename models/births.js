@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "father",
     });
     birth.belongsTo(models.family_member, {
+      as: "chil",
       foreignKey: {
         name: "child",
         allowNull: false,

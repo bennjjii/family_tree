@@ -19,6 +19,44 @@ exports.get_family_member = function (req, res) {
     });
 };
 
+exports.get_target = function (req, res) {
+  return models.family_member
+    .findOne({
+      where: {
+        uuid_family_member: req.params.id,
+      },
+      include: [
+        {
+          model: models.birth,
+          as: "chil",
+        },
+        {
+          model: models.death,
+          as: "die",
+        },
+      ],
+    })
+    .then((resp) => {
+      const {
+        first_name,
+        middle_name,
+        last_name,
+        uuid_family_member,
+      } = resp.dataValues;
+      const resData = {
+        name: [first_name, middle_name, last_name],
+        uuid: uuid_family_member,
+        d_o_b: resp.dataValues.chil
+          ? resp.dataValues.chil.dataValues.d_o_b
+          : null,
+        d_o_d: resp.dataValues.die
+          ? resp.dataValues.die.dataValues.d_o_d
+          : null,
+      };
+      res.json(resData);
+    });
+};
+
 exports.get_birth = function (req, res) {
   //this function is ridiculous. Look at get_marriage. Rewrite this
   //as a single query with joins and "as" aliases added to births foreign keys
@@ -77,16 +115,22 @@ exports.get_children = function (req, res) {
       where: {
         [Op.or]: [{ father: req.params.id }, { mother: req.params.id }],
       },
-      include: ["family_member"],
+      include: [
+        {
+          model: models.family_member,
+          as: "chil",
+        },
+      ],
     })
     .then((resp) => {
+      console.log(resp[0].dataValues.chil);
       resp.map((item, index) => {
         const {
           first_name,
           middle_name,
           last_name,
           uuid_family_member,
-        } = item.dataValues.family_member;
+        } = item.dataValues.chil;
         const { d_o_b } = item.dataValues;
         children_res[index] = {
           name: [first_name, middle_name, last_name],

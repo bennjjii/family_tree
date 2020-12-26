@@ -22,26 +22,17 @@ export class TargetBox extends Component {
           if (validator.isUUID(this.props.uuid_target)) {
             ///////////
 
-            const getName = axios.get(
-              "http://localhost:5000/get_family_member/" +
-                this.props.uuid_target
-            );
-
-            const getBirthday = axios.get(
-              "http://localhost:5000/get_birth/" + this.props.uuid_target
-            );
-
-            Promise.all([getName, getBirthday]).then((responses) => {
-              const nameArr = [
-                responses[0].data.first_name,
-                responses[0].data.middle_name,
-                responses[0].data.last_name,
-              ];
-              this.setState({
-                name: nameArr,
-                d_o_b: responses[1].data.d_o_b,
+            axios
+              .get("http://localhost:5000/get_target/" + this.props.uuid_target)
+              .then((resp) => {
+                const respObj = {
+                  name: resp.data.name,
+                  uuid: resp.data.uuid,
+                  d_o_b: resp.data.d_o_b,
+                  d_o_d: resp.data.d_o_d,
+                };
+                this.setState(respObj);
               });
-            });
 
             ///////////
           }

@@ -65,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "father",
     });
     family_member.hasOne(models.birth, {
+      as: "chil",
       foreignKey: {
         name: "child",
         allowNull: false,
@@ -74,6 +75,7 @@ module.exports = (sequelize, DataTypes) => {
     //deaths
 
     family_member.hasOne(models.death, {
+      as: "die",
       foreignKey: {
         name: "died",
         allowNull: false,

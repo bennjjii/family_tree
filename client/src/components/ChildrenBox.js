@@ -23,6 +23,7 @@ export class ChildrenBox extends Component {
                 "http://localhost:5000/get_children/" + this.props.uuid_target
               )
               .then((resp) => {
+                console.log(resp);
                 let children_resp = [];
                 children_resp = resp.data.map((child, index) => {
                   return {
