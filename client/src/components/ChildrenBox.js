@@ -8,6 +8,13 @@ export class ChildrenBox extends Component {
     this.state = {
       children: [{ name: [], uuid: "" }],
     };
+
+    this.handleUpdate = this.handleUpdate.bind(this);
+  }
+
+  handleUpdate(e) {
+    e.preventDefault();
+    this.props.handleUpd(e.target.name);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -50,12 +57,16 @@ export class ChildrenBox extends Component {
         {this.state.children.map((child) => {
           return (
             <>
-              <div className="person_box" key={child.uuid}>
-                <h5>
-                  {child.name.join(" ")}
-                  <br /> {child.d_o_b}
-                </h5>
-              </div>
+              <button
+                className="parents-btn"
+                name={child.uuid}
+                key={child.uuid}
+                onClick={this.handleUpdate}
+              >
+                {child.name.join(" ")}
+                <br />
+                {child.d_o_b}
+              </button>
               <br />
             </>
           );

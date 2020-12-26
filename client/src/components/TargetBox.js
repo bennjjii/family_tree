@@ -20,8 +20,6 @@ export class TargetBox extends Component {
         },
         () => {
           if (validator.isUUID(this.props.uuid_target)) {
-            ///////////
-
             axios
               .get("http://localhost:5000/get_target/" + this.props.uuid_target)
               .then((resp) => {
@@ -33,8 +31,6 @@ export class TargetBox extends Component {
                 };
                 this.setState(respObj);
               });
-
-            ///////////
           }
         }
       );
@@ -46,7 +42,6 @@ export class TargetBox extends Component {
       <div className="person_details">
         <h4>{this.state.name.join(" ")}</h4>
         <h6>Born: {this.state.d_o_b}</h6>
-        <h6>{this.props.uuid_target}</h6>
       </div>
     );
   }

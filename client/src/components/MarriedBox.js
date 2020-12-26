@@ -6,15 +6,14 @@ export class MarriedBox extends Component {
   constructor(props) {
     super();
     this.state = {
-      spouses: [
-        // {
-        //   name: [],
-        //   uuid: "",
-        //   d_o_mar: null,
-        //   d_o_div: null,
-        // },
-      ],
+      spouses: [],
     };
+    this.handleUpdate = this.handleUpdate.bind(this);
+  }
+
+  handleUpdate(e) {
+    e.preventDefault();
+    this.props.handleUpd(e.target.name);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -56,10 +55,17 @@ export class MarriedBox extends Component {
         {this.state.spouses.map((spouse) => {
           return (
             <>
-              <div className="person_box" key={spouse.uuid}>
-                <h5>{spouse.name.join(" ")}</h5>
-                <h5>{spouse.d_o_mar}</h5>
-              </div>
+              <button
+                className="parents-btn"
+                name={spouse.uuid}
+                key={spouse.uuid}
+                onClick={this.handleUpdate}
+              >
+                {spouse.name.join(" ")}
+                <br />
+                {spouse.d_o_mar}
+              </button>
+              <br />
             </>
           );
         })}

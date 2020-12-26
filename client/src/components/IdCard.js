@@ -70,8 +70,14 @@ export class IdCard extends Component {
           </div>
         </div>
         <div className="btm_sect">
-          <MarriedBox uuid_target={this.state.uuid_target} />
-          <ChildrenBox uuid_target={this.state.uuid_target} />
+          <MarriedBox
+            uuid_target={this.state.uuid_target}
+            handleUpd={this.updateTarget}
+          />
+          <ChildrenBox
+            uuid_target={this.state.uuid_target}
+            handleUpd={this.updateTarget}
+          />
         </div>
       </div>
     );
