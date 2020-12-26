@@ -19,11 +19,11 @@ exports.get_family_member = function (req, res) {
     });
 };
 
-/////////////////////////////////////////////////////
-/////////////////////////////////////////////////////
-/////////////////////////////////////////////////////
-
 exports.get_birth = function (req, res) {
+  //this function is ridiculous. Look at get_marriage. Rewrite this
+  //as a single query with joins and "as" aliases added to births foreign keys
+  //and here. Works for now though.
+
   const birth_response = {};
   models.birth
     .findOne({
@@ -53,19 +53,15 @@ exports.get_birth = function (req, res) {
             uuid_family_member,
           } = item.dataValues;
           if (index == 0) {
-            birth_response.mother = [
-              first_name,
-              middle_name,
-              last_name,
-              uuid_family_member,
-            ];
+            birth_response.mother = {
+              name: [first_name, middle_name, last_name],
+              uuid: uuid_family_member,
+            };
           } else {
-            birth_response.father = [
-              first_name,
-              middle_name,
-              last_name,
-              uuid_family_member,
-            ];
+            birth_response.father = {
+              name: [first_name, middle_name, last_name],
+              uuid: uuid_family_member,
+            };
           }
         });
 

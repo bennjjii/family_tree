@@ -14,15 +14,19 @@ export class IdCard extends Component {
     this.state = {
       uuid_box: "442f0558-cc6e-47ed-bb82-0d0abe95f1ac",
       uuid_target: "",
-      target_name: ["", "", ""],
-      birthday: "",
-      marriages: [],
-      death: "",
-      children: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.updateTarget = this.updateTarget.bind(this);
+  }
+
+  updateTarget(newTargetUUID) {
+    if (this.state.uuid_target != newTargetUUID) {
+      this.setState({
+        uuid_target: newTargetUUID,
+      });
+    }
   }
 
   handleSubmit(e) {
@@ -39,41 +43,14 @@ export class IdCard extends Component {
     });
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (this.state.uuid_target !== prevState.uuid_target) {
-  //     this.setState(
-  //       {
-  //         target_name: ["", "", ""],
-  //       },
-  //       () => {
-  //         if (validator.isUUID(this.state.uuid_target)) {
-  //           axios
-  //             .get(
-  //               "http://localhost:5000/get_family_member/" +
-  //                 this.state.uuid_target
-  //             )
-  //             .then((res) => {
-  //               const targetnames = [
-  //                 res.data.first_name,
-  //                 res.data.middle_name,
-  //                 res.data.last_name,
-  //               ];
-  //               this.setState({
-  //                 target_name: targetnames,
-  //               });
-  //             })
-  //             .catch((reason) => console.log(reason));
-  //         }
-  //       }
-  //     );
-  //   }
-  // }
-
   render() {
     return (
       <div className="IdCard">
         <div className="top_sect">
-          <ParentsBox uuid_target={this.state.uuid_target} />
+          <ParentsBox
+            uuid_target={this.state.uuid_target}
+            handleUpd={this.updateTarget}
+          />
         </div>
         <div className="mid_sect">
           <div className="family_image">
@@ -93,7 +70,7 @@ export class IdCard extends Component {
           </div>
         </div>
         <div className="btm_sect">
-          <MarriedBox />
+          <MarriedBox uuid_target={this.state.uuid_target} />
           <ChildrenBox uuid_target={this.state.uuid_target} />
         </div>
       </div>

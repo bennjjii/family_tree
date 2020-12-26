@@ -31,12 +31,9 @@ export class ChildrenBox extends Component {
                     uuid: child.uuid,
                   };
                 });
-                this.setState(
-                  {
-                    children: children_resp,
-                  },
-                  () => console.log(this.state.children)
-                );
+                this.setState({
+                  children: children_resp,
+                });
               });
           }
         }
