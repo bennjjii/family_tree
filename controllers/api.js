@@ -125,10 +125,14 @@ exports.get_target_data = function (req, res) {
       ],
     })
     .then((resp) => {
+      //Structure of JSON response
+
       const respData = {
         target_name: ["", "", ""],
         uuid: "",
+        gender: null,
         born: null,
+        died: null,
         mother: {
           name: ["", "", ""],
           uuid: "",
@@ -159,9 +163,20 @@ exports.get_target_data = function (req, res) {
         last_name,
         uuid_family_member,
       } = resp.dataValues;
+
+      //Recover data from response
+
       respData.target_name = [first_name, middle_name, last_name];
       respData.uuid = uuid_family_member;
       respData.born = resp.dataValues.chil.d_o_b;
+      respData.gender = resp.dataValues.gender;
+
+      resp.dataValues.die
+        ? (respData.died = resp.dataValues.die.d_o_d)
+        : (respData.died = null);
+
+      //parents
+
       if (resp.dataValues.chil.mothe) {
         ({
           first_name,
@@ -186,9 +201,48 @@ exports.get_target_data = function (req, res) {
           uuid: uuid_family_member,
         };
       } else respData.father = null;
+      // children
+      let parentSelector;
+      respData.gender == "Male"
+        ? (parentSelector = "fathe")
+        : (parentSelector = "mothe");
+
+      respData.children = resp.dataValues[parentSelector].map((item) => {
+        ({
+          first_name,
+          middle_name,
+          last_name,
+          uuid_family_member,
+        } = item.chil);
+        return {
+          name: [first_name, middle_name, last_name],
+          uuid: uuid_family_member,
+          d_o_b: item.dataValues.d_o_b,
+        };
+      });
+
+      //marriages
+
+      let spouseSelector = {};
+      respData.gender == "Male"
+        ? ([spouseSelector.target, spouseSelector.spouse] = ["grom", "brid"])
+        : ([spouseSelector.target, spouseSelector.spouse] = ["brid", "grom"]);
+
+      respData.spouses = resp.dataValues[spouseSelector.target].map((item) => {
+        ({ first_name, middle_name, last_name, uuid_family_member } = item[
+          spouseSelector.spouse
+        ]);
+
+        return {
+          name: [first_name, middle_name, last_name],
+          d_o_mar: item.dataValues.d_o_mar,
+          d_o_div: item.dataValues.d_o_div,
+        };
+      });
+
       // console.log(resp.dataValues);
       // console.trace(resp);
-      console.time(resp);
+      //console.log(resp.dataValues.brid);
       res.json(respData);
     });
 };
