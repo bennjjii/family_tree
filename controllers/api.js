@@ -57,6 +57,142 @@ exports.get_target = function (req, res) {
     });
 };
 
+exports.get_target_data = function (req, res) {
+  return models.family_member
+    .findOne({
+      where: {
+        uuid_family_member: req.params.id,
+      },
+      include: [
+        {
+          model: models.birth,
+          as: "chil",
+          include: [
+            {
+              model: models.family_member,
+              as: "fathe",
+            },
+            {
+              model: models.family_member,
+              as: "mothe",
+            },
+          ],
+        },
+        {
+          model: models.death,
+          as: "die",
+        },
+        {
+          model: models.birth,
+          as: "mothe",
+          include: [
+            {
+              model: models.family_member,
+              as: "chil",
+            },
+          ],
+        },
+        {
+          model: models.birth,
+          as: "fathe",
+          include: [
+            {
+              model: models.family_member,
+              as: "chil",
+            },
+          ],
+        },
+        {
+          model: models.marriage,
+          as: "brid",
+          include: [
+            {
+              model: models.family_member,
+              as: "grom",
+            },
+          ],
+        },
+        {
+          model: models.marriage,
+          as: "grom",
+          include: [
+            {
+              model: models.family_member,
+              as: "brid",
+            },
+          ],
+        },
+      ],
+    })
+    .then((resp) => {
+      const respData = {
+        target_name: ["", "", ""],
+        uuid: "",
+        born: null,
+        mother: {
+          name: ["", "", ""],
+          uuid: "",
+        },
+        father: {
+          name: ["", "", ""],
+          uuid: "",
+        },
+        children: [
+          {
+            name: ["", "", ""],
+            d_o_b: null,
+            uuid: "",
+          },
+        ],
+        spouses: [
+          {
+            name: ["", "", ""],
+            uuid: "",
+            d_o_mar: null,
+            d_o_div: null,
+          },
+        ],
+      };
+      let {
+        first_name,
+        middle_name,
+        last_name,
+        uuid_family_member,
+      } = resp.dataValues;
+      respData.target_name = [first_name, middle_name, last_name];
+      respData.uuid = uuid_family_member;
+      respData.born = resp.dataValues.chil.d_o_b;
+      if (resp.dataValues.chil.mothe) {
+        ({
+          first_name,
+          middle_name,
+          last_name,
+          uuid_family_member,
+        } = resp.dataValues.chil.mothe);
+        respData.mother = {
+          name: [first_name, middle_name, last_name],
+          uuid: uuid_family_member,
+        };
+      } else respData.mother = null;
+      if (resp.dataValues.chil.fathe) {
+        ({
+          first_name,
+          middle_name,
+          last_name,
+          uuid_family_member,
+        } = resp.dataValues.chil.fathe);
+        respData.father = {
+          name: [first_name, middle_name, last_name],
+          uuid: uuid_family_member,
+        };
+      } else respData.father = null;
+      // console.log(resp.dataValues);
+      // console.trace(resp);
+      console.time(resp);
+      res.json(respData);
+    });
+};
+
 exports.get_birth = function (req, res) {
   //this function is ridiculous. Look at get_marriage. Rewrite this
   //as a single query with joins and "as" aliases added to births foreign keys

@@ -59,9 +59,11 @@ module.exports = (sequelize, DataTypes) => {
     //births
 
     family_member.hasMany(models.birth, {
+      as: "mothe",
       foreignKey: "mother",
     });
     family_member.hasMany(models.birth, {
+      as: "fathe",
       foreignKey: "father",
     });
     family_member.hasOne(models.birth, {
@@ -85,6 +87,7 @@ module.exports = (sequelize, DataTypes) => {
     //marriage
 
     family_member.hasMany(models.marriage, {
+      as: "brid",
       foreignKey: {
         name: "bride",
         allowNull: false,
@@ -92,6 +95,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     family_member.hasMany(models.marriage, {
+      as: "grom",
       foreignKey: {
         name: "groom",
         allowNull: false,

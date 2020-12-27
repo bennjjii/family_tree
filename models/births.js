@@ -16,9 +16,11 @@ module.exports = (sequelize, DataTypes) => {
 
   birth.associate = (models) => {
     birth.belongsTo(models.family_member, {
+      as: "mothe",
       foreignKey: "mother",
     });
     birth.belongsTo(models.family_member, {
+      as: "fathe",
       foreignKey: "father",
     });
     birth.belongsTo(models.family_member, {
