@@ -128,11 +128,13 @@ exports.get_target_data = function (req, res) {
       //Structure of JSON response
 
       const respData = {
-        target_name: ["", "", ""],
-        uuid: "",
-        gender: null,
-        born: null,
-        died: null,
+        target: {
+          name: ["", "", ""],
+          uuid: "",
+          gender: null,
+          born: null,
+          died: null,
+        },
         mother: {
           name: ["", "", ""],
           uuid: "",
@@ -166,14 +168,14 @@ exports.get_target_data = function (req, res) {
 
       //Recover data from response
 
-      respData.target_name = [first_name, middle_name, last_name];
-      respData.uuid = uuid_family_member;
-      respData.born = resp.dataValues.chil.d_o_b;
-      respData.gender = resp.dataValues.gender;
+      respData.target.name = [first_name, middle_name, last_name];
+      respData.target.uuid = uuid_family_member;
+      respData.target.born = resp.dataValues.chil.d_o_b;
+      respData.target.gender = resp.dataValues.gender;
 
       resp.dataValues.die
-        ? (respData.died = resp.dataValues.die.d_o_d)
-        : (respData.died = null);
+        ? (respData.target.died = resp.dataValues.die.d_o_d)
+        : (respData.target.died = null);
 
       //parents
 
@@ -188,7 +190,11 @@ exports.get_target_data = function (req, res) {
           name: [first_name, middle_name, last_name],
           uuid: uuid_family_member,
         };
-      } else respData.mother = null;
+      } else
+        respData.mother = {
+          name: ["", "", ""],
+          uuid: "",
+        };
       if (resp.dataValues.chil.fathe) {
         ({
           first_name,
@@ -200,12 +206,16 @@ exports.get_target_data = function (req, res) {
           name: [first_name, middle_name, last_name],
           uuid: uuid_family_member,
         };
-      } else respData.father = null;
+      } else
+        respData.father = {
+          name: ["", "", ""],
+          uuid: "",
+        };
       // children
       let parentSelector;
-      respData.gender == "Male"
-        ? (parentSelector = "fathe")
-        : (parentSelector = "mothe");
+      resp.fathe[0] ? (parentSelector = "fathe") : (parentSelector = "mothe");
+
+      console.log(parentSelector);
 
       respData.children = resp.dataValues[parentSelector].map((item) => {
         ({
@@ -224,25 +234,26 @@ exports.get_target_data = function (req, res) {
       //marriages
 
       let spouseSelector = {};
-      respData.gender == "Male"
+      resp.grom[0]
         ? ([spouseSelector.target, spouseSelector.spouse] = ["grom", "brid"])
         : ([spouseSelector.target, spouseSelector.spouse] = ["brid", "grom"]);
 
-      respData.spouses = resp.dataValues[spouseSelector.target].map((item) => {
-        ({ first_name, middle_name, last_name, uuid_family_member } = item[
-          spouseSelector.spouse
-        ]);
+      respData.spouses = resp[spouseSelector.target].map((item) => {
+        ({
+          first_name,
+          middle_name,
+          last_name,
+          uuid_family_member,
+        } = item.dataValues[spouseSelector.spouse]);
 
         return {
           name: [first_name, middle_name, last_name],
+          uuid: uuid_family_member,
           d_o_mar: item.dataValues.d_o_mar,
           d_o_div: item.dataValues.d_o_div,
         };
       });
-
-      // console.log(resp.dataValues);
-      // console.trace(resp);
-      //console.log(resp.dataValues.brid);
+      console.log(resp);
       res.json(respData);
     });
 };
