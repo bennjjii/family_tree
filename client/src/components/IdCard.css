@@ -163,3 +163,12 @@
   transform: translate(0, -5px);
   float: right;
 }
+
+.fa-edit {
+  float: right;
+  transform: translateY(5px);
+}
+
+.fa-edit:hover {
+  color: grey;
+}

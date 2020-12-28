@@ -8,7 +8,7 @@ import MarriedBox from "./MarriedBox";
 import TargetBox from "./TargetBox";
 import validator from "validator";
 
-export class IdCard extends Component {
+class IdCard extends Component {
   constructor() {
     super();
     const initState = {
@@ -69,6 +69,7 @@ export class IdCard extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTarget = this.updateTarget.bind(this);
+    this.updateTarget2 = this.updateTarget2.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -92,6 +93,18 @@ export class IdCard extends Component {
       this.setState({
         uuid_target: newTargetUUID,
       });
+    }
+  }
+
+  updateTarget2(e) {
+    e.preventDefault();
+    console.log(e.target);
+    if (e.target.getAttribute("uuid")) {
+      if (e.target.getAttribute("uuid") !== this.state.uuid_target) {
+        this.setState({
+          uuid_target: e.target.getAttribute("uuid"),
+        });
+      }
     }
   }
 
@@ -143,7 +156,7 @@ export class IdCard extends Component {
           />
           <ChildrenBox
             children={this.state.children}
-            handleUpd={this.updateTarget}
+            handleUpd={this.updateTarget2}
           />
         </div>
       </div>
