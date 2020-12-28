@@ -80,9 +80,7 @@ export class IdCard extends Component {
               "http://localhost:5000/get_target_data/" + this.state.uuid_target
             )
             .then((resp) => {
-              this.setState(resp.data, () => {
-                console.log(this.state);
-              });
+              this.setState(resp.data);
             });
         }
       });

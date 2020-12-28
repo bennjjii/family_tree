@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
-import validator from "validator";
 
 export class MarriedBox extends Component {
   constructor(props) {
@@ -25,7 +23,6 @@ export class MarriedBox extends Component {
               <button
                 className="parents-btn"
                 name={spouse.uuid}
-                key={spouse.uuid}
                 onClick={this.handleUpdate}
               >
                 {spouse.name.join(" ")}
