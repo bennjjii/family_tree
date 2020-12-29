@@ -7,6 +7,7 @@ import ChildrenBox from "./ChildrenBox";
 import MarriedBox from "./MarriedBox";
 import TargetBox from "./TargetBox";
 import validator from "validator";
+import NewChild from "./NewChild";
 
 class IdCard extends Component {
   constructor() {
@@ -64,12 +65,21 @@ class IdCard extends Component {
           d_o_div: null,
         },
       ],
+      editMode: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTarget = this.updateTarget.bind(this);
     this.updateTarget2 = this.updateTarget2.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.state.uuid_target === "") {
+      this.setState({
+        uuid_target: "442f0558-cc6e-47ed-bb82-0d0abe95f1ac",
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -89,7 +99,7 @@ class IdCard extends Component {
   }
 
   updateTarget(newTargetUUID) {
-    if (this.state.uuid_target != newTargetUUID) {
+    if (this.state.uuid_target !== newTargetUUID) {
       this.setState({
         uuid_target: newTargetUUID,
       });
@@ -116,7 +126,7 @@ class IdCard extends Component {
   }
 
   handleChange(e) {
-    const { name, value, type } = e.target;
+    const { name, value } = e.target;
     this.setState({
       [name]: value,
     });
@@ -125,6 +135,7 @@ class IdCard extends Component {
   render() {
     return (
       <div className="IdCard">
+        <NewChild />
         <div className="top_sect">
           <ParentsBox
             handleUpd={this.updateTarget}
@@ -134,7 +145,7 @@ class IdCard extends Component {
         </div>
         <div className="mid_sect">
           <div className="family_image">
-            <img src={harold} alt="picture" />
+            <img src={harold} alt="photograph of family member" />
           </div>
           <TargetBox target={this.state.target} />
           <div className="uuid_form">

@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
-import validator from "validator";
 
 export class TargetBox extends Component {
   constructor(props) {

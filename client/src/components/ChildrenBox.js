@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Child from "./Child";
+import NewChild from "./NewChild";
 
 export class ChildrenBox extends Component {
   constructor(props) {
