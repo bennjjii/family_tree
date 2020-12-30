@@ -66,12 +66,16 @@ class IdCard extends Component {
         },
       ],
       editMode: false,
-      editChild: false,
+      editNewChild: false,
+      newChildStyle: {
+        display: "none",
+      },
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTarget = this.updateTarget.bind(this);
+    this.addChild = this.addChild.bind(this);
   }
 
   componentDidMount() {
@@ -124,10 +128,29 @@ class IdCard extends Component {
     });
   }
 
+  addChild(stuff) {
+    console.log(stuff);
+    this.setState({
+      editNewChild: true,
+    });
+  }
+
   render() {
+    let editChildComponent;
+    if (this.state.editNewChild) {
+      editChildComponent = (
+        <NewChild
+          target={this.state.target.uuid}
+          targetParentGender={this.state.target.gender}
+          targetSpouses={this.state.spouses}
+        />
+      );
+    }
+
     return (
       <div className="IdCard">
-        <NewChild />
+        {editChildComponent}
+
         <div className="top_sect">
           <ParentsBox
             handleUpd={this.updateTarget}
@@ -160,6 +183,7 @@ class IdCard extends Component {
           <ChildrenBox
             children={this.state.children}
             handleUpd={this.updateTarget}
+            addChild={this.addChild}
           />
         </div>
       </div>

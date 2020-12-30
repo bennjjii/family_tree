@@ -11,8 +11,13 @@ export class NewChild extends Component {
       last_name: "",
       d_o_b: null,
       gender: null,
+      targetParent: this.props.target,
+      targetParentGender: this.props.targetParentGender,
+      otherParent: this.props.targetSpouses[0].uuid,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeBirth = this.handleChangeBirth.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(e) {
@@ -27,11 +32,27 @@ export class NewChild extends Component {
     );
   }
 
+  handleChangeBirth(date) {
+    this.setState(
+      {
+        d_o_b: date,
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log(this.state);
+  }
+
   render() {
     return (
-      <div className="new-child">
+      <div className="new-child" style={this.props.newChildStyle}>
         <h3>Add child</h3>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <label>
             First name
             <br />
@@ -40,6 +61,7 @@ export class NewChild extends Component {
               name="first_name"
               autoComplete="off"
               value={this.state.first_name}
+              onChange={this.handleChange}
             ></input>
           </label>
           <br />
@@ -51,6 +73,7 @@ export class NewChild extends Component {
               autoComplete="no"
               name="middle_name"
               value={this.state.middle_name}
+              onChange={this.handleChange}
             ></input>
           </label>
           <br />
@@ -62,6 +85,7 @@ export class NewChild extends Component {
               autoComplete="no"
               name="last_name"
               value={this.state.last_name}
+              onChange={this.handleChange}
             ></input>
           </label>
           <br />
@@ -74,13 +98,23 @@ export class NewChild extends Component {
             dateFormat="dd/MM/yyyy"
             showYearDropdown
             autoComplete="off"
+            onChange={this.handleChangeBirth}
+            selected={this.state.d_o_b}
           />
           <br />
 
           <label>
             Gender
             <br />
-            <select>
+            <select
+              name="gender"
+              value={this.state.gender}
+              onChange={this.handleChange}
+            >
+              {" "}
+              <option value="" selected disabled hidden>
+                ---
+              </option>
               <option>Male</option>
               <option>Female</option>
             </select>
@@ -88,10 +122,18 @@ export class NewChild extends Component {
           <br />
 
           <label>
-            Father
+            {this.props.targetGender !== "Male" ? "Father" : "Mother"}
             <br />
-            <select>
-              <option>Gerald Stephen Ravis</option>
+            <select
+              name="otherParent"
+              value={this.state.otherParent}
+              onChange={this.handleChange}
+            >
+              {this.props.targetSpouses.map((spouse) => {
+                return (
+                  <option value={spouse.uuid}>{spouse.name.join(" ")}</option>
+                );
+              })}
             </select>
           </label>
           <br />

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Child from "./Child";
-import NewChild from "./NewChild";
 
 export class ChildrenBox extends Component {
   constructor(props) {
@@ -10,7 +9,9 @@ export class ChildrenBox extends Component {
   render() {
     return (
       <div className="children_box">
-        <button className="plus_button">+</button>
+        <button className="plus_button" onClick={this.props.addChild}>
+          +
+        </button>
         <h5>Children:</h5>
         {this.props.children.map((child, index) => {
           return (
