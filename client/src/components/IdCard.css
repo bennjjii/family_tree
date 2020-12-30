@@ -43,6 +43,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 .parent_details {
@@ -172,6 +173,17 @@
   box-shadow: 1px 1px 3px hsl(0, 0%, 20%);
   transform: translate(0, -5px);
   float: right;
+}
+
+.plus_button:focus {
+  border-style: none;
+  outline: none;
+}
+
+.plus_button:active {
+  transform: translateY(2px);
+  border-style: none;
+  outline: none;
 }
 
 .fa-edit {

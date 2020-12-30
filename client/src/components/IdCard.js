@@ -66,12 +66,12 @@ class IdCard extends Component {
         },
       ],
       editMode: false,
+      editChild: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTarget = this.updateTarget.bind(this);
-    this.updateTarget2 = this.updateTarget2.bind(this);
   }
 
   componentDidMount() {
@@ -98,15 +98,7 @@ class IdCard extends Component {
     }
   }
 
-  updateTarget(newTargetUUID) {
-    if (this.state.uuid_target !== newTargetUUID) {
-      this.setState({
-        uuid_target: newTargetUUID,
-      });
-    }
-  }
-
-  updateTarget2(e) {
+  updateTarget(e) {
     e.preventDefault();
     console.log(e.target);
     if (e.target.getAttribute("uuid")) {
@@ -167,7 +159,7 @@ class IdCard extends Component {
           />
           <ChildrenBox
             children={this.state.children}
-            handleUpd={this.updateTarget2}
+            handleUpd={this.updateTarget}
           />
         </div>
       </div>

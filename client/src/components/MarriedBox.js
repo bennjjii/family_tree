@@ -3,13 +3,6 @@ import React, { Component } from "react";
 export class MarriedBox extends Component {
   constructor(props) {
     super();
-
-    this.handleUpdate = this.handleUpdate.bind(this);
-  }
-
-  handleUpdate(e) {
-    e.preventDefault();
-    this.props.handleUpd(e.target.name);
   }
 
   render() {
@@ -22,8 +15,8 @@ export class MarriedBox extends Component {
             <>
               <button
                 className="parents-btn"
-                name={spouse.uuid}
-                onClick={this.handleUpdate}
+                uuid={spouse.uuid}
+                onClick={this.props.handleUpd}
               >
                 {spouse.name.join(" ")}
                 <br />

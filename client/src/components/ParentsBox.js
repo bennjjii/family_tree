@@ -3,13 +3,6 @@ import React, { Component } from "react";
 export class ParentsBox extends Component {
   constructor(props) {
     super();
-
-    this.handleUpdate = this.handleUpdate.bind(this);
-  }
-
-  handleUpdate(e) {
-    e.preventDefault();
-    this.props.handleUpd(e.target.name);
   }
 
   render() {
@@ -19,15 +12,15 @@ export class ParentsBox extends Component {
         <div>
           <button
             className="parents-btn"
-            name={this.props.father.uuid}
-            onClick={this.handleUpdate}
+            uuid={this.props.father.uuid}
+            onClick={this.props.handleUpd}
           >
             {this.props.father.name.join(" ")}
           </button>
           <button
             className="parents-btn"
-            name={this.props.mother.uuid}
-            onClick={this.handleUpdate}
+            uuid={this.props.mother.uuid}
+            onClick={this.props.handleUpd}
           >
             {this.props.mother.name.join(" ")}
           </button>
