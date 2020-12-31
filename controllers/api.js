@@ -203,7 +203,7 @@ exports.get_target_data = function (req, res) {
 };
 
 exports.create_new_child = (req, res) => {
-  console.log(req);
+  //console.log(req);
   return models.birth
     .create(
       {
@@ -230,8 +230,8 @@ exports.create_new_child = (req, res) => {
       }
     )
     .then((resp) => {
-      //console.log(resp);
-      res.send(200);
+      console.log(resp);
+      res.json(resp.chil);
     });
 };
 
