@@ -75,7 +75,8 @@ class IdCard extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTarget = this.updateTarget.bind(this);
-    this.addChild = this.addChild.bind(this);
+    this.showNewChild = this.showNewChild.bind(this);
+    this.submitNewChild = this.submitNewChild.bind(this);
   }
 
   componentDidMount() {
@@ -128,12 +129,14 @@ class IdCard extends Component {
     });
   }
 
-  addChild(stuff) {
+  showNewChild(stuff) {
     console.log(stuff);
     this.setState({
       editNewChild: true,
     });
   }
+
+  submitNewChild() {}
 
   render() {
     let editChildComponent;
@@ -183,7 +186,7 @@ class IdCard extends Component {
           <ChildrenBox
             children={this.state.children}
             handleUpd={this.updateTarget}
-            addChild={this.addChild}
+            showNewChild={this.showNewChild}
           />
         </div>
       </div>

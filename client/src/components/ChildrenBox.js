@@ -9,7 +9,7 @@ export class ChildrenBox extends Component {
   render() {
     return (
       <div className="children_box">
-        <button className="plus_button" onClick={this.props.addChild}>
+        <button className="plus_button" onClick={this.props.showNewChild}>
           +
         </button>
         <h5>Children:</h5>

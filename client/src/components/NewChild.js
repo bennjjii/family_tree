@@ -10,6 +10,7 @@ export class NewChild extends Component {
       middle_name: "",
       last_name: "",
       d_o_b: null,
+      dobstring: "",
       gender: null,
       targetParent: this.props.target,
       targetParentGender: this.props.targetParentGender,
@@ -33,9 +34,11 @@ export class NewChild extends Component {
   }
 
   handleChangeBirth(date) {
+    const dobstring = JSON.stringify(date);
     this.setState(
       {
         d_o_b: date,
+        dobstring: dobstring,
       },
       () => {
         console.log(this.state);
@@ -97,6 +100,8 @@ export class NewChild extends Component {
             shouldCloseOnSelect={true}
             dateFormat="dd/MM/yyyy"
             showYearDropdown
+            scrollableYearDropdown
+            yearDropdownItemNumber={40}
             autoComplete="off"
             onChange={this.handleChangeBirth}
             selected={this.state.d_o_b}
