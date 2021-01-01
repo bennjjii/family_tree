@@ -231,7 +231,7 @@ exports.create_new_child = (req, res) => {
     )
     .then((resp) => {
       console.log(resp);
-      res.json(resp.chil);
+      res.json(resp);
     });
 };
 

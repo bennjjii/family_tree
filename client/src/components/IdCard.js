@@ -136,7 +136,27 @@ class IdCard extends Component {
     });
   }
 
-  submitNewChild() {}
+  submitNewChild(newChildResponse) {
+    axios
+      .post("http://localhost:5000/create_new_child", newChildResponse)
+      .then((response) => {
+        const child = {
+          name: [
+            response.data.chil.first_name,
+            response.data.chil.middle_name,
+            response.data.chil.last_name,
+          ],
+          d_o_b: response.data.d_o_b,
+          uuid: response.data.chil.uuid_family_member,
+        };
+        const children = [...this.state.children];
+        children.push(child);
+        this.setState({
+          children: children,
+          editNewChild: false,
+        });
+      });
+  }
 
   render() {
     let editChildComponent;
@@ -146,6 +166,7 @@ class IdCard extends Component {
           target={this.state.target.uuid}
           targetParentGender={this.state.target.gender}
           targetSpouses={this.state.spouses}
+          submitNewChild={this.submitNewChild}
         />
       );
     }

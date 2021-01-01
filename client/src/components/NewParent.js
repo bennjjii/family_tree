@@ -2,14 +2,14 @@ import React, { Component } from "react";
 
 import DatePicker from "react-datepicker";
 
-export class NewChild extends Component {
+export class NewParent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       first_name: "",
       middle_name: "",
       last_name: "",
-      d_o_b: null,
+      target_d_o_b: null,
       dobstring: "",
       gender: null,
       targetParent: this.props.target,
@@ -167,4 +167,4 @@ export class NewChild extends Component {
   }
 }
 
-export default NewChild;
+export default NewParent;
