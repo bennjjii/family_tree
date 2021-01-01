@@ -9,12 +9,8 @@ export class NewParent extends Component {
       first_name: "",
       middle_name: "",
       last_name: "",
-      target_d_o_b: null,
-      dobstring: "",
       gender: null,
-      targetParent: this.props.target,
-      targetParentGender: this.props.targetParentGender,
-      otherParent: this.props.targetSpouses[0].uuid,
+      target_d_o_b: null,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeBirth = this.handleChangeBirth.bind(this);
@@ -34,11 +30,9 @@ export class NewParent extends Component {
   }
 
   handleChangeBirth(date) {
-    const dobstring = JSON.stringify(date);
     this.setState(
       {
         d_o_b: date,
-        dobstring: dobstring,
       },
       () => {
         console.log(this.state);
@@ -71,7 +65,7 @@ export class NewParent extends Component {
   render() {
     return (
       <div className="new-child" style={this.props.newChildStyle}>
-        <h3>Add child</h3>
+        <h3>Add parent</h3>
         <form onSubmit={this.handleSubmit}>
           <label>
             First name
@@ -143,23 +137,6 @@ export class NewParent extends Component {
           </label>
           <br />
 
-          <label>
-            {this.props.targetGender !== "Male" ? "Father" : "Mother"}
-            <br />
-            <select
-              name="otherParent"
-              value={this.state.otherParent}
-              onChange={this.handleChange}
-            >
-              {this.props.targetSpouses.map((spouse) => {
-                return (
-                  <option value={spouse.uuid}>{spouse.name.join(" ")}</option>
-                );
-              })}
-            </select>
-          </label>
-          <br />
-          <br />
           <input type="submit" value="Save"></input>
         </form>
       </div>

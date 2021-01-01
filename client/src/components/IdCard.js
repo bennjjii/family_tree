@@ -8,6 +8,7 @@ import MarriedBox from "./MarriedBox";
 import TargetBox from "./TargetBox";
 import validator from "validator";
 import NewChild from "./NewChild";
+import NewParent from "./NewParent";
 
 class IdCard extends Component {
   constructor() {
@@ -174,6 +175,7 @@ class IdCard extends Component {
     return (
       <div className="IdCard">
         {editChildComponent}
+        <NewParent />
 
         <div className="top_sect">
           <ParentsBox

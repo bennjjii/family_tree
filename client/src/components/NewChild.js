@@ -10,7 +10,6 @@ export class NewChild extends Component {
       middle_name: "",
       last_name: "",
       d_o_b: null,
-      dobstring: "",
       gender: null,
       targetParent: this.props.target,
       targetParentGender: this.props.targetParentGender,
@@ -23,32 +22,19 @@ export class NewChild extends Component {
 
   handleChange(e) {
     const { name, value } = e.target;
-    this.setState(
-      {
-        [name]: value,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({
+      [name]: value,
+    });
   }
 
   handleChangeBirth(date) {
-    const dobstring = JSON.stringify(date);
-    this.setState(
-      {
-        d_o_b: date,
-        dobstring: dobstring,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({
+      d_o_b: date,
+    });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
     const response = {
       first_name: this.state.first_name,
       middle_name: this.state.middle_name,
@@ -70,7 +56,7 @@ export class NewChild extends Component {
 
   render() {
     return (
-      <div className="new-child" style={this.props.newChildStyle}>
+      <div className="new-child">
         <h3>Add child</h3>
         <form onSubmit={this.handleSubmit}>
           <label>
