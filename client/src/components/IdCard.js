@@ -68,6 +68,7 @@ class IdCard extends Component {
       ],
       editMode: false,
       editNewChild: false,
+      editNewParent: false,
       newChildStyle: {
         display: "none",
       },
@@ -159,10 +160,39 @@ class IdCard extends Component {
       });
   }
 
+  showNewParent(stuff) {
+    console.log(stuff);
+    this.setState({
+      editNewParent: true,
+    });
+  }
+
+  submitNewParent(newParentResponse) {
+    // axios
+    //   .post("http://localhost:5000/create_new_parent", newParentResponse)
+    //   .then((response) => {
+    //     const parent = {
+    //       name: [
+    //         response.data.chil.first_name,
+    //         response.data.chil.middle_name,
+    //         response.data.chil.last_name,
+    //       ],
+    //       d_o_b: response.data.d_o_b,
+    //       uuid: response.data.chil.uuid_family_member,
+    //     };
+    //     const children = [...this.state.children];
+    //     children.push(child);
+    //     this.setState({
+    //       children: children,
+    //       editNewChild: false,
+    //     });
+    //   });
+  }
+
   render() {
-    let editChildComponent;
+    let newChildComponent;
     if (this.state.editNewChild) {
-      editChildComponent = (
+      newChildComponent = (
         <NewChild
           target={this.state.target.uuid}
           targetParentGender={this.state.target.gender}
@@ -172,9 +202,22 @@ class IdCard extends Component {
       );
     }
 
+    let newParentComponent;
+    if (this.state.editNewParent) {
+      newParentComponent = (
+        <NewParent
+          target={this.state.target.uuid}
+          targetGender={this.state.target.gender}
+          targetMother={this.state.mother}
+          targetFather={this.state.father}
+          submitNewParent={this.submitNewParent}
+        />
+      );
+    }
+
     return (
       <div className="IdCard">
-        {editChildComponent}
+        {newChildComponent}
         <NewParent />
 
         <div className="top_sect">

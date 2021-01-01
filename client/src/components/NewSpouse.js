@@ -2,47 +2,38 @@ import React, { Component } from "react";
 
 import DatePicker from "react-datepicker";
 
-export class NewParent extends Component {
+export class NewSpouse extends Component {
   constructor(props) {
     super(props);
     this.state = {
       first_name: "",
       middle_name: "",
       last_name: "",
-      gender: null,
-      target_d_o_b: null,
+      d_o_mar: null,
+      target: this.props.target,
+      targetGender: this.props.targetParentGender,
+      spouse: this.props.targetSpouses[0].uuid,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleChangeDate = this.handleChangeDate.bind(this);
+    this.handleChangeBirth = this.handleChangeBirth.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(e) {
     const { name, value } = e.target;
-    this.setState(
-      {
-        [name]: value,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({
+      [name]: value,
+    });
   }
 
-  handleChangeDate(date) {
-    this.setState(
-      {
-        d_o_b: date,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+  handleChangeBirth(date) {
+    this.setState({
+      d_o_b: date,
+    });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
     const response = {
       first_name: this.state.first_name,
       middle_name: this.state.middle_name,
@@ -59,13 +50,13 @@ export class NewParent extends Component {
       gender: this.state.gender,
     };
 
-    this.props.submitNewChild(response);
+    this.props.submitNewSpouse(response);
   }
 
   render() {
     return (
-      <div className="new-child" style={this.props.newChildStyle}>
-        <h3>Add parent</h3>
+      <div className="new-child">
+        <h3>Add child</h3>
         <form onSubmit={this.handleSubmit}>
           <label>
             First name
@@ -102,7 +93,7 @@ export class NewParent extends Component {
               onChange={this.handleChange}
             ></input>
           </label>
-          {/* <br />
+          <br />
           <label htmlFor="birthday">Date of birth</label>
 
           <br />
@@ -114,9 +105,9 @@ export class NewParent extends Component {
             scrollableYearDropdown
             yearDropdownItemNumber={40}
             autoComplete="off"
-            onChange={this.handleChangeDate}
+            onChange={this.handleChangeBirth}
             selected={this.state.d_o_b}
-          />*/}
+          />
           <br />
 
           <label>
@@ -137,6 +128,23 @@ export class NewParent extends Component {
           </label>
           <br />
 
+          <label>
+            {this.props.targetGender !== "Male" ? "Father" : "Mother"}
+            <br />
+            <select
+              name="otherParent"
+              value={this.state.otherParent}
+              onChange={this.handleChange}
+            >
+              {this.props.targetSpouses.map((spouse) => {
+                return (
+                  <option value={spouse.uuid}>{spouse.name.join(" ")}</option>
+                );
+              })}
+            </select>
+          </label>
+          <br />
+          <br />
           <input type="submit" value="Save"></input>
         </form>
       </div>
@@ -144,4 +152,4 @@ export class NewParent extends Component {
   }
 }
 
-export default NewParent;
+export default NewSpouse;
