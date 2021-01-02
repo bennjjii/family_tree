@@ -194,7 +194,8 @@ class IdCard extends Component {
     if (this.state.editNewChild) {
       newChildComponent = (
         <NewChild
-          target={this.state.target.uuid}
+          target={this.state.uuid_target}
+          d_o_b={this.state.target.born}
           targetParentGender={this.state.target.gender}
           targetSpouses={this.state.spouses}
           submitNewChild={this.submitNewChild}
@@ -202,23 +203,23 @@ class IdCard extends Component {
       );
     }
 
-    let newParentComponent;
-    if (this.state.editNewParent) {
-      newParentComponent = (
-        <NewParent
-          target={this.state.target.uuid}
-          targetGender={this.state.target.gender}
-          targetMother={this.state.mother}
-          targetFather={this.state.father}
-          submitNewParent={this.submitNewParent}
-        />
-      );
-    }
+    // let newParentComponent;
+    // if (this.state.editNewParent) {
+    //   newParentComponent = (
+    //     <NewParent
+    //       target={this.state.uuid_target}
+    //       targetGender={this.state.target.gender}
+    //       targetMother={this.state.mother}
+    //       targetFather={this.state.father}
+    //       submitNewParent={this.submitNewParent}
+    //     />
+    //   );
+    // }
 
     return (
       <div className="IdCard">
         {newChildComponent}
-        <NewParent />
+        {/* <NewParent /> */}
 
         <div className="top_sect">
           <ParentsBox

@@ -6,11 +6,13 @@ export class NewParent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      first_name: "",
-      middle_name: "",
-      last_name: "",
-      gender: null,
+      np_first_name: "",
+      np_middle_name: "",
+      np_last_name: "",
+      np_gender: null,
       target_d_o_b: null,
+      mother: this.props.targetMother,
+      father: this.props.targetFather,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -44,9 +46,9 @@ export class NewParent extends Component {
     e.preventDefault();
     console.log(this.state);
     const response = {
-      first_name: this.state.first_name,
-      middle_name: this.state.middle_name,
-      last_name: this.state.last_name,
+      first_name: this.state.np_first_name,
+      middle_name: this.state.np_middle_name,
+      last_name: this.state.np_last_name,
       father:
         this.state.targetParentGender === "Male"
           ? this.state.targetParent
@@ -55,8 +57,9 @@ export class NewParent extends Component {
         this.state.targetParentGender === "Female"
           ? this.state.targetParent
           : this.state.otherParent,
-      d_o_b: this.state.d_o_b,
-      gender: this.state.gender,
+      d_o_b: this.state.target_d_o_b,
+      newParentGender: this.state.np_gender,
+      target_uuid: this.props.target,
     };
 
     this.props.submitNewChild(response);
@@ -72,9 +75,9 @@ export class NewParent extends Component {
             <br />
             <input
               type="text"
-              name="first_name"
+              name="np_first_name"
               autoComplete="off"
-              value={this.state.first_name}
+              value={this.state.np_first_name}
               onChange={this.handleChange}
             ></input>
           </label>
@@ -85,8 +88,8 @@ export class NewParent extends Component {
             <input
               type="text"
               autoComplete="no"
-              name="middle_name"
-              value={this.state.middle_name}
+              name="np_middle_name"
+              value={this.state.np_middle_name}
               onChange={this.handleChange}
             ></input>
           </label>
@@ -97,8 +100,8 @@ export class NewParent extends Component {
             <input
               type="text"
               autoComplete="no"
-              name="last_name"
-              value={this.state.last_name}
+              name="np_last_name"
+              value={this.state.np_last_name}
               onChange={this.handleChange}
             ></input>
           </label>
@@ -123,8 +126,8 @@ export class NewParent extends Component {
             Gender
             <br />
             <select
-              name="gender"
-              value={this.state.gender}
+              name="np_gender"
+              value={this.state.np_gender}
               onChange={this.handleChange}
             >
               {" "}

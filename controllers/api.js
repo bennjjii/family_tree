@@ -235,6 +235,31 @@ exports.create_new_child = (req, res) => {
     });
 };
 
+exports.create_new_parent = (req, res) => {
+  const genderSelecto = null;
+  const genderSelector = null;
+  const oppGenderSelecto = null;
+  const oppGenderSelector = null;
+  if (req.body.np_gender === "Male") {
+    genderSelecto = "fathe";
+    genderSelector = "father";
+    oppGenderSelecto = "mothe";
+    oppGenderSelector = "mother";
+  } else {
+    genderSelecto = "mothe";
+    genderSelector = "mother";
+  }
+  return models.birth.create({
+    d_o_b: req.body.d_o_b.split("T")[0],
+    [genderSelecto]: {
+      first_name: req.body[genderSelector].np_first_name,
+      middle_name: req.body[genderSelector].np_middle_name,
+      last_name: req.body[genderSelector].np_last_name,
+    },
+    child: req.body.target_uuid,
+  });
+};
+
 exports.create_family_member = function (req, res) {
   console.log(req);
   return models.family_member
