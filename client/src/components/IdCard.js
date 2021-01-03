@@ -66,11 +66,11 @@ class IdCard extends Component {
           d_o_div: null,
         },
       ],
-      editMode: false,
-      editNewChild: false,
-      editNewParent: false,
-      newChildStyle: {
-        display: "none",
+      UIparams: {
+        editMode: false,
+        editNewChild: false,
+        editNewParent: false,
+        newParentGender: null,
       },
     };
 
@@ -133,9 +133,16 @@ class IdCard extends Component {
 
   showNewChild(stuff) {
     console.log(stuff);
-    this.setState({
-      editNewChild: true,
-    });
+    this.setState(
+      {
+        UIparams: {
+          editNewChild: true,
+        },
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   }
 
   submitNewChild(newChildResponse) {
@@ -155,7 +162,7 @@ class IdCard extends Component {
         children.push(child);
         this.setState({
           children: children,
-          editNewChild: false,
+          UIparams: { editNewChild: false },
         });
       });
   }
@@ -191,7 +198,7 @@ class IdCard extends Component {
 
   render() {
     let newChildComponent;
-    if (this.state.editNewChild) {
+    if (this.state.UIparams.editNewChild) {
       newChildComponent = (
         <NewChild
           target={this.state.uuid_target}
@@ -203,18 +210,19 @@ class IdCard extends Component {
       );
     }
 
-    // let newParentComponent;
-    // if (this.state.editNewParent) {
-    //   newParentComponent = (
-    //     <NewParent
-    //       target={this.state.uuid_target}
-    //       targetGender={this.state.target.gender}
-    //       targetMother={this.state.mother}
-    //       targetFather={this.state.father}
-    //       submitNewParent={this.submitNewParent}
-    //     />
-    //   );
-    // }
+    let newParentComponent;
+    if (this.state.UIparams.editNewParent) {
+      newParentComponent = (
+        <NewParent
+          target={this.state.uuid_target}
+          target_d_o_b={this.state.target.born}
+          newParentGender={this.state.newParentGender}
+          targetMother={this.state.mother}
+          targetFather={this.state.father}
+          submitNewParent={this.submitNewParent}
+        />
+      );
+    }
 
     return (
       <div className="IdCard">

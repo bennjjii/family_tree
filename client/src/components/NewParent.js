@@ -1,22 +1,49 @@
 import React, { Component } from "react";
 
+import validator from "validator";
 import DatePicker from "react-datepicker";
 
 export class NewParent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      componentMode: {
+        mode: null,
+        modes: ["noParents", "motherExists", "fatherExists"],
+      },
       np_first_name: "",
       np_middle_name: "",
       np_last_name: "",
-      np_gender: null,
-      target_d_o_b: null,
+      np_gender: this.props.newParentGender,
+      target_d_o_b: this.props.target_d_o_b,
       mother: this.props.targetMother,
       father: this.props.targetFather,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeDate = this.handleChangeDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    if (validator.isUUID(this.props.targetMother.uuid)) {
+      this.setState({
+        componentMode: {
+          mode: this.state.componentMode.modes[1],
+        },
+      });
+    } else if (validator.isUUID(this.props.targetFather.uuid)) {
+      this.setState({
+        componentMode: {
+          mode: this.state.componentMode.modes[2],
+        },
+      });
+    } else {
+      this.setState({
+        componentMode: {
+          mode: this.state.componentMode.modes[0],
+        },
+      });
+    }
   }
 
   handleChange(e) {
@@ -49,17 +76,6 @@ export class NewParent extends Component {
       first_name: this.state.np_first_name,
       middle_name: this.state.np_middle_name,
       last_name: this.state.np_last_name,
-      father:
-        this.state.targetParentGender === "Male"
-          ? this.state.targetParent
-          : this.state.otherParent,
-      mother:
-        this.state.targetParentGender === "Female"
-          ? this.state.targetParent
-          : this.state.otherParent,
-      d_o_b: this.state.target_d_o_b,
-      newParentGender: this.state.np_gender,
-      target_uuid: this.props.target,
     };
 
     this.props.submitNewChild(response);
