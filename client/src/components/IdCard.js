@@ -42,7 +42,13 @@ class IdCard extends Component {
     this.state = {
       uuid_box: "442f0558-cc6e-47ed-bb82-0d0abe95f1ac",
       uuid_target: "",
-      target: { name: ["", "", ""], gender: null, born: null, died: null },
+      target: {
+        name: ["", "", ""],
+        gender: null,
+        born: null,
+        birth_uuid: null,
+        died: null,
+      },
       mother: {
         name: ["", "", ""],
         uuid: "",

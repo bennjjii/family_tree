@@ -72,14 +72,13 @@ exports.get_target_data = function (req, res) {
       ],
     })
     .then((resp) => {
-      //Structure of JSON response
-
       const respData = {
         target: {
           name: ["", "", ""],
           uuid: "",
           gender: null,
           born: null,
+          birth_uuid: null,
           died: null,
         },
         mother: {
@@ -118,6 +117,7 @@ exports.get_target_data = function (req, res) {
       respData.target.name = [first_name, middle_name, last_name];
       respData.target.uuid = uuid_family_member;
       respData.target.born = resp.dataValues.chil.d_o_b;
+      respData.target.birth_uuid = resp.dataValues.chil.uuid_birth;
       respData.target.gender = resp.dataValues.gender;
 
       resp.dataValues.die
@@ -202,6 +202,10 @@ exports.get_target_data = function (req, res) {
     });
 };
 
+exports.upsert = (req, res) => {
+  return models.birth.upsert({});
+};
+
 exports.create_new_child = (req, res) => {
   //console.log(req);
   return models.birth
@@ -236,10 +240,10 @@ exports.create_new_child = (req, res) => {
 };
 
 exports.create_new_parent = (req, res) => {
-  const genderSelecto = null;
-  const genderSelector = null;
-  const oppGenderSelecto = null;
-  const oppGenderSelector = null;
+  let genderSelecto = null;
+  let genderSelector = null;
+  let oppGenderSelecto = null;
+  let oppGenderSelector = null;
   if (req.body.np_gender === "Male") {
     genderSelecto = "fathe";
     genderSelector = "father";
@@ -248,16 +252,40 @@ exports.create_new_parent = (req, res) => {
   } else {
     genderSelecto = "mothe";
     genderSelector = "mother";
+    oppGenderSelecto = "fathe";
+    oppGenderSelector = "father";
   }
-  return models.birth.create({
-    d_o_b: req.body.d_o_b.split("T")[0],
-    [genderSelecto]: {
-      first_name: req.body[genderSelector].np_first_name,
-      middle_name: req.body[genderSelector].np_middle_name,
-      last_name: req.body[genderSelector].np_last_name,
-    },
-    child: req.body.target_uuid,
-  });
+  return models.birth
+    .findOrCreate(
+      {
+        where: {
+          uuid_birth: req.body.uuid_birth,
+        },
+      },
+      {
+        d_o_b: req.body.d_o_b.split("T")[0],
+        [genderSelector]: {
+          first_name: req.body.np_first_name,
+          middle_name: req.body.np_middle_name,
+          last_name: req.body.np_last_name,
+          gender: req.body.gender,
+          uuid_family_tree: uuid_family_tree,
+        },
+        uuid_family_tree: uuid_family_tree,
+        child: req.body.target_uuid,
+      },
+      {
+        include: [
+          {
+            model: models.family_member,
+            as: "fathe",
+          },
+        ],
+      }
+    )
+    .then((resp) => {
+      res.json(resp);
+    });
 };
 
 exports.create_family_member = function (req, res) {
