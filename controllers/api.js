@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const { response } = require("express");
 const uuid_family_tree = "58ae4e8f-bd4e-482c-959c-747a97d1e2dc";
 const validator = require("validator");
+const { sequelize } = require("../models");
 
 exports.get_target_data = function (req, res) {
   return models.family_member
@@ -242,49 +243,50 @@ exports.create_new_child = (req, res) => {
 exports.create_new_parent = (req, res) => {
   let genderSelecto = null;
   let genderSelector = null;
-  let oppGenderSelecto = null;
-  let oppGenderSelector = null;
+  let responses = [];
+
   if (req.body.np_gender === "Male") {
     genderSelecto = "fathe";
     genderSelector = "father";
-    oppGenderSelecto = "mothe";
-    oppGenderSelector = "mother";
   } else {
     genderSelecto = "mothe";
     genderSelector = "mother";
-    oppGenderSelecto = "fathe";
-    oppGenderSelector = "father";
   }
-  return models.birth
-    .findOrCreate(
-      {
-        where: {
-          uuid_birth: req.body.uuid_birth,
+
+  return models.family_member
+    .create({
+      first_name: req.body.np_first_name,
+      middle_name: req.body.np_middle_name,
+      last_name: req.body.np_last_name,
+      gender: req.body.np_gender,
+      uuid_family_tree: uuid_family_tree,
+    })
+    .then((parent) => {
+      responses.push(JSON.parse(JSON.stringify(parent)));
+      return models.birth.update(
+        {
+          [genderSelector]: responses[0].uuid_family_member,
         },
-      },
-      {
-        d_o_b: req.body.d_o_b.split("T")[0],
-        [genderSelector]: {
-          first_name: req.body.np_first_name,
-          middle_name: req.body.np_middle_name,
-          last_name: req.body.np_last_name,
-          gender: req.body.gender,
-          uuid_family_tree: uuid_family_tree,
-        },
-        uuid_family_tree: uuid_family_tree,
-        child: req.body.target_uuid,
-      },
-      {
-        include: [
-          {
-            model: models.family_member,
-            as: "fathe",
+        {
+          where: {
+            uuid_birth: req.body.uuid_birth,
           },
-        ],
-      }
-    )
+        }
+      );
+    })
     .then((resp) => {
-      res.json(resp);
+      responses.push(JSON.parse(JSON.stringify(resp)));
+      if (req.body.d_o_b !== "") {
+        return models.birth.create({
+          child: responses[0].uuid_family_member,
+          d_o_b: req.body.d_o_b,
+          uuid_family_tree: uuid_family_tree,
+        });
+      }
+    })
+    .then((resp) => {
+      responses.push(JSON.parse(JSON.stringify(resp)));
+      res.json(responses);
     });
 };
 
