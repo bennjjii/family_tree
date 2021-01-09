@@ -73,6 +73,7 @@ exports.get_target_data = function (req, res) {
       ],
     })
     .then((resp) => {
+      console.log(resp);
       const respData = {
         target: {
           name: ["", "", ""],
@@ -200,7 +201,8 @@ exports.get_target_data = function (req, res) {
         };
       });
       res.json(respData);
-    });
+    })
+    .catch(console.log("Error occured"));
 };
 
 exports.upsert = (req, res) => {

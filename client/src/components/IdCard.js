@@ -40,7 +40,7 @@ class IdCard extends Component {
       ],
     };
     this.state = {
-      uuid_box: "442f0558-cc6e-47ed-bb82-0d0abe95f1ac",
+      uuid_box: "a8acfb1f-adfe-402f-8424-8f8488759f83",
       uuid_target: "",
       target: {
         name: ["", "", ""],
@@ -90,7 +90,7 @@ class IdCard extends Component {
   componentDidMount() {
     if (this.state.uuid_target === "") {
       this.setState({
-        uuid_target: "442f0558-cc6e-47ed-bb82-0d0abe95f1ac",
+        uuid_target: this.state.uuid_box,
       });
     }
   }
@@ -114,12 +114,16 @@ class IdCard extends Component {
   updateTarget(e) {
     e.preventDefault();
     console.log(e.target);
-    if (e.target.getAttribute("uuid")) {
-      if (e.target.getAttribute("uuid") !== this.state.uuid_target) {
-        this.setState({
-          uuid_target: e.target.getAttribute("uuid"),
-        });
+    if (e.target.getAttribute("uuid") !== "") {
+      if (e.target.getAttribute("uuid")) {
+        if (e.target.getAttribute("uuid") !== this.state.uuid_target) {
+          this.setState({
+            uuid_target: e.target.getAttribute("uuid"),
+          });
+        }
       }
+    } else {
+      this.showNewParent(e.target.getAttribute("name"));
     }
   }
 
@@ -137,8 +141,8 @@ class IdCard extends Component {
     });
   }
 
-  showNewChild(stuff) {
-    console.log(stuff);
+  showNewChild(parentGender) {
+    console.log(parentGender);
     this.setState(
       {
         UIparams: {
@@ -173,10 +177,10 @@ class IdCard extends Component {
       });
   }
 
-  showNewParent(stuff) {
-    console.log(stuff);
+  showNewParent(gender) {
+    console.log(gender);
     this.setState({
-      editNewParent: true,
+      UIparams: { editNewParent: true },
     });
   }
 
@@ -233,7 +237,7 @@ class IdCard extends Component {
     return (
       <div className="IdCard">
         {newChildComponent}
-        {/* <NewParent /> */}
+        {newParentComponent}
 
         <div className="top_sect">
           <ParentsBox
