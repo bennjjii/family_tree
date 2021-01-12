@@ -18,6 +18,7 @@ export class NewParent extends Component {
       target_d_o_b: this.props.target_d_o_b,
       mother: this.props.targetMother,
       father: this.props.targetFather,
+      targetBirthUUID: this.props.targetBirthUUID,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -73,12 +74,14 @@ export class NewParent extends Component {
     e.preventDefault();
     console.log(this.state);
     const response = {
-      first_name: this.state.np_first_name,
-      middle_name: this.state.np_middle_name,
-      last_name: this.state.np_last_name,
+      np_first_name: this.state.np_first_name,
+      np_middle_name: this.state.np_middle_name,
+      np_last_name: this.state.np_last_name,
+      np_gender: this.state.np_gender,
+      uuid_birth: this.state.targetBirthUUID,
     };
 
-    this.props.submitNewChild(response);
+    this.props.submitNewParent(response);
   }
 
   render() {

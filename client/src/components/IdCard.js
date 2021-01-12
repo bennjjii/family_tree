@@ -14,7 +14,13 @@ class IdCard extends Component {
   constructor() {
     super();
     const initState = {
-      target: { name: ["", "", ""], gender: null, born: null, died: null },
+      target: {
+        name: ["", "", ""],
+        gender: null,
+        born: null,
+        birth_uuid: null,
+        died: null,
+      },
       mother: {
         name: ["", "", ""],
         uuid: "",
@@ -40,7 +46,7 @@ class IdCard extends Component {
       ],
     };
     this.state = {
-      uuid_box: "a8acfb1f-adfe-402f-8424-8f8488759f83",
+      uuid_box: "a25b136f-92a0-4443-aadd-b36f976ac60f",
       uuid_target: "",
       target: {
         name: ["", "", ""],
@@ -85,6 +91,8 @@ class IdCard extends Component {
     this.updateTarget = this.updateTarget.bind(this);
     this.showNewChild = this.showNewChild.bind(this);
     this.submitNewChild = this.submitNewChild.bind(this);
+
+    this.submitNewParent = this.submitNewParent.bind(this);
   }
 
   componentDidMount() {
@@ -180,30 +188,24 @@ class IdCard extends Component {
   showNewParent(gender) {
     console.log(gender);
     this.setState({
-      UIparams: { editNewParent: true },
+      UIparams: {
+        editNewParent: true,
+        newParentGender: gender,
+      },
     });
   }
 
   submitNewParent(newParentResponse) {
-    // axios
-    //   .post("http://localhost:5000/create_new_parent", newParentResponse)
-    //   .then((response) => {
-    //     const parent = {
-    //       name: [
-    //         response.data.chil.first_name,
-    //         response.data.chil.middle_name,
-    //         response.data.chil.last_name,
-    //       ],
-    //       d_o_b: response.data.d_o_b,
-    //       uuid: response.data.chil.uuid_family_member,
-    //     };
-    //     const children = [...this.state.children];
-    //     children.push(child);
-    //     this.setState({
-    //       children: children,
-    //       editNewChild: false,
-    //     });
-    //   });
+    axios
+      .post("http://localhost:5000/create_new_parent", newParentResponse)
+      .then((response) => {
+        console.log(response);
+        this.setState({
+          UIparams: {
+            editNewParent: false,
+          },
+        });
+      });
   }
 
   render() {
@@ -226,6 +228,7 @@ class IdCard extends Component {
         <NewParent
           target={this.state.uuid_target}
           target_d_o_b={this.state.target.born}
+          targetBirthUUID={this.state.target.birth_uuid}
           newParentGender={this.state.newParentGender}
           targetMother={this.state.mother}
           targetFather={this.state.father}

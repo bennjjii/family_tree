@@ -11,7 +11,7 @@ export class ParentsBox extends Component {
         <h5>Parents: </h5>
         <div>
           <button
-            name="Father"
+            name="Male"
             className="parents-btn"
             uuid={this.props.father.uuid}
             onClick={this.props.handleUpd}
@@ -21,7 +21,7 @@ export class ParentsBox extends Component {
               : "Add father"}
           </button>
           <button
-            name="Mother"
+            name="Female"
             className="parents-btn"
             uuid={this.props.mother.uuid}
             onClick={this.props.handleUpd}
