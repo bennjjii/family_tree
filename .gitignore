@@ -1,3 +1,4 @@
 node_modules
 .env
 client/src/components/harold.png
+client/.eslintcache
