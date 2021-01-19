@@ -292,6 +292,14 @@ exports.create_new_parent = (req, res) => {
     });
 };
 
+exports.create_new_spouse = (req, res) => {
+  try {
+    const transaction = await sequelize.transaction(async (t)=>{
+      
+    })
+  }
+};
+
 exports.create_family_member = function (req, res) {
   console.log(req);
   return models.family_member

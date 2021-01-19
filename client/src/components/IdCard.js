@@ -201,6 +201,8 @@ class IdCard extends Component {
       .then((response) => {
         console.log(response);
         this.setState({
+          //this is where you update the current state with the new parent (one time)
+
           UIparams: {
             editNewParent: false,
           },
