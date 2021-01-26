@@ -278,10 +278,10 @@ exports.create_new_parent = (req, res) => {
     })
     .then((resp) => {
       responses.push(JSON.parse(JSON.stringify(resp)));
-      if (req.body.d_o_b !== "") {
+      if (validator.isISO8601(req.body.d_o_b)) {
         return models.birth.create({
           child: responses[0].uuid_family_member,
-          d_o_b: req.body.d_o_b,
+          d_o_b: req.body.d_o_b.split("T")[0],
           uuid_family_tree: uuid_family_tree,
         });
       }
@@ -293,11 +293,39 @@ exports.create_new_parent = (req, res) => {
 };
 
 exports.create_new_spouse = (req, res) => {
-  try {
-    const transaction = await sequelize.transaction(async (t)=>{
-      
-    })
+  let targetSpouse = null;
+  let newSpouse = null;
+
+  if (req.body.ns_gender === "Male") {
+    targetSpouse = "bride";
+    newSpouse = "groom";
+  } else {
+    targetSpouse = "groom";
+    newSpouse = "bride";
   }
+
+  return models.family_member
+    .create({
+      first_name: req.body.first_name,
+      middle_name: req.body.middle_name,
+      last_name: req.body.last_name,
+      gender: req.body.gender,
+      uuid_family_tree: uuid_family_tree,
+    })
+    .then((resp) => {
+      return JSON.parse(JSON.stringify(resp));
+    })
+    .then((res) => {
+      models.marriages.create({
+        [newSpouse]: res.uuid_family_member,
+        [targetSpouse]: req.body.uuid_target,
+        d_o_mar: req.body.d_o_mar.split("T")[0],
+        uuid_family_tree: uuid_family_tree,
+      });
+    })
+    .then((resp) => {
+      res.json(resp);
+    });
 };
 
 exports.create_family_member = function (req, res) {
