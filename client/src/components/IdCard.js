@@ -9,6 +9,7 @@ import TargetBox from "./TargetBox";
 import validator from "validator";
 import NewChild from "./NewChild";
 import NewParent from "./NewParent";
+import NewSpouse from "./NewSpouse";
 
 class IdCard extends Component {
   constructor() {
@@ -82,6 +83,7 @@ class IdCard extends Component {
         editMode: false,
         editNewChild: false,
         editNewParent: false,
+        editNewSpouse: false,
         newParentGender: null,
       },
     };
@@ -239,10 +241,21 @@ class IdCard extends Component {
       );
     }
 
+    let newSpouseComponent;
+    if (this.state.UIparams.newSpouseComponent) {
+      newSpouseComponent = (
+        <NewSpouse
+          target_uuid={this.state.uuid_target}
+          target_gender={this.state.target.gender}
+        />
+      );
+    }
+
     return (
       <div className="IdCard">
         {newChildComponent}
         {newParentComponent}
+        {newSpouseComponent}
 
         <div className="top_sect">
           <ParentsBox

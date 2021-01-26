@@ -10,7 +10,7 @@ export class NewSpouse extends Component {
       middle_name: "",
       last_name: "",
       d_o_mar: null,
-      target: this.props.target,
+      target_uuid: this.props.target,
       targetGender: this.props.targetParentGender,
       spouse: this.props.targetSpouses[0].uuid,
     };
