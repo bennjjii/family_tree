@@ -8,7 +8,9 @@ export class MarriedBox extends Component {
   render() {
     return (
       <div className="married_box">
-        <button className="plus_button">+</button>
+        <button className="plus_button" onClick={this.props.showNewSpouse}>
+          +
+        </button>
         <h5>Married:</h5>
         {this.props.spouses.map((spouse) => {
           return (

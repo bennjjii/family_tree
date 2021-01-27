@@ -12,10 +12,9 @@ export class NewSpouse extends Component {
       d_o_mar: null,
       target_uuid: this.props.target,
       targetGender: this.props.targetParentGender,
-      spouse: this.props.targetSpouses[0].uuid,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleChangeBirth = this.handleChangeBirth.bind(this);
+    this.handleChangeMarriageDate = this.handleChangeMarriageDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -26,9 +25,9 @@ export class NewSpouse extends Component {
     });
   }
 
-  handleChangeBirth(date) {
+  handleChangeMarriageDate(date) {
     this.setState({
-      d_o_b: date,
+      d_o_mar: date,
     });
   }
 
@@ -56,7 +55,7 @@ export class NewSpouse extends Component {
   render() {
     return (
       <div className="new-child">
-        <h3>Add child</h3>
+        <h3>Add spouse</h3>
         <form onSubmit={this.handleSubmit}>
           <label>
             First name
@@ -94,19 +93,19 @@ export class NewSpouse extends Component {
             ></input>
           </label>
           <br />
-          <label htmlFor="birthday">Date of birth</label>
+          <label htmlFor="marriageDate">Date of marriage</label>
 
           <br />
           <DatePicker
-            id="birthday"
+            id="marriageDate"
             shouldCloseOnSelect={true}
             dateFormat="dd/MM/yyyy"
             showYearDropdown
             scrollableYearDropdown
             yearDropdownItemNumber={40}
             autoComplete="off"
-            onChange={this.handleChangeBirth}
-            selected={this.state.d_o_b}
+            onChange={this.handleChangeMarriageDate}
+            selected={this.state.d_o_mar}
           />
           <br />
 
@@ -128,21 +127,6 @@ export class NewSpouse extends Component {
           </label>
           <br />
 
-          <label>
-            {this.props.targetGender !== "Male" ? "Father" : "Mother"}
-            <br />
-            <select
-              name="otherParent"
-              value={this.state.otherParent}
-              onChange={this.handleChange}
-            >
-              {this.props.targetSpouses.map((spouse) => {
-                return (
-                  <option value={spouse.uuid}>{spouse.name.join(" ")}</option>
-                );
-              })}
-            </select>
-          </label>
           <br />
           <br />
           <input type="submit" value="Save"></input>

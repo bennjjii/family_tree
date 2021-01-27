@@ -309,7 +309,7 @@ exports.create_new_spouse = (req, res) => {
       first_name: req.body.first_name,
       middle_name: req.body.middle_name,
       last_name: req.body.last_name,
-      gender: req.body.gender,
+      gender: req.body.ns_gender,
       uuid_family_tree: uuid_family_tree,
     })
     .then((resp) => {

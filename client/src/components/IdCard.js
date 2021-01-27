@@ -79,7 +79,7 @@ class IdCard extends Component {
           d_o_div: null,
         },
       ],
-      UIparams: {
+      UIstate: {
         editMode: false,
         editNewChild: false,
         editNewParent: false,
@@ -93,8 +93,10 @@ class IdCard extends Component {
     this.updateTarget = this.updateTarget.bind(this);
     this.showNewChild = this.showNewChild.bind(this);
     this.submitNewChild = this.submitNewChild.bind(this);
-
+    this.showNewParent = this.showNewParent.bind(this);
     this.submitNewParent = this.submitNewParent.bind(this);
+    this.showNewSpouse = this.showNewSpouse.bind(this);
+    this.submitNewSpouse = this.submitNewSpouse.bind(this);
   }
 
   componentDidMount() {
@@ -155,7 +157,7 @@ class IdCard extends Component {
     console.log(parentGender);
     this.setState(
       {
-        UIparams: {
+        UIstate: {
           editNewChild: true,
         },
       },
@@ -165,9 +167,9 @@ class IdCard extends Component {
     );
   }
 
-  submitNewChild(newChildResponse) {
+  submitNewChild(newChildDetails) {
     axios
-      .post("http://localhost:5000/create_new_child", newChildResponse)
+      .post("http://localhost:5000/create_new_child", newChildDetails)
       .then((response) => {
         const child = {
           name: [
@@ -182,7 +184,7 @@ class IdCard extends Component {
         children.push(child);
         this.setState({
           children: children,
-          UIparams: { editNewChild: false },
+          UIstate: { editNewChild: false },
         });
       });
   }
@@ -190,23 +192,42 @@ class IdCard extends Component {
   showNewParent(gender) {
     console.log(gender);
     this.setState({
-      UIparams: {
+      UIstate: {
         editNewParent: true,
         newParentGender: gender,
       },
     });
   }
 
-  submitNewParent(newParentResponse) {
+  submitNewParent(newParentDetails) {
     axios
-      .post("http://localhost:5000/create_new_parent", newParentResponse)
+      .post("http://localhost:5000/create_new_parent", newParentDetails)
       .then((response) => {
         console.log(response);
         this.setState({
           //this is where you update the current state with the new parent (one time)
 
-          UIparams: {
+          UIstate: {
             editNewParent: false,
+          },
+        });
+      });
+  }
+
+  showNewSpouse() {
+    this.setState({
+      UIstate: { editNewSpouse: true },
+    });
+  }
+
+  submitNewSpouse(newSpouseDetails) {
+    axios
+      .post("http://localhost:5000/create_new_spouse", newSpouseDetails)
+      .then((resp) => {
+        console.log(resp);
+        this.setState({
+          UIstate: {
+            editNewSpouse: false,
           },
         });
       });
@@ -214,7 +235,7 @@ class IdCard extends Component {
 
   render() {
     let newChildComponent;
-    if (this.state.UIparams.editNewChild) {
+    if (this.state.UIstate.editNewChild) {
       newChildComponent = (
         <NewChild
           target={this.state.uuid_target}
@@ -227,13 +248,13 @@ class IdCard extends Component {
     }
 
     let newParentComponent;
-    if (this.state.UIparams.editNewParent) {
+    if (this.state.UIstate.editNewParent) {
       newParentComponent = (
         <NewParent
           target={this.state.uuid_target}
           target_d_o_b={this.state.target.born}
           targetBirthUUID={this.state.target.birth_uuid}
-          newParentGender={this.state.newParentGender}
+          newParentGender={this.state.UIstate.newParentGender}
           targetMother={this.state.mother}
           targetFather={this.state.father}
           submitNewParent={this.submitNewParent}
@@ -242,7 +263,7 @@ class IdCard extends Component {
     }
 
     let newSpouseComponent;
-    if (this.state.UIparams.newSpouseComponent) {
+    if (this.state.UIstate.editNewSpouse) {
       newSpouseComponent = (
         <NewSpouse
           target_uuid={this.state.uuid_target}
@@ -285,6 +306,7 @@ class IdCard extends Component {
           <MarriedBox
             spouses={this.state.spouses}
             handleUpd={this.updateTarget}
+            showNewSpouse={this.showNewSpouse}
           />
           <ChildrenBox
             children={this.state.children}
