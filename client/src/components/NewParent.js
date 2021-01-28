@@ -49,14 +49,9 @@ export class NewParent extends Component {
 
   handleChange(e) {
     const { name, value } = e.target;
-    this.setState(
-      {
-        [name]: value,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({
+      [name]: value,
+    });
   }
 
   handleChangeDate(date) {
@@ -72,16 +67,16 @@ export class NewParent extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
-    const response = {
+    const newParentDetails = {
       np_first_name: this.state.np_first_name,
       np_middle_name: this.state.np_middle_name,
       np_last_name: this.state.np_last_name,
       np_gender: this.state.np_gender,
+      np_d_o_b: null,
       uuid_birth: this.state.targetBirthUUID,
     };
 
-    this.props.submitNewParent(response);
+    this.props.submitNewParent(newParentDetails);
   }
 
   render() {
@@ -150,7 +145,7 @@ export class NewParent extends Component {
               onChange={this.handleChange}
             >
               {" "}
-              <option value="" selected disabled hidden>
+              <option value="" disabled hidden>
                 ---
               </option>
               <option>Male</option>

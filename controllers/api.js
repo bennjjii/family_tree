@@ -73,7 +73,6 @@ exports.get_target_data = function (req, res) {
       ],
     })
     .then((resp) => {
-      console.log(resp);
       const respData = {
         target: {
           name: ["", "", ""],
@@ -205,12 +204,8 @@ exports.get_target_data = function (req, res) {
     .catch(console.log("Error occured"));
 };
 
-exports.upsert = (req, res) => {
-  return models.birth.upsert({});
-};
-
 exports.create_new_child = (req, res) => {
-  //console.log(req);
+  console.log(req);
   return models.birth
     .create(
       {
@@ -278,17 +273,26 @@ exports.create_new_parent = (req, res) => {
     })
     .then((resp) => {
       responses.push(JSON.parse(JSON.stringify(resp)));
-      if (validator.isISO8601(req.body.d_o_b)) {
-        return models.birth.create({
-          child: responses[0].uuid_family_member,
-          d_o_b: req.body.d_o_b.split("T")[0],
-          uuid_family_tree: uuid_family_tree,
-        });
-      }
+
+      return models.birth.create({
+        child: responses[0].uuid_family_member,
+        d_o_b: req.body.d_o_b ? req.body.d_o_b.split("T")[0] : null,
+        uuid_family_tree: uuid_family_tree,
+      });
     })
     .then((resp) => {
       responses.push(JSON.parse(JSON.stringify(resp)));
-      res.json(responses);
+      let response = {
+        [genderSelector]: {
+          name: [
+            responses[0].first_name,
+            responses[0].middle_name,
+            responses[0].last_name,
+          ],
+          uuid: responses[0].uuid_family_member,
+        },
+      };
+      res.json(response);
     });
 };
 

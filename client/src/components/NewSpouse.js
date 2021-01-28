@@ -10,8 +10,8 @@ export class NewSpouse extends Component {
       middle_name: "",
       last_name: "",
       d_o_mar: null,
-      target_uuid: this.props.target,
-      targetGender: this.props.targetParentGender,
+      target_uuid: this.props.uuid_target,
+      targetGender: this.props.target_gender,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeMarriageDate = this.handleChangeMarriageDate.bind(this);

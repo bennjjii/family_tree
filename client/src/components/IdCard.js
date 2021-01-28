@@ -47,7 +47,7 @@ class IdCard extends Component {
       ],
     };
     this.state = {
-      uuid_box: "a25b136f-92a0-4443-aadd-b36f976ac60f",
+      uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
       uuid_target: "",
       target: {
         name: ["", "", ""],
@@ -125,7 +125,6 @@ class IdCard extends Component {
 
   updateTarget(e) {
     e.preventDefault();
-    console.log(e.target);
     if (e.target.getAttribute("uuid") !== "") {
       if (e.target.getAttribute("uuid")) {
         if (e.target.getAttribute("uuid") !== this.state.uuid_target) {
@@ -204,9 +203,8 @@ class IdCard extends Component {
       .post("http://localhost:5000/create_new_parent", newParentDetails)
       .then((response) => {
         console.log(response);
+        this.setState(response.data);
         this.setState({
-          //this is where you update the current state with the new parent (one time)
-
           UIstate: {
             editNewParent: false,
           },
@@ -221,6 +219,7 @@ class IdCard extends Component {
   }
 
   submitNewSpouse(newSpouseDetails) {
+    console.log("New Spouse being submitted");
     axios
       .post("http://localhost:5000/create_new_spouse", newSpouseDetails)
       .then((resp) => {
@@ -268,6 +267,7 @@ class IdCard extends Component {
         <NewSpouse
           target_uuid={this.state.uuid_target}
           target_gender={this.state.target.gender}
+          submitNewSpouse={this.submitNewSpouse}
         />
       );
     }
