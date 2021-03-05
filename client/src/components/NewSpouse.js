@@ -37,16 +37,8 @@ export class NewSpouse extends Component {
       first_name: this.state.first_name,
       middle_name: this.state.middle_name,
       last_name: this.state.last_name,
-      father:
-        this.state.targetParentGender === "Male"
-          ? this.state.targetParent
-          : this.state.otherParent,
-      mother:
-        this.state.targetParentGender === "Female"
-          ? this.state.targetParent
-          : this.state.otherParent,
-      d_o_b: this.state.d_o_b,
-      gender: this.state.gender,
+      d_o_mar: this.state.d_o_mar,
+      target_uuid: this.state.target_uuid,
     };
 
     this.props.submitNewSpouse(response);
