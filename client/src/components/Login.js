@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { Link } from "react-router-dom";
+
 export class Login extends Component {
   constructor() {
     super();
@@ -17,7 +19,6 @@ export class Login extends Component {
     type === "checkbox"
       ? this.setState({ [name]: checked })
       : this.setState({ [name]: value });
-    console.log(event.target.value);
   }
 
   onSubmit(e) {
@@ -34,6 +35,7 @@ export class Login extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit} className="loginForm">
+        <h2>Login</h2>
         <div className="form-group">
           <label>Email address:</label>
           <input
@@ -70,6 +72,9 @@ export class Login extends Component {
         <button type="submit" className="btn btn-default">
           Submit
         </button>
+        <Link to="/register" className="nav-link">
+          Register
+        </Link>
       </form>
     );
   }

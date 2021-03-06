@@ -7,6 +7,7 @@ export class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      username: "",
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -17,25 +18,36 @@ export class Login extends Component {
     type === "checkbox"
       ? this.setState({ [name]: checked })
       : this.setState({ [name]: value });
-    console.log(event.target.value);
   }
 
   onSubmit(e) {
     e.preventDefault();
-    const loginDetails = {
+    const userDetails = {
+      username: this.state.username,
       email: this.state.email,
       password: this.state.password,
     };
 
-    axios.post("localhost:5000/register", loginDetails);
+    axios.post("http://localhost:5000/register", userDetails);
 
-    console.log(loginDetails);
+    console.log(userDetails);
   }
 
   render() {
     return (
       <form onSubmit={this.onSubmit} className="loginForm">
         <h3>Register</h3>
+        <div className="form-group">
+          <label>Username:</label>
+          <input
+            type="text"
+            value={this.state.username}
+            name="username"
+            onChange={this.handleChange}
+            className="form-control"
+            id="username"
+          />
+        </div>
         <div className="form-group">
           <label>Email address:</label>
           <input
@@ -57,17 +69,6 @@ export class Login extends Component {
             className="form-control"
             id="pwd"
           />
-        </div>
-        <div className="checkbox">
-          <label>
-            <input
-              type="checkbox"
-              name="rememberMe"
-              checked={this.state.rememberMe}
-              onChange={this.handleChange}
-            />{" "}
-            Remember me
-          </label>
         </div>
         <button type="submit" className="btn btn-default">
           Submit

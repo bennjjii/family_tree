@@ -4,13 +4,34 @@ const { response } = require("express");
 const uuid_family_tree = "58ae4e8f-bd4e-482c-959c-747a97d1e2dc";
 const validator = require("validator");
 const { sequelize } = require("../models");
+const bcrypt = require("bcrypt");
 
-exports.register = function (req, res) {
-  return res.status(200);
+exports.register = async function (req, res) {
+  let hashedPassword = null;
+  console.log(req.body.password);
+  try {
+    const salt = await bcrypt.genSalt();
+    hashedPassword = await bcrypt.hash(req.body.password, salt);
+  } catch {
+    res.status(500).send();
+  }
+
+  console.log(hashedPassword);
+  return models.user
+    .create({
+      username: req.body.username,
+      email: req.body.email,
+      hashed_password: hashedPassword,
+      super_user: false,
+    })
+    .then((resp) => {
+      res.json(resp);
+      console.log(resp);
+    });
 };
 
 exports.login = function (req, res) {
-  return res.status(200);
+  return res.status(201).send();
 };
 
 exports.get_target_data = function (req, res) {
