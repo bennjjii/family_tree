@@ -29,21 +29,23 @@ class App extends React.Component {
       <Router>
         <div className="App">
           <Navbar />
-          <Route
-            exact
-            path="/"
-            render={() => {
-              return this.state.isUserAuthenticated ? (
-                <Redirect to="/app" />
-              ) : (
-                <Redirect to="/login" />
-              );
-            }}
-          />
-          <Route path="/login" exact component={Login} />
-          <Route path="/register" exact component={Register} />
-          <Route path="/app" exact component={IdCard} />
-          <Route path="/add" exact component={AddFamilyMember} />
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={() => {
+                return this.state.isUserAuthenticated ? (
+                  <Redirect to="/app" />
+                ) : (
+                  <Redirect to="/login" />
+                );
+              }}
+            />
+            <Route path="/login" exact component={Login} />
+            <Route path="/register" exact component={Register} />
+            <Route path="/app" exact component={IdCard} />
+            <Route path="/add" exact component={AddFamilyMember} />
+          </Switch>
         </div>
       </Router>
     );

@@ -7,8 +7,7 @@ const { sequelize } = require("../models");
 const bcrypt = require("bcrypt");
 
 exports.register = async function (req, res) {
-  let hashedPassword = null;
-  console.log(req.body.password);
+  let hashedPassword;
   try {
     const salt = await bcrypt.genSalt();
     hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -16,7 +15,6 @@ exports.register = async function (req, res) {
     res.status(500).send();
   }
 
-  console.log(hashedPassword);
   return models.user
     .create({
       username: req.body.username,
@@ -41,7 +39,6 @@ exports.login = async function (req, res) {
     .then((resp) => {
       hashedPassword = resp.dataValues.hashed_password;
     });
-  console.log(hashedPassword);
 
   try {
     if (await bcrypt.compare(req.body.password, hashedPassword)) {
