@@ -28,7 +28,9 @@ export class Login extends Component {
       username: this.state.username,
       password: this.state.password,
     };
-    axios.post("http://localhost:5000/login", loginDetails);
+    axios.post("http://localhost:5000/login", loginDetails).then((resp) => {
+      console.log(resp);
+    });
   }
 
   render() {

@@ -5,6 +5,8 @@ const uuid_family_tree = "58ae4e8f-bd4e-482c-959c-747a97d1e2dc";
 const validator = require("validator");
 const { sequelize } = require("../models");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.register = async function (req, res) {
   let hashedPassword;
@@ -30,6 +32,7 @@ exports.register = async function (req, res) {
 
 exports.login = async function (req, res) {
   let hashedPassword;
+  let username;
   await models.user
     .findOne({
       where: {
@@ -38,11 +41,14 @@ exports.login = async function (req, res) {
     })
     .then((resp) => {
       hashedPassword = resp.dataValues.hashed_password;
+      username = resp.dataValues.username;
     });
 
   try {
     if (await bcrypt.compare(req.body.password, hashedPassword)) {
-      console.log("Success");
+      const user = { name: username };
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+      res.json({ accessToken: accessToken });
     } else {
       console.log("Not Allowed");
     }
