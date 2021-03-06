@@ -1,7 +1,9 @@
 const models = require("../models");
+require("dotenv").config();
+const uuid_family_tree = process.env.TEMP_UUID_FAMILY_TREE;
 
 exports.create_new_child = (req, res) => {
-  console.log(req);
+  console.log(uuid_family_tree);
   return models.birth
     .create(
       {
