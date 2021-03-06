@@ -1,14 +1,21 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import React, { useContext, createContext, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import IdCard from "./components/IdCard";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import AddFamilyMember from "./components/AddFamilyMember";
-import React from "react";
-//import { UserProvider } from "./components/UserContext";
 
 class App extends React.Component {
   constructor(props) {

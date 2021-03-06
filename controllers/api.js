@@ -30,8 +30,28 @@ exports.register = async function (req, res) {
     });
 };
 
-exports.login = function (req, res) {
-  return res.status(201).send();
+exports.login = async function (req, res) {
+  let hashedPassword;
+  await models.user
+    .findOne({
+      where: {
+        username: req.body.username,
+      },
+    })
+    .then((resp) => {
+      hashedPassword = resp.dataValues.hashed_password;
+    });
+  console.log(hashedPassword);
+
+  try {
+    if (await bcrypt.compare(req.body.password, hashedPassword)) {
+      console.log("Success");
+    } else {
+      console.log("Not Allowed");
+    }
+  } catch {
+    res.status(500).send();
+  }
 };
 
 exports.get_target_data = function (req, res) {

@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 
+import axios from "axios";
+
 import { Link } from "react-router-dom";
 
 export class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
+      username: "",
       password: "",
-      rememberMe: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -24,12 +25,10 @@ export class Login extends Component {
   onSubmit(e) {
     e.preventDefault();
     const loginDetails = {
-      email: this.state.email,
+      username: this.state.username,
       password: this.state.password,
-      rememberMe: this.state.rememberMe,
     };
-
-    console.log(loginDetails);
+    axios.post("http://localhost:5000/login", loginDetails);
   }
 
   render() {
@@ -37,14 +36,14 @@ export class Login extends Component {
       <form onSubmit={this.onSubmit} className="loginForm">
         <h2>Login</h2>
         <div className="form-group">
-          <label>Email address:</label>
+          <label>Username:</label>
           <input
-            type="email"
-            value={this.state.email}
-            name="email"
+            type="text"
+            value={this.state.username}
+            name="username"
             onChange={this.handleChange}
             className="form-control"
-            id="email"
+            id="username"
           />
         </div>
         <div className="form-group">
@@ -57,17 +56,6 @@ export class Login extends Component {
             className="form-control"
             id="pwd"
           />
-        </div>
-        <div className="checkbox">
-          <label>
-            <input
-              type="checkbox"
-              name="rememberMe"
-              checked={this.state.rememberMe}
-              onChange={this.handleChange}
-            />{" "}
-            Remember me
-          </label>
         </div>
         <button type="submit" className="btn btn-default">
           Submit
