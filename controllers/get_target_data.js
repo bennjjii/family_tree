@@ -1,3 +1,5 @@
+const models = require("../models");
+
 exports.get_target_data = function (req, res) {
   return models.family_member
     .findOne({
