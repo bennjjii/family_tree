@@ -19,8 +19,8 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
     "pg": "^8.5.1",
-    "pug": "2.0.0-beta11",
-    "sequelize": "^6.3.5",
+    "pug": "^3.0.2",
+    "sequelize": "^6.5.0",
     "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
