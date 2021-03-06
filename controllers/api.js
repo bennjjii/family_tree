@@ -5,6 +5,14 @@ const uuid_family_tree = "58ae4e8f-bd4e-482c-959c-747a97d1e2dc";
 const validator = require("validator");
 const { sequelize } = require("../models");
 
+exports.register = function (req, res) {
+  return res.status(200);
+};
+
+exports.login = function (req, res) {
+  return res.status(200);
+};
+
 exports.get_target_data = function (req, res) {
   return models.family_member
     .findOne({

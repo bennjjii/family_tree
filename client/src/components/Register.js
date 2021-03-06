@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 export class Login extends Component {
   constructor() {
@@ -6,7 +7,6 @@ export class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      rememberMe: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -25,8 +25,9 @@ export class Login extends Component {
     const loginDetails = {
       email: this.state.email,
       password: this.state.password,
-      rememberMe: this.state.rememberMe,
     };
+
+    axios.post("localhost:5000/register", loginDetails);
 
     console.log(loginDetails);
   }
@@ -34,6 +35,7 @@ export class Login extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit} className="loginForm">
+        <h3>Register</h3>
         <div className="form-group">
           <label>Email address:</label>
           <input
