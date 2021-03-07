@@ -113,7 +113,12 @@ class IdCard extends Component {
         if (validator.isUUID(this.state.uuid_target)) {
           axios
             .get(
-              "http://localhost:5000/get_target_data/" + this.state.uuid_target
+              "http://localhost:5000/get_target_data/" + this.state.uuid_target,
+              {
+                headers: {
+                  authorization: localStorage.getItem("token"),
+                },
+              }
             )
             .then((resp) => {
               this.setState(resp.data);

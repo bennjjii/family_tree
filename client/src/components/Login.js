@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import { Link } from "react-router-dom";
+import Axios from "axios";
 
 export class Login extends Component {
   constructor() {
@@ -13,6 +14,7 @@ export class Login extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    Axios.defaults.withCredentials = true;
   }
 
   handleChange(event) {
@@ -29,7 +31,8 @@ export class Login extends Component {
       password: this.state.password,
     };
     axios.post("http://localhost:5000/login", loginDetails).then((resp) => {
-      console.log(resp);
+      localStorage.setItem("token", resp.data.accessToken);
+      console.log(localStorage.getItem("token"));
     });
   }
 

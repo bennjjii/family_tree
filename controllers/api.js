@@ -32,7 +32,6 @@ exports.register = async function (req, res) {
 
 exports.login = async function (req, res) {
   let user;
-  let uuid_user;
   await models.user
     .findOne({
       where: {
@@ -45,9 +44,11 @@ exports.login = async function (req, res) {
 
   try {
     if (await bcrypt.compare(req.body.password, user.hashed_password)) {
-      const userObj = { uuid_user: user.uuid_user };
-      const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET);
-      res.json({ accessToken: accessToken });
+      const userObj = { uuid_user: user.uuid_user, username: user.username };
+      const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: 300,
+      });
+      res.json({ auth: true, accessToken: accessToken });
     } else {
       console.log("Not Allowed");
     }
