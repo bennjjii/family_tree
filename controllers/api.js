@@ -32,7 +32,7 @@ exports.register = async function (req, res) {
 
 exports.login = async function (req, res) {
   let hashedPassword;
-  let username;
+  let uuid_user;
   await models.user
     .findOne({
       where: {
@@ -41,12 +41,12 @@ exports.login = async function (req, res) {
     })
     .then((resp) => {
       hashedPassword = resp.dataValues.hashed_password;
-      username = resp.dataValues.username;
+      uuid_user = resp.dataValues.uuid_user;
     });
 
   try {
     if (await bcrypt.compare(req.body.password, hashedPassword)) {
-      const user = { name: username };
+      const user = { uuid_user: uuid_user };
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
       res.json({ accessToken: accessToken });
     } else {
