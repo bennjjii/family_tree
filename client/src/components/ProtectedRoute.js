@@ -6,7 +6,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
-        if (false) {
+        if (true) {
           return <Component {...props} />;
         } else {
           return (

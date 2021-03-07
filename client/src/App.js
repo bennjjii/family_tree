@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar";
 import IdCard from "./components/IdCard";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import ProtectedRoute from "./components/ProtectedRoute";
 import AddFamilyMember from "./components/AddFamilyMember";
 
 class App extends React.Component {
@@ -43,7 +44,7 @@ class App extends React.Component {
             />
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
-            <Route path="/app" exact component={IdCard} />
+            <ProtectedRoute path="/app" exact component={IdCard} />
             <Route path="/add" exact component={AddFamilyMember} />
           </Switch>
         </div>
