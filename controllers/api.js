@@ -40,6 +40,9 @@ exports.login = async function (req, res) {
     })
     .then((resp) => {
       user = resp.dataValues;
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   try {

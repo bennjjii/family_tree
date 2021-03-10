@@ -3,9 +3,10 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import { Link, History } from "react-router-dom";
-import Axios from "axios";
+import { authContext } from "./ProvideAuth";
 
 export class Login extends Component {
+  static contextType = authContext;
   constructor() {
     super();
     this.state = {
@@ -14,7 +15,7 @@ export class Login extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    Axios.defaults.withCredentials = true;
+    axios.defaults.withCredentials = true;
   }
 
   handleChange(event) {
@@ -25,19 +26,12 @@ export class Login extends Component {
   }
 
   onSubmit(e) {
-    console.log(this.context);
     e.preventDefault();
     const loginDetails = {
       username: this.state.username,
       password: this.state.password,
     };
-    axios.post("http://localhost:5000/login", loginDetails).then((resp) => {
-      if (resp.data.accessToken) {
-        console.log(localStorage.getItem("token"));
-        localStorage.setItem("token", resp.data.accessToken);
-        this.props.history.push("/app", { from: "Login" });
-      }
-    });
+    this.context.login(loginDetails, this);
   }
 
   render() {
