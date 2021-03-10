@@ -12,22 +12,23 @@ export class MarriedBox extends Component {
           +
         </button>
         <h5>Married:</h5>
-        {this.props.spouses.map((spouse) => {
-          return (
-            <>
-              <button
-                className="parents-btn"
-                uuid={spouse.uuid}
-                onClick={this.props.handleUpd}
-              >
-                {spouse.name.join(" ")}
+        {this.props.spouses &&
+          this.props.spouses.map((spouse) => {
+            return (
+              <>
+                <button
+                  className="parents-btn"
+                  uuid={spouse.uuid}
+                  onClick={this.props.handleUpd}
+                >
+                  {spouse.name.join(" ")}
+                  <br />
+                  {spouse.d_o_mar}
+                </button>
                 <br />
-                {spouse.d_o_mar}
-              </button>
-              <br />
-            </>
-          );
-        })}
+              </>
+            );
+          })}
       </div>
     );
   }

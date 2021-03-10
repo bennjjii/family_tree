@@ -43,14 +43,6 @@ class IdCard extends Component {
         },
       ],
 
-      spouses: [
-        {
-          name: ["", "", ""],
-          uuid: "",
-          d_o_mar: null,
-          d_o_div: null,
-        },
-      ],
       UIstate: {
         editMode: false,
         editNewChild: false,
