@@ -8,44 +8,15 @@ import MarriedBox from "./MarriedBox";
 import TargetBox from "./TargetBox";
 import validator from "validator";
 import NewChild from "./NewChild";
+import NewChildFunctional from "./NewChildFunctional";
 import NewParent from "./NewParent";
 import NewSpouse from "./NewSpouse";
+import Target from "./Target";
 
 class IdCard extends Component {
   constructor() {
     super();
-    const initState = {
-      target: {
-        name: ["", "", ""],
-        gender: null,
-        born: null,
-        birth_uuid: null,
-        died: null,
-      },
-      mother: {
-        name: ["", "", ""],
-        uuid: "",
-      },
-      father: {
-        name: ["", "", ""],
-        uuid: "",
-      },
-      children: [
-        {
-          name: ["", "", ""],
-          d_o_b: null,
-          uuid: "",
-        },
-      ],
-      spouses: [
-        {
-          name: ["", "", ""],
-          uuid: "",
-          d_o_mar: null,
-          d_o_div: null,
-        },
-      ],
-    };
+
     this.state = {
       uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
       uuid_target: "",
@@ -71,6 +42,7 @@ class IdCard extends Component {
           uuid: "",
         },
       ],
+
       spouses: [
         {
           name: ["", "", ""],
@@ -105,11 +77,13 @@ class IdCard extends Component {
         uuid_target: this.state.uuid_box,
       });
     }
+    const tgt = new Target();
+    console.log(tgt.target);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.uuid_target !== prevState.uuid_target) {
-      this.setState(this.initState, () => {
+      this.setState({}, () => {
         if (validator.isUUID(this.state.uuid_target)) {
           axios
             .get(
@@ -122,6 +96,9 @@ class IdCard extends Component {
             )
             .then((resp) => {
               this.setState(resp.data);
+              this.setState({
+                uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
+              });
             });
         }
       });

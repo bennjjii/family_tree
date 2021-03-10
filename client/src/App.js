@@ -22,9 +22,7 @@ import AddFamilyMember from "./components/AddFamilyMember";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isUserAuthenticated: false,
-    };
+    this.state = {};
   }
 
   render() {
@@ -34,17 +32,7 @@ class App extends React.Component {
           <div className="App">
             <Navbar />
             <Switch>
-              <Route
-                exact
-                path="/"
-                render={() => {
-                  return this.state.isUserAuthenticated ? (
-                    <Redirect to="/app" />
-                  ) : (
-                    <Redirect to="/login" />
-                  );
-                }}
-              />
+              <Route exact path="/" component={Login} />
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={Register} />
               <ProtectedRoute path="/app" exact component={IdCard} />
