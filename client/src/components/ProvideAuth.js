@@ -11,18 +11,26 @@ export function useAuth() {
 
 function useProvideAuth() {
   const [user, setUser] = useState(null);
-  const [jwt, setJwt] = useState("banana");
+  const [jwt, setJwt] = useState(null);
   const login = (loginDetails, context) => {
     axios.post("http://localhost:5000/login", loginDetails).then((resp) => {
       if (resp.data.accessToken) {
         localStorage.setItem("token", resp.data.accessToken);
+        console.log(loginDetails.username);
         setUser(loginDetails.username);
+        setJwt(resp.data.accessToken);
+
         context.props.history.push("/app", { from: "Login" });
       }
     });
   };
 
-  return { user, jwt, login };
+  const logout = (props) => {
+    setUser(null);
+    setJwt(null);
+  };
+
+  return { user, jwt, login, logout };
 }
 
 export function ProvideAuth({ children }) {

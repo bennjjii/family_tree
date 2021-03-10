@@ -26,6 +26,7 @@ class App extends React.Component {
       isUserAuthenticated: false,
     };
   }
+
   render() {
     return (
       <ProvideAuth>

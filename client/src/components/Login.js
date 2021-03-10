@@ -18,6 +18,10 @@ export class Login extends Component {
     axios.defaults.withCredentials = true;
   }
 
+  componentDidUpdate() {
+    console.log(this.context);
+  }
+
   handleChange(event) {
     const { name, value, type, checked } = event.target;
     type === "checkbox"
