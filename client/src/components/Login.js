@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
-import { Link } from "react-router-dom";
+import { Link, History } from "react-router-dom";
 import Axios from "axios";
 
 export class Login extends Component {
@@ -25,14 +25,18 @@ export class Login extends Component {
   }
 
   onSubmit(e) {
+    console.log(this.context);
     e.preventDefault();
     const loginDetails = {
       username: this.state.username,
       password: this.state.password,
     };
     axios.post("http://localhost:5000/login", loginDetails).then((resp) => {
-      localStorage.setItem("token", resp.data.accessToken);
-      console.log(localStorage.getItem("token"));
+      if (resp.data.accessToken) {
+        console.log(localStorage.getItem("token"));
+        localStorage.setItem("token", resp.data.accessToken);
+        this.props.history.push("/app", { from: "Login" });
+      }
     });
   }
 
