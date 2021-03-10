@@ -1,75 +1,59 @@
-import { Component } from "react";
+import { Component, useState } from "react";
 
-class Child extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      editMode: false,
-      inputStyle: {
-        display: "none",
-      },
-      textStyle: {
-        display: "inline-block",
-      },
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
+const Child = (props) => {
+  const [editMode, setEditMode] = useState(false);
+  const [inputStyle, setInputStyle] = useState({
+    display: "none",
+  });
+  const [textStyle, setTextStyle] = useState({
+    display: "inline-block",
+  });
 
-  handleClick(e) {
+  const handleClick = (e) => {
     console.log(e);
-    if (this.state.editMode === false) {
-      this.setState({
-        editMode: true,
-        inputStyle: {
-          display: "inline-block",
-        },
-        textStyle: {
-          display: "none",
-        },
+    if (editMode === false) {
+      setEditMode(true);
+      setInputStyle({
+        display: "inline-block",
+      });
+      setTextStyle({
+        display: "none",
       });
     } else {
-      this.setState({
-        editMode: false,
-        inputStyle: {
-          display: "none",
-        },
-        textStyle: {
-          display: "inline-block",
-        },
+      setEditMode(false);
+      setInputStyle({
+        display: "none",
+      });
+      setTextStyle({
+        display: "inline-block",
       });
     }
-  }
+  };
 
-  render() {
-    return (
-      <>
-        <button
-          className="parents-btn"
-          name={this.props.name}
-          onClick={this.props.handleUpdate}
-          uuid={this.props.uuid}
-          key={this.props.key + "btn"}
-        >
-          <form>
-            <input style={this.state.inputStyle}></input>
-          </form>
-          <span
-            style={this.state.textStyle}
-            uuid={this.props.uuid}
-            className="child-name"
-          >
-            {this.props.name.join(" ")}
-          </span>
+  return (
+    <>
+      <button
+        className="parents-btn"
+        name={props.name}
+        onClick={props.handleUpdate}
+        uuid={props.uuid}
+        key={props.key + "btn"}
+      >
+        <form>
+          <input style={inputStyle}></input>
+        </form>
+        <span style={textStyle} uuid={props.uuid} className="child-name">
+          {props.name.join(" ")}
+        </span>
 
-          <br key={this.props.key + "br1"} />
-          {this.props.d_o_b}
-          <i onClick={this.handleClick} className="far fa-edit"></i>
-        </button>
+        <br key={props.key + "br1"} />
+        {props.d_o_b}
+        <i onClick={handleClick} className="far fa-edit"></i>
+      </button>
 
-        <br key={this.props.key + "br2"} />
-      </>
-    );
-  }
-}
+      <br key={props.key + "br2"} />
+    </>
+  );
+};
 
 export default Child;
