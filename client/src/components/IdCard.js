@@ -8,7 +8,6 @@ import MarriedBox from "./MarriedBox";
 import TargetBox from "./TargetBox";
 import validator from "validator";
 import NewChild from "./NewChild";
-import NewChildFunctional from "./NewChildFunctional";
 import NewParent from "./NewParent";
 import NewSpouse from "./NewSpouse";
 import Target from "./Target";
