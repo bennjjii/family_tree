@@ -30,6 +30,32 @@ exports.register = async function (req, res) {
     });
 };
 
+exports.refreshAccessToken = async (req, res) => {
+  try {
+    const { uuid_user } = await jwt.verify(
+      req.cookies.refresh_token,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+    console.log(uuid_user);
+    if (uuid_user) {
+      models.user
+        .findOne({
+          where: {
+            uuid_user: uuid_user,
+          },
+        })
+        .then((res) => {
+          if (req.cookies.refresh_token === res.refresh_token) {
+            console.log("access token granted");
+            return res.sendStatus(200);
+          }
+        });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 exports.login = async function (req, res) {
   let user;
   await models.user
@@ -50,6 +76,23 @@ exports.login = async function (req, res) {
       const userObj = { uuid_user: user.uuid_user, username: user.username };
       const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: 300,
+      });
+      const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, {
+        expiresIn: 30000,
+      });
+      let updatedUser = await models.user.update(
+        {
+          refresh_token: refreshToken,
+        },
+        {
+          where: {
+            uuid_user: user.uuid_user,
+          },
+        }
+      );
+      res.cookie("refresh_token", refreshToken, {
+        httpOnly: true,
+        sameSite: "strict",
       });
       res.json({ auth: true, accessToken: accessToken });
     } else {

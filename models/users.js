@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      refresh_token: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       super_user: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
