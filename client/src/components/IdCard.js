@@ -18,40 +18,42 @@ class IdCard extends Component {
   constructor() {
     super();
 
-    this.state = {
-      uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
-      uuid_target: "",
-      target: {
-        name: ["", "", ""],
-        gender: null,
-        born: null,
-        birth_uuid: null,
-        died: null,
-      },
-      mother: {
-        name: ["", "", ""],
-        uuid: "",
-      },
-      father: {
-        name: ["", "", ""],
-        uuid: "",
-      },
-      children: [
-        {
-          name: ["", "", ""],
-          d_o_b: null,
-          uuid: "",
-        },
-      ],
+    this.state = new Target();
 
-      UIstate: {
-        editMode: false,
-        editNewChild: false,
-        editNewParent: false,
-        editNewSpouse: false,
-        newParentGender: null,
-      },
-    };
+    // {
+    //   uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
+    //   uuid_target: "",
+    //   target: {
+    //     name: ["", "", ""],
+    //     gender: null,
+    //     born: null,
+    //     birth_uuid: null,
+    //     died: null,
+    //   },
+    //   mother: {
+    //     name: ["", "", ""],
+    //     uuid: "",
+    //   },
+    //   father: {
+    //     name: ["", "", ""],
+    //     uuid: "",
+    //   },
+    //   children: [
+    //     {
+    //       name: ["", "", ""],
+    //       d_o_b: null,
+    //       uuid: "",
+    //     },
+    //   ],
+
+    //   UIstate: {
+    //     editMode: false,
+    //     editNewChild: false,
+    //     editNewParent: false,
+    //     editNewSpouse: false,
+    //     newParentGender: null,
+    //   },
+    // };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
