@@ -10,7 +10,7 @@ import validator from "validator";
 import NewChild from "./NewChild";
 import NewParent from "./NewParent";
 import NewSpouse from "./NewSpouse";
-import Target from "./Target";
+import StateTemplate from "./StateTemplate";
 import { authContext } from "./ProvideAuth";
 
 class IdCard extends Component {
@@ -18,42 +18,7 @@ class IdCard extends Component {
   constructor() {
     super();
 
-    this.state = new Target();
-
-    // {
-    //   uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
-    //   uuid_target: "",
-    //   target: {
-    //     name: ["", "", ""],
-    //     gender: null,
-    //     born: null,
-    //     birth_uuid: null,
-    //     died: null,
-    //   },
-    //   mother: {
-    //     name: ["", "", ""],
-    //     uuid: "",
-    //   },
-    //   father: {
-    //     name: ["", "", ""],
-    //     uuid: "",
-    //   },
-    //   children: [
-    //     {
-    //       name: ["", "", ""],
-    //       d_o_b: null,
-    //       uuid: "",
-    //     },
-    //   ],
-
-    //   UIstate: {
-    //     editMode: false,
-    //     editNewChild: false,
-    //     editNewParent: false,
-    //     editNewSpouse: false,
-    //     newParentGender: null,
-    //   },
-    // };
+    this.state = new StateTemplate();
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -72,8 +37,6 @@ class IdCard extends Component {
         uuid_target: this.state.uuid_box,
       });
     }
-    const tgt = new Target();
-    console.log(tgt.target);
   }
 
   componentDidUpdate(prevProps, prevState) {

@@ -1,6 +1,6 @@
 import FamilyMember from "./FamilyMember";
 
-class Target {
+class StateTemplate {
   constructor() {
     this.uuid_box = "704459f2-c51b-4433-9991-30a4ef63c63f";
     this.uuid_target = "";
@@ -19,4 +19,4 @@ class Target {
   }
 }
 
-export default Target;
+export default StateTemplate;
