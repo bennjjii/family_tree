@@ -30,9 +30,9 @@ class App extends React.Component {
       <ProvideAuth>
         <Router>
           <div className="App">
-            <Navbar />
+            <Navbar ctx={this} />
             <Switch>
-              <Route exact path="/" component={Login} />
+              <Route path="/" exact component={Login} />
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={Register} />
               <ProtectedRoute path="/app" exact component={IdCard} />

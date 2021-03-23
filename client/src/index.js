@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+
+import { ProvideAuth, authContext } from "./components/ProvideAuth";
 require("dotenv").config();
 
 ReactDOM.render(

@@ -18,13 +18,8 @@ export class Login extends Component {
     axios.defaults.withCredentials = true;
   }
 
-  componentDidMount() {
-    this.context.getAccessToken(this);
-    console.log(this.context.jwt);
-  }
-
-  componentDidUpdate() {
-    console.log(this.context.jwt);
+  async componentDidMount() {
+    await this.context.getAccessToken(this);
   }
 
   handleChange(event) {

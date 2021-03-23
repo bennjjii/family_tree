@@ -28,7 +28,11 @@ export class Login extends Component {
       password: this.state.password,
     };
 
-    axios.post("http://localhost:5000/register", userDetails);
+    axios
+      .post("http://localhost:5000/register", userDetails)
+      .then((response) => {
+        this.props.history.push("/", { from: "Register" });
+      });
 
     console.log(userDetails);
   }

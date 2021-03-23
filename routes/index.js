@@ -16,6 +16,7 @@ router.post("/create_new_parent", create_new_parent);
 router.post("/create_new_spouse", create_new_spouse);
 router.post("/register", api.register);
 router.post("/login", api.login);
+router.post("/logout", api.logout);
 router.post("/refresh", api.getAccessToken);
 
 module.exports = router;

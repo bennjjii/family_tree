@@ -14,7 +14,7 @@ const Navbar = (props) => {
         <ul className="navbar-nav mr-auto">
           <li className="navbar-item">
             <Link to="/app" className="nav-link">
-              List
+              App
             </Link>
           </li>
           <li className="navbar-item">
@@ -31,7 +31,7 @@ const Navbar = (props) => {
             <Link
               to="/login"
               className="nav-link"
-              onClick={() => auth.logout()}
+              onClick={() => auth.logout(props.ctx)}
             >
               Logout
             </Link>

@@ -45,11 +45,7 @@ exports.getAccessToken = async (req, res) => {
           },
         })
         .then((user) => {
-          console.log(user);
-          console.log(req.cookies.refresh_token);
-          console.log(user.refresh_token);
           if (req.cookies.refresh_token === user.refresh_token) {
-            console.log("MAtches");
             const userObj = {
               uuid_user: user.uuid_user,
               username: user.username,
@@ -118,6 +114,25 @@ exports.login = async function (req, res) {
   } catch {
     res.status(500).send();
   }
+};
+
+exports.logout = async (req, res) => {
+  await models.user
+    .update(
+      {
+        refresh_token: "",
+      },
+      {
+        where: {
+          username: req.body.username,
+        },
+      }
+    )
+    .then((row) => {
+      console.log(row);
+      res.cookie("refresh_token", "", { expires: new Date(0) });
+      res.json({ success: true });
+    });
 };
 
 exports.create_family_account = function (req, res) {
