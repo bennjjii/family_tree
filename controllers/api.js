@@ -30,13 +30,13 @@ exports.register = async function (req, res) {
     });
 };
 
-exports.refreshAccessToken = async (req, res) => {
+exports.getAccessToken = async (req, res) => {
   try {
     const { uuid_user } = await jwt.verify(
       req.cookies.refresh_token,
       process.env.REFRESH_TOKEN_SECRET
     );
-    console.log(uuid_user);
+
     if (uuid_user) {
       models.user
         .findOne({
@@ -44,15 +44,27 @@ exports.refreshAccessToken = async (req, res) => {
             uuid_user: uuid_user,
           },
         })
-        .then((res) => {
-          if (req.cookies.refresh_token === res.refresh_token) {
-            console.log("access token granted");
-            return res.sendStatus(200);
+        .then((user) => {
+          //console.log(user);
+          if (req.cookies.refresh_token === user.refresh_token) {
+            const userObj = {
+              uuid_user: user.uuid_user,
+              username: user.username,
+            };
+            const accessToken =
+              "Bearer " +
+              jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: "15m",
+              });
+            res.json(accessToken);
           }
+        })
+        .catch((err) => {
+          throw err;
         });
     }
   } catch (err) {
-    console.log(err);
+    res.sendStatus(401);
   }
 };
 
@@ -77,9 +89,7 @@ exports.login = async function (req, res) {
       const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: 300,
       });
-      const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, {
-        expiresIn: 30000,
-      });
+      const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET);
       let updatedUser = await models.user.update(
         {
           refresh_token: refreshToken,
