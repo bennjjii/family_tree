@@ -11,8 +11,10 @@ import NewChild from "./NewChild";
 import NewParent from "./NewParent";
 import NewSpouse from "./NewSpouse";
 import Target from "./Target";
+import { authContext } from "./ProvideAuth";
 
 class IdCard extends Component {
+  static contextType = authContext;
   constructor() {
     super();
 
@@ -81,7 +83,7 @@ class IdCard extends Component {
               "http://localhost:5000/get_target_data/" + this.state.uuid_target,
               {
                 headers: {
-                  authorization: localStorage.getItem("token"),
+                  authorization: this.context.jwt,
                 },
               }
             )

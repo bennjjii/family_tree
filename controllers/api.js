@@ -45,18 +45,25 @@ exports.getAccessToken = async (req, res) => {
           },
         })
         .then((user) => {
-          //console.log(user);
+          console.log(user);
+          console.log(req.cookies.refresh_token);
+          console.log(user.refresh_token);
           if (req.cookies.refresh_token === user.refresh_token) {
+            console.log("MAtches");
             const userObj = {
               uuid_user: user.uuid_user,
               username: user.username,
             };
-            const accessToken =
-              "Bearer " +
-              jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
+            const accessToken = jwt.sign(
+              userObj,
+              process.env.ACCESS_TOKEN_SECRET,
+              {
                 expiresIn: "15m",
-              });
+              }
+            );
             res.json(accessToken);
+          } else {
+            res.sendStatus(401);
           }
         })
         .catch((err) => {
@@ -104,7 +111,7 @@ exports.login = async function (req, res) {
         httpOnly: true,
         sameSite: "strict",
       });
-      res.json({ auth: true, accessToken: accessToken });
+      res.json({ auth: true });
     } else {
       console.log("Not Allowed");
     }
