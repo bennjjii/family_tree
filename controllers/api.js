@@ -9,25 +9,28 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.register = async function (req, res) {
-  let hashedPassword;
-  try {
-    const salt = await bcrypt.genSalt();
-    hashedPassword = await bcrypt.hash(req.body.password, salt);
-  } catch {
-    res.status(500).send();
-  }
-
-  return models.user
-    .create({
-      username: req.body.username,
-      email: req.body.email,
-      hashed_password: hashedPassword,
-      super_user: false,
-    })
-    .then((resp) => {
-      res.json(resp);
-      console.log(resp);
-    });
+  hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const createdUser = await models.family_tree.create(
+    {
+      family_tree_name: req.body.family_tree_name,
+      use: {
+        username: req.body.username,
+        email: req.body.email,
+        hashed_password: hashedPassword,
+        super_user: false,
+      },
+    },
+    {
+      include: [
+        {
+          model: models.user,
+          as: "use",
+        },
+      ],
+    }
+  );
+  console.log(createdUser);
+  res.json(createdUser);
 };
 
 exports.getAccessToken = async (req, res) => {
@@ -38,33 +41,32 @@ exports.getAccessToken = async (req, res) => {
     );
 
     if (uuid_user) {
-      models.user
-        .findOne({
-          where: {
-            uuid_user: uuid_user,
-          },
-        })
-        .then((user) => {
-          if (req.cookies.refresh_token === user.refresh_token) {
-            const userObj = {
-              uuid_user: user.uuid_user,
-              username: user.username,
-            };
-            const accessToken = jwt.sign(
-              userObj,
-              process.env.ACCESS_TOKEN_SECRET,
-              {
-                expiresIn: "15m",
-              }
-            );
-            res.json(accessToken);
-          } else {
-            res.sendStatus(401);
-          }
-        })
-        .catch((err) => {
-          throw err;
+      const user = await models.user.findOne({
+        where: {
+          uuid_user: uuid_user,
+        },
+      });
+
+      // const familyTree = await models.family_tree.findOne({
+      //   where: {
+      //     uuid_user: user.uuid_user,
+      //   },
+      // });
+
+      // console.log(familyTree);
+
+      if (req.cookies.refresh_token === user.refresh_token) {
+        const userObj = {
+          uuid_user: user.uuid_user,
+          username: user.username,
+        };
+        const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
+          expiresIn: "15m",
         });
+        res.json(accessToken);
+      } else {
+        res.sendStatus(401);
+      }
     }
   } catch (err) {
     res.sendStatus(401);
@@ -89,9 +91,6 @@ exports.login = async function (req, res) {
   try {
     if (await bcrypt.compare(req.body.password, user.hashed_password)) {
       const userObj = { uuid_user: user.uuid_user, username: user.username };
-      const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: 300,
-      });
       const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET);
       let updatedUser = await models.user.update(
         {
@@ -106,6 +105,7 @@ exports.login = async function (req, res) {
       res.cookie("refresh_token", refreshToken, {
         httpOnly: true,
         sameSite: "strict",
+        //add path restriction
       });
       res.json({ auth: true });
     } else {
