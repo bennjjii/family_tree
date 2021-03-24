@@ -55,11 +55,13 @@ exports.getAccessToken = async (req, res) => {
         },
       });
 
+      console.log("sdf" + uuid_family_tree);
+
       if (req.cookies.refresh_token === user.refresh_token) {
         const userObj = {
           uuid_user: user.uuid_user,
           username: user.username,
-          uuid_family_tree: uuid_family_tree,
+          // uuid_family_tree: uuid_family_tree,
         };
         const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
           expiresIn: "15m",
@@ -75,7 +77,8 @@ exports.getAccessToken = async (req, res) => {
 };
 
 exports.login = async function (req, res) {
-  let user;
+  let user = null;
+  let refreshToken = null;
   await models.user
     .findOne({
       where: {
@@ -86,13 +89,14 @@ exports.login = async function (req, res) {
       user = resp.dataValues;
     })
     .catch((err) => {
+      console.log(err);
       res.json(err);
     });
 
   try {
     if (await bcrypt.compare(req.body.password, user.hashed_password)) {
       const userObj = { uuid_user: user.uuid_user, username: user.username };
-      const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET);
+      refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET);
       let updatedUser = await models.user.update(
         {
           refresh_token: refreshToken,
@@ -103,6 +107,7 @@ exports.login = async function (req, res) {
           },
         }
       );
+      console.log(updatedUser);
       res.cookie("refresh_token", refreshToken, {
         httpOnly: true,
         sameSite: "strict",
