@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
     birth.belongsTo(models.family_tree, {
+      as: "birt",
       foreignKey: {
         name: "uuid_family_tree",
         allowNull: false,

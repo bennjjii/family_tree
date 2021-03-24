@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    focal_member: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
   });
 
   family_tree.associate = (models) => {
@@ -37,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     //births
 
     family_tree.hasMany(models.birth, {
+      as: "birt",
       foreignKey: {
         name: "uuid_family_tree",
         allowNull: false,

@@ -196,5 +196,5 @@ exports.get_target_data = function (req, res) {
       });
       res.json(respData);
     })
-    .catch(console.log("Error occured"));
+    .catch((err) => console.log(err));
 };

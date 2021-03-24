@@ -13,6 +13,7 @@ export function useAuth() {
 function useProvideAuth() {
   const [user, setUser] = useState(null);
   const [uuidUser, setUuidUser] = useState(null);
+  const [focus, setFocus] = useState(null);
   const [uuidFamilyTree, setUuidFamilyTree] = useState(null);
   const [jwt, setJwt] = useState(null);
   const getAccessToken = async (context) => {
@@ -20,12 +21,16 @@ function useProvideAuth() {
       .post("http://localhost:5000/refresh")
       .then((res) => {
         try {
-          const { username, uuid_user, uuid_family_tree } = jwt_decode(
-            res.data
-          );
+          const {
+            username,
+            uuid_user,
+            uuid_family_tree,
+            focal_member,
+          } = jwt_decode(res.data);
           setUser(username);
           setUuidUser(uuid_user);
           setUuidFamilyTree(uuid_family_tree);
+          setFocus(focal_member);
           setJwt(res.data);
           context.props.history.push("/app", { from: "Login" });
         } catch (err) {
@@ -56,7 +61,16 @@ function useProvideAuth() {
       });
   };
 
-  return { user, jwt, login, logout, getAccessToken };
+  return {
+    user,
+    uuidUser,
+    uuidFamilyTree,
+    focus,
+    jwt,
+    login,
+    logout,
+    getAccessToken,
+  };
 }
 
 export function ProvideAuth({ children }) {
