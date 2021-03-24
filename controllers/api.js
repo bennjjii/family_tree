@@ -47,18 +47,19 @@ exports.getAccessToken = async (req, res) => {
         },
       });
 
-      // const familyTree = await models.family_tree.findOne({
-      //   where: {
-      //     uuid_user: user.uuid_user,
-      //   },
-      // });
-
-      // console.log(familyTree);
+      const {
+        dataValues: { uuid_family_tree },
+      } = await models.family_tree.findOne({
+        where: {
+          uuid_user: user.uuid_user,
+        },
+      });
 
       if (req.cookies.refresh_token === user.refresh_token) {
         const userObj = {
           uuid_user: user.uuid_user,
           username: user.username,
+          uuid_family_tree: uuid_family_tree,
         };
         const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
           expiresIn: "15m",
