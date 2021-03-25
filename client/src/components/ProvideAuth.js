@@ -66,6 +66,7 @@ function useProvideAuth() {
     uuidUser,
     uuidFamilyTree,
     focus,
+    setFocus,
     jwt,
     login,
     logout,

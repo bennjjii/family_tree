@@ -99,6 +99,7 @@ const NewChild = (props) => {
           showYearDropdown
           scrollableYearDropdown
           yearDropdownItemNumber={40}
+          maxDate={new Date()}
           autoComplete="off"
           onChange={handleChangeBirth}
           selected={formData.d_o_b}

@@ -98,6 +98,7 @@ export class NewSpouse extends Component {
             autoComplete="off"
             onChange={this.handleChangeMarriageDate}
             selected={this.state.d_o_mar}
+            maxDate={new Date()}
           />
           <br />
 

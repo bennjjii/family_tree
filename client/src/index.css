@@ -48,11 +48,43 @@ code {
 }
 
 .loginForm {
+  width: 70%;
+  margin: auto;
+
+  margin-top: 50px;
+}
+
+.register-form {
+  margin-top: 50px;
+}
+
+.registerForm {
   margin-top: auto;
   margin-bottom: auto;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+}
+
+.formcol-1 {
+  flex-basis: 200px;
+  flex-shrink: 0;
+  align-self: center;
+  flex-grow: 2;
+}
+
+.formcol-2 {
+  flex-basis: 200px;
+  flex-shrink: 0;
+  align-self: center;
+  flex-grow: 2;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
 }

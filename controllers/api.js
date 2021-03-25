@@ -6,13 +6,19 @@ const validator = require("validator");
 const { sequelize } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const uuid = require("uuid");
 require("dotenv").config();
 
-exports.register = async function (req, res) {
-  hashedPassword = await bcrypt.hash(req.body.password, 10);
+exports.register = async (req, res) => {
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const tempFamilyTreeUuid = uuid.v4();
+  const tempFamilyMemberUuid = uuid.v4();
+
   const createdUser = await models.family_tree.create(
     {
+      uuid_family_tree: tempFamilyTreeUuid,
       family_tree_name: req.body.family_tree_name,
+      focal_member: tempFamilyMemberUuid,
       use: {
         username: req.body.username,
         email: req.body.email,
@@ -29,8 +35,38 @@ exports.register = async function (req, res) {
       ],
     }
   );
+
+  const createdFamilyMember = await models.birth.create(
+    {
+      d_o_b: req.body.d_o_b,
+      chil: {
+        uuid_family_member: tempFamilyMemberUuid,
+        first_name: req.body.first_name,
+        middle_name: req.body.middle_name,
+        last_name: req.body.last_name,
+        gender: req.body.gender,
+        uuid_family_tree: tempFamilyTreeUuid,
+      },
+      uuid_family_tree: tempFamilyTreeUuid,
+    },
+    {
+      include: [
+        {
+          model: models.family_member,
+          as: "chil",
+        },
+      ],
+    }
+  );
+
   console.log(createdUser);
+  console.log(createdFamilyMember);
   res.json(createdUser);
+};
+
+exports.register2 = async (req, res) => {
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  //create 4 records, birth, family member, family tree, user
 };
 
 exports.getAccessToken = async (req, res) => {
@@ -76,7 +112,7 @@ exports.getAccessToken = async (req, res) => {
   }
 };
 
-exports.login = async function (req, res) {
+exports.login = async (req, res) => {
   let user = null;
 
   await models.user
@@ -141,7 +177,7 @@ exports.logout = async (req, res) => {
     });
 };
 
-exports.create_family_account = function (req, res) {
+exports.create_family_account = (req, res) => {
   const acc_name = req.body["acc_name"];
   return models.family_account
     .create({ family_account_name: acc_name })

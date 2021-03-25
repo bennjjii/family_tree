@@ -53,7 +53,9 @@ class IdCard extends Component {
               }
             )
             .then((resp) => {
-              this.setState(resp.data);
+              this.setState(resp.data, () => {
+                this.context.setFocus(this.state.uuid_target);
+              });
               // this.setState({
               //   uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
               // });
