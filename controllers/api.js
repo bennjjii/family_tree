@@ -64,11 +64,6 @@ exports.register = async (req, res) => {
   res.json(createdUser);
 };
 
-exports.register2 = async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  //create 4 records, birth, family member, family tree, user
-};
-
 exports.getAccessToken = async (req, res) => {
   try {
     const { uuid_user } = await jwt.verify(
