@@ -3,10 +3,10 @@ const models = require("../models");
 // ##### CURRENTLY LOGGED IN USERS CAN ACCESS OTHER USER'S DATA
 
 exports.get_target_data = async (req, res) => {
-  console.log(req.params.id);
+  console.log(req.body);
   const resp = await models.family_member.findOne({
     where: {
-      uuid_family_member: req.params.id,
+      uuid_family_member: req.body.target,
     },
     include: [
       {
@@ -72,8 +72,8 @@ exports.get_target_data = async (req, res) => {
 
   //Check user is authorized to access this family tree (can this be moved into the auth middleware?)
 
-  console.log(req.user.uuid_family_tree);
-  console.log(resp.dataValues.uuid_family_tree);
+  // console.log(req.user.uuid_family_tree);
+  // console.log(resp.dataValues.uuid_family_tree);
 
   if (req.user.uuid_family_tree !== resp.dataValues.uuid_family_tree) {
     return res.sendStatus(403);

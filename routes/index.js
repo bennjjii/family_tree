@@ -9,7 +9,8 @@ let { create_new_spouse } = require("../controllers/create_new_spouse");
 let { create_family_member } = require("../controllers/create_family_member");
 
 //router.get("/get_target_data/:id", get_target_data);
-router.get("/get_target_data/:id", authenticateToken, get_target_data);
+//router.get("/get_target_data/:id", authenticateToken, get_target_data);
+router.post("/get_target_data", authenticateToken, get_target_data);
 router.post("/add_family_member", create_family_member);
 router.post("/create_new_child", create_new_child);
 router.post("/create_new_parent", create_new_parent);

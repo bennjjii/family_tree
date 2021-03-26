@@ -9,9 +9,18 @@ const NewChild = (props) => {
     last_name: "",
     d_o_b: null,
     gender: null,
-    targetParent: props.target,
-    targetParentGender: props.targetParentGender,
-    otherParent: props.targetSpouses[0].uuid,
+    father:
+      props.state.target.gender === "Male"
+        ? props.state.target.uuid
+        : props.state.spouses[0]
+        ? props.state.spouses[0].uuid
+        : null,
+    mother:
+      props.state.target.gender === "Female"
+        ? props.state.target.uuid
+        : props.state.spouses[0]
+        ? props.state.spouses[0].uuid
+        : null,
   });
 
   const handleChange = (e) => {
@@ -35,14 +44,8 @@ const NewChild = (props) => {
       first_name: formData.first_name,
       middle_name: formData.middle_name,
       last_name: formData.last_name,
-      father:
-        formData.targetParentGender === "Male"
-          ? formData.targetParent
-          : formData.otherParent,
-      mother:
-        formData.targetParentGender === "Female"
-          ? formData.targetParent
-          : formData.otherParent,
+      father: formData.father,
+      mother: formData.mother,
       d_o_b: formData.d_o_b,
       gender: formData.gender,
     };
@@ -121,14 +124,18 @@ const NewChild = (props) => {
         <br />
 
         <label>
-          {props.targetGender !== "Male" ? "Father" : "Mother"}
+          {props.state.target.gender !== "Male" ? "Father" : "Mother"}
           <br />
           <select
-            name="otherParent"
-            value={formData.otherParent}
+            name={props.state.target.gender !== "Male" ? "father" : "mother"}
+            value={
+              props.state.target.gender !== "Male"
+                ? formData.father
+                : formData.mother
+            }
             onChange={handleChange}
           >
-            {props.targetSpouses.map((spouse) => {
+            {props.state.spouses.map((spouse) => {
               return (
                 <option value={spouse.uuid}>{spouse.name.join(" ")}</option>
               );

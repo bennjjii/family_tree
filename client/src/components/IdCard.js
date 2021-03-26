@@ -39,19 +39,45 @@ class IdCard extends Component {
     }
   }
 
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (this.state.uuid_target !== prevState.uuid_target) {
+  //     this.setState({}, () => {
+  //       if (validator.isUUID(this.state.uuid_target)) {
+  //         axios
+  //           .get(
+  //             "http://localhost:5000/get_target_data/" + this.state.uuid_target,
+  //             {
+  //               headers: {
+  //                 authorization: this.context.jwt,
+  //               },
+  //             }
+  //           )
+  //           .then((resp) => {
+  //             this.setState(resp.data, () => {
+  //               this.context.setFocus(this.state.uuid_target);
+  //             });
+  //             // this.setState({
+  //             //   uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
+  //             // });
+  //           });
+  //       }
+  //     });
+  //   }
+
+  // }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.state.uuid_target !== prevState.uuid_target) {
       this.setState({}, () => {
         if (validator.isUUID(this.state.uuid_target)) {
+          const request = { target: this.state.uuid_target };
+
           axios
-            .get(
-              "http://localhost:5000/get_target_data/" + this.state.uuid_target,
-              {
-                headers: {
-                  authorization: this.context.jwt,
-                },
-              }
-            )
+            .post("http://localhost:5000/get_target_data/", request, {
+              headers: {
+                authorization: this.context.jwt,
+              },
+            })
             .then((resp) => {
               this.setState(resp.data, () => {
                 this.context.setFocus(this.state.uuid_target);
@@ -179,10 +205,11 @@ class IdCard extends Component {
     if (this.state.UIstate.editNewChild) {
       newChildComponent = (
         <NewChild
-          target={this.state.uuid_target}
-          d_o_b={this.state.target.born}
-          targetParentGender={this.state.target.gender}
-          targetSpouses={this.state.spouses}
+          state={this.state}
+          // target={this.state.uuid_target}
+          // d_o_b={this.state.target.born}
+          // targetParentGender={this.state.target.gender}
+          // targetSpouses={this.state.spouses}
           submitNewChild={this.submitNewChild}
         />
       );
