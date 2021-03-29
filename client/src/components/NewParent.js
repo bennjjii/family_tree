@@ -7,10 +7,6 @@ export class NewParent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      componentMode: {
-        mode: null,
-        modes: ["noParents", "motherExists", "fatherExists"],
-      },
       np_first_name: "",
       np_middle_name: "",
       np_last_name: "",
@@ -25,27 +21,27 @@ export class NewParent extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {
-    if (validator.isUUID(this.props.targetMother.uuid)) {
-      this.setState({
-        componentMode: {
-          mode: this.state.componentMode.modes[1],
-        },
-      });
-    } else if (validator.isUUID(this.props.targetFather.uuid)) {
-      this.setState({
-        componentMode: {
-          mode: this.state.componentMode.modes[2],
-        },
-      });
-    } else {
-      this.setState({
-        componentMode: {
-          mode: this.state.componentMode.modes[0],
-        },
-      });
-    }
-  }
+  // componentDidMount() {
+  //   if (validator.isUUID(this.props.targetMother.uuid)) {
+  //     this.setState({
+  //       componentMode: {
+  //         mode: this.state.componentMode.modes[1],
+  //       },
+  //     });
+  //   } else if (validator.isUUID(this.props.targetFather.uuid)) {
+  //     this.setState({
+  //       componentMode: {
+  //         mode: this.state.componentMode.modes[2],
+  //       },
+  //     });
+  //   } else {
+  //     this.setState({
+  //       componentMode: {
+  //         mode: this.state.componentMode.modes[0],
+  //       },
+  //     });
+  //   }
+  // }
 
   handleChange(e) {
     const { name, value } = e.target;

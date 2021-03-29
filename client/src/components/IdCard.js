@@ -204,14 +204,7 @@ class IdCard extends Component {
     let newChildComponent;
     if (this.state.UIstate.editNewChild) {
       newChildComponent = (
-        <NewChild
-          state={this.state}
-          // target={this.state.uuid_target}
-          // d_o_b={this.state.target.born}
-          // targetParentGender={this.state.target.gender}
-          // targetSpouses={this.state.spouses}
-          submitNewChild={this.submitNewChild}
-        />
+        <NewChild state={this.state} submitNewChild={this.submitNewChild} />
       );
     }
 
@@ -225,6 +218,7 @@ class IdCard extends Component {
           newParentGender={this.state.UIstate.newParentGender}
           targetMother={this.state.mother}
           targetFather={this.state.father}
+          state={this.state}
           submitNewParent={this.submitNewParent}
         />
       );
