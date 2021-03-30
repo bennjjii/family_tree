@@ -16,7 +16,7 @@ exports.create_new_parent = async (req, res) => {
       middle_name: req.body.middle_name,
       last_name: req.body.last_name,
       gender: req.body.gender,
-      uuid_family_tree: req.body.uuid_family_tree,
+      uuid_family_tree: req.user.uuid_family_tree,
     });
     responses.push(JSON.parse(JSON.stringify(newParent)));
     const updatedBirth = await models.birth.update(
@@ -35,7 +35,7 @@ exports.create_new_parent = async (req, res) => {
     const newParentBirth = await models.birth.create({
       child: responses[0].uuid_family_member,
       d_o_b: req.body.d_o_b.split("T")[0],
-      uuid_family_tree: req.body.uuid_family_tree,
+      uuid_family_tree: req.user.uuid_family_tree,
     });
 
     responses.push(JSON.parse(JSON.stringify(newParentBirth)));

@@ -11,7 +11,7 @@ export class NewSpouse extends Component {
       last_name: "",
       d_o_mar: null,
       target_uuid: this.props.uuid_target,
-      targetGender: this.props.target_gender,
+      gender: this.props.target_gender,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeMarriageDate = this.handleChangeMarriageDate.bind(this);
@@ -39,6 +39,7 @@ export class NewSpouse extends Component {
       last_name: this.state.last_name,
       d_o_mar: this.state.d_o_mar,
       target_uuid: this.state.target_uuid,
+      gender: this.state.gender,
     };
 
     this.props.submitNewSpouse(response);

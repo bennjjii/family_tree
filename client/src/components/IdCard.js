@@ -39,33 +39,6 @@ class IdCard extends Component {
     }
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (this.state.uuid_target !== prevState.uuid_target) {
-  //     this.setState({}, () => {
-  //       if (validator.isUUID(this.state.uuid_target)) {
-  //         axios
-  //           .get(
-  //             "http://localhost:5000/get_target_data/" + this.state.uuid_target,
-  //             {
-  //               headers: {
-  //                 authorization: this.context.jwt,
-  //               },
-  //             }
-  //           )
-  //           .then((resp) => {
-  //             this.setState(resp.data, () => {
-  //               this.context.setFocus(this.state.uuid_target);
-  //             });
-  //             // this.setState({
-  //             //   uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
-  //             // });
-  //           });
-  //       }
-  //     });
-  //   }
-
-  // }
-
   componentDidUpdate(prevProps, prevState) {
     if (this.state.uuid_target !== prevState.uuid_target) {
       this.setState({}, () => {
@@ -82,9 +55,6 @@ class IdCard extends Component {
               this.setState(resp.data, () => {
                 this.context.setFocus(this.state.uuid_target);
               });
-              // this.setState({
-              //   uuid_box: "704459f2-c51b-4433-9991-30a4ef63c63f",
-              // });
             });
         }
       });
@@ -136,7 +106,11 @@ class IdCard extends Component {
 
   submitNewChild(newChildDetails) {
     axios
-      .post("http://localhost:5000/create_new_child", newChildDetails)
+      .post("http://localhost:5000/create_new_child", newChildDetails, {
+        headers: {
+          authorization: this.context.jwt,
+        },
+      })
       .then((response) => {
         const child = {
           name: [
@@ -168,9 +142,12 @@ class IdCard extends Component {
 
   submitNewParent(newParentDetails) {
     newParentDetails.uuid_birth = this.state.target.birth_uuid;
-    newParentDetails.uuid_family_tree = this.context.uuidFamilyTree;
     axios
-      .post("http://localhost:5000/create_new_parent", newParentDetails)
+      .post("http://localhost:5000/create_new_parent", newParentDetails, {
+        headers: {
+          authorization: this.context.jwt,
+        },
+      })
       .then((response) => {
         console.log(response);
         this.setState(response.data);
@@ -189,11 +166,16 @@ class IdCard extends Component {
   }
 
   submitNewSpouse(newSpouseDetails) {
-    console.log("New Spouse being submitted");
     axios
-      .post("http://localhost:5000/create_new_spouse", newSpouseDetails)
+      .post("http://localhost:5000/create_new_spouse", newSpouseDetails, {
+        headers: {
+          authorization: this.context.jwt,
+        },
+      })
       .then((resp) => {
         console.log(resp);
+
+        //unfinished - handle the returned new spouse + insert into the data structure
         this.setState({
           UIstate: {
             editNewSpouse: false,
