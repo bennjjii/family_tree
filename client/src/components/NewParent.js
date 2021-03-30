@@ -1,160 +1,98 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-import validator from "validator";
 import DatePicker from "react-datepicker";
 
-export class NewParent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      np_first_name: "",
-      np_middle_name: "",
-      np_last_name: "",
-      np_gender: this.props.newParentGender,
-      target_d_o_b: this.props.target_d_o_b,
-      mother: this.props.targetMother,
-      father: this.props.targetFather,
-      targetBirthUUID: this.props.targetBirthUUID,
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChangeDate = this.handleChangeDate.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+export const NewParent = (props) => {
+  const [formData, setFormData] = useState({
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    d_o_b: null,
+    gender: props.state.UIstate.newParentGender,
+  });
 
-  // componentDidMount() {
-  //   if (validator.isUUID(this.props.targetMother.uuid)) {
-  //     this.setState({
-  //       componentMode: {
-  //         mode: this.state.componentMode.modes[1],
-  //       },
-  //     });
-  //   } else if (validator.isUUID(this.props.targetFather.uuid)) {
-  //     this.setState({
-  //       componentMode: {
-  //         mode: this.state.componentMode.modes[2],
-  //       },
-  //     });
-  //   } else {
-  //     this.setState({
-  //       componentMode: {
-  //         mode: this.state.componentMode.modes[0],
-  //       },
-  //     });
-  //   }
-  // }
-
-  handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    this.setState({
+    setFormData({
+      ...formData,
       [name]: value,
     });
-  }
+  };
 
-  handleChangeDate(date) {
-    this.setState(
-      {
-        d_o_b: date,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
-  }
+  const handleChangeBirth = (date) => {
+    setFormData({
+      ...formData,
+      d_o_b: date,
+    });
+  };
 
-  handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const newParentDetails = {
-      np_first_name: this.state.np_first_name,
-      np_middle_name: this.state.np_middle_name,
-      np_last_name: this.state.np_last_name,
-      np_gender: this.state.np_gender,
-      np_d_o_b: null,
-      uuid_birth: this.state.targetBirthUUID,
-    };
 
-    this.props.submitNewParent(newParentDetails);
-  }
+    props.submitNewParent(formData);
+  };
 
-  render() {
-    return (
-      <div className="new-child" style={this.props.newChildStyle}>
-        <h3>Add parent</h3>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            First name
-            <br />
-            <input
-              type="text"
-              name="np_first_name"
-              autoComplete="off"
-              value={this.state.np_first_name}
-              onChange={this.handleChange}
-            ></input>
-          </label>
+  return (
+    <div className="new-child">
+      <h3>Add parent</h3>
+      <form onSubmit={handleSubmit}>
+        <label>
+          First name
           <br />
-          <label>
-            Middle name
-            <br />
-            <input
-              type="text"
-              autoComplete="no"
-              name="np_middle_name"
-              value={this.state.np_middle_name}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          <br />
-          <label>
-            Last name
-            <br />
-            <input
-              type="text"
-              autoComplete="no"
-              name="np_last_name"
-              value={this.state.np_last_name}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          {/* <br />
-          <label htmlFor="birthday">Date of birth</label>
-
-          <br />
-          <DatePicker
-            id="birthday"
-            shouldCloseOnSelect={true}
-            dateFormat="dd/MM/yyyy"
-            showYearDropdown
-            scrollableYearDropdown
-            yearDropdownItemNumber={40}
+          <input
+            type="text"
+            name="first_name"
             autoComplete="off"
-            onChange={this.handleChangeDate}
-            selected={this.state.d_o_b}
-          />*/}
+            value={formData.first_name}
+            onChange={handleChange}
+          ></input>
+        </label>
+        <br />
+        <label>
+          Middle name
           <br />
-
-          <label>
-            Gender
-            <br />
-            <select
-              name="np_gender"
-              value={this.state.np_gender}
-              onChange={this.handleChange}
-            >
-              {" "}
-              <option value="" disabled hidden>
-                ---
-              </option>
-              <option>Male</option>
-              <option>Female</option>
-            </select>
-          </label>
+          <input
+            type="text"
+            autoComplete="no"
+            name="middle_name"
+            value={formData.middle_name}
+            onChange={handleChange}
+          ></input>
+        </label>
+        <br />
+        <label>
+          Last name
           <br />
+          <input
+            type="text"
+            autoComplete="no"
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+          ></input>
+        </label>
+        <br />
+        <label htmlFor="birthday">Date of birth</label>
 
-          <input type="submit" value="Save"></input>
-        </form>
-      </div>
-    );
-  }
-}
+        <br />
+        <DatePicker
+          id="birthday"
+          shouldCloseOnSelect={true}
+          dateFormat="dd/MM/yyyy"
+          showYearDropdown
+          scrollableYearDropdown
+          yearDropdownItemNumber={40}
+          maxDate={new Date()}
+          autoComplete="off"
+          onChange={handleChangeBirth}
+          selected={formData.d_o_b}
+        />
+        <br />
+        <br />
+        <input type="submit" value="Save"></input>
+      </form>
+    </div>
+  );
+};
 
 export default NewParent;

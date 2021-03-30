@@ -167,6 +167,8 @@ class IdCard extends Component {
   }
 
   submitNewParent(newParentDetails) {
+    newParentDetails.uuid_birth = this.state.target.birth_uuid;
+    newParentDetails.uuid_family_tree = this.context.uuidFamilyTree;
     axios
       .post("http://localhost:5000/create_new_parent", newParentDetails)
       .then((response) => {
@@ -211,16 +213,7 @@ class IdCard extends Component {
     let newParentComponent;
     if (this.state.UIstate.editNewParent) {
       newParentComponent = (
-        <NewParent
-          target={this.state.uuid_target}
-          target_d_o_b={this.state.target.born}
-          targetBirthUUID={this.state.target.birth_uuid}
-          newParentGender={this.state.UIstate.newParentGender}
-          targetMother={this.state.mother}
-          targetFather={this.state.father}
-          state={this.state}
-          submitNewParent={this.submitNewParent}
-        />
+        <NewParent state={this.state} submitNewParent={this.submitNewParent} />
       );
     }
 
