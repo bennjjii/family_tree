@@ -1,6 +1,7 @@
 const models = require("../models");
 
 //this also needs to check user is not cross posting to another user's data area
+//this should give the option to also create a marriage if a second parent is available
 
 exports.create_new_parent = async (req, res) => {
   let responses = [];

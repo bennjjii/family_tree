@@ -95,7 +95,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     family_member.hasMany(models.marriage, {
-      as: "grom",
+      as: "groo",
       foreignKey: {
         name: "groom",
         allowNull: false,

@@ -173,7 +173,11 @@ class IdCard extends Component {
         },
       })
       .then((resp) => {
-        console.log(resp);
+        console.log(resp.data);
+
+        this.setState((prevState, prevProps) => ({
+          spouses: [...prevState.spouses, resp.data],
+        }));
 
         //unfinished - handle the returned new spouse + insert into the data structure
         this.setState({
@@ -202,11 +206,7 @@ class IdCard extends Component {
     let newSpouseComponent;
     if (this.state.UIstate.editNewSpouse) {
       newSpouseComponent = (
-        <NewSpouse
-          target_uuid={this.state.uuid_target}
-          target_gender={this.state.target.gender}
-          submitNewSpouse={this.submitNewSpouse}
-        />
+        <NewSpouse state={this.state} submitNewSpouse={this.submitNewSpouse} />
       );
     }
 

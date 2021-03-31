@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     //female family member, groom
 
     marriage.belongsTo(models.family_member, {
-      as: "grom",
+      as: "groo",
       foreignKey: {
         name: "groom",
         allowNull: false,

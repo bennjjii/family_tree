@@ -3,7 +3,6 @@ const models = require("../models");
 // ##### CURRENTLY LOGGED IN USERS CAN ACCESS OTHER USER'S DATA
 
 exports.get_target_data = async (req, res) => {
-  console.log(req.body);
   const resp = await models.family_member.findOne({
     where: {
       uuid_family_member: req.body.target,
@@ -53,13 +52,13 @@ exports.get_target_data = async (req, res) => {
         include: [
           {
             model: models.family_member,
-            as: "grom",
+            as: "groo",
           },
         ],
       },
       {
         model: models.marriage,
-        as: "grom",
+        as: "groo",
         include: [
           {
             model: models.family_member,
@@ -69,6 +68,8 @@ exports.get_target_data = async (req, res) => {
       },
     ],
   });
+
+  console.log(resp.brid);
 
   //Check user is authorized to access this family tree (can this be moved into the auth middleware?)
 
@@ -181,9 +182,9 @@ exports.get_target_data = async (req, res) => {
   //marriages
 
   let spouseSelector = {};
-  resp.grom[0]
-    ? ([spouseSelector.target, spouseSelector.spouse] = ["grom", "brid"])
-    : ([spouseSelector.target, spouseSelector.spouse] = ["brid", "grom"]);
+  resp.groo[0]
+    ? ([spouseSelector.target, spouseSelector.spouse] = ["groo", "brid"])
+    : ([spouseSelector.target, spouseSelector.spouse] = ["brid", "groo"]);
 
   respData.spouses = resp[spouseSelector.target].map((item) => {
     ({
