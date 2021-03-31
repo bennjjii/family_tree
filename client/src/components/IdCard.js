@@ -76,6 +76,8 @@ class IdCard extends Component {
     }
   }
 
+  poo = () => {};
+
   handleSubmit(e) {
     e.preventDefault();
     this.setState((prevState) => ({
