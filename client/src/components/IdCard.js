@@ -190,7 +190,6 @@ class IdCard extends Component {
 
   render() {
     let newChildComponent;
-    let pooChildComponent;
     if (this.state.UIstate.editNewChild) {
       newChildComponent = (
         <NewChild state={this.state} submitNewChild={this.submitNewChild} />
