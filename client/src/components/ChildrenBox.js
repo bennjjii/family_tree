@@ -9,15 +9,11 @@ const ChildrenBox = (props) => {
       <h5>Children:</h5>
       {props.children.map((child, index) => {
         return (
-          <>
-            <Child
-              handleUpdate={props.handleUpd}
-              name={child.name}
-              uuid={child.uuid}
-              d_o_b={child.d_o_b}
-              key={child.uuid + index}
-            />
-          </>
+          <Child
+            child={child}
+            updateTarget={props.updateTarget}
+            key={child.uuid_family_member + "child"}
+          />
         );
       })}
     </div>

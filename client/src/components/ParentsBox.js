@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 const ParentsBox = (props) => {
   return (
     <div className="parent_details">
@@ -6,10 +8,13 @@ const ParentsBox = (props) => {
         <button
           name="Male"
           className="parents-btn"
-          uuid={props.father.uuid_family_member}
+          uuid={
+            (props.father || {}).uuid_family_member &&
+            props.father.uuid_family_member
+          }
           onClick={props.handleUpd}
         >
-          {props.father.uuid_family_member !== ""
+          {props.father
             ? props.father.first_name +
               " " +
               props.father.middle_name +
@@ -20,10 +25,13 @@ const ParentsBox = (props) => {
         <button
           name="Female"
           className="parents-btn"
-          uuid={props.mother.uuid_family_member}
+          uuid={
+            (props.mother || {}).uuid_family_member &&
+            props.mother.uuid_family_member
+          }
           onClick={props.handleUpd}
         >
-          {props.mother.uuid_family_member !== ""
+          {props.mother
             ? props.mother.first_name +
               " " +
               props.mother.middle_name +

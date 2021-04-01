@@ -32,14 +32,9 @@ class IdCard extends Component {
   }
 
   componentDidMount() {
-    this.setState(
-      {
-        uuid_family_member: this.context.focus,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState({
+      uuid_family_member: this.context.focus,
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -56,7 +51,7 @@ class IdCard extends Component {
             })
             .then((data) => {
               this.setState(data.data, () => {
-                console.log(this.state);
+                console.log(this.state.children);
                 this.context.setFocus(this.state.uuid_family_member);
               });
             });
@@ -231,7 +226,7 @@ class IdCard extends Component {
           <div className="family_image">
             <img src={harold} alt="photograph of family member" />
           </div>
-          {/* <TargetBox target={this.state.target} /> */}
+          <TargetBox target={this.state} />
           {/* <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>
               <input
@@ -245,16 +240,16 @@ class IdCard extends Component {
           </div> */}
         </div>
         <div className="btm_sect">
-          {/* <MarriedBox
+          <MarriedBox
             spouses={this.state.spouses}
             handleUpd={this.updateTarget}
             showNewSpouse={this.showNewSpouse}
           />
           <ChildrenBox
             children={this.state.children}
-            handleUpd={this.updateTarget}
+            updateTarget={this.updateTarget}
             showNewChild={this.showNewChild}
-          /> */}
+          />
         </div>
       </div>
     );
