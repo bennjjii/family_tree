@@ -6,21 +6,29 @@ const ParentsBox = (props) => {
         <button
           name="Male"
           className="parents-btn"
-          uuid={props.father.uuid}
+          uuid={props.father.uuid_family_member}
           onClick={props.handleUpd}
         >
-          {props.father.uuid !== ""
-            ? props.father.name.join(" ")
+          {props.father.uuid_family_member !== ""
+            ? props.father.first_name +
+              " " +
+              props.father.middle_name +
+              " " +
+              props.father.last_name
             : "Add father"}
         </button>
         <button
           name="Female"
           className="parents-btn"
-          uuid={props.mother.uuid}
+          uuid={props.mother.uuid_family_member}
           onClick={props.handleUpd}
         >
-          {props.mother.uuid !== ""
-            ? props.mother.name.join(" ")
+          {props.mother.uuid_family_member !== ""
+            ? props.mother.first_name +
+              " " +
+              props.mother.middle_name +
+              " " +
+              props.mother.last_name
             : "Add mother"}
         </button>
       </div>

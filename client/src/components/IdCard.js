@@ -20,8 +20,8 @@ class IdCard extends Component {
 
     this.state = new StateTemplate();
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTarget = this.updateTarget.bind(this);
     this.showNewChild = this.showNewChild.bind(this);
     this.submitNewChild = this.submitNewChild.bind(this);
@@ -32,18 +32,21 @@ class IdCard extends Component {
   }
 
   componentDidMount() {
-    if (this.state.uuid_target === "") {
-      this.setState({
-        uuid_target: this.context.focus,
-      });
-    }
+    this.setState(
+      {
+        uuid_family_member: this.context.focus,
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.uuid_target !== prevState.uuid_target) {
+    if (this.state.uuid_family_member !== prevState.uuid_family_member) {
       this.setState({}, () => {
-        if (validator.isUUID(this.state.uuid_target)) {
-          const request = { target: this.state.uuid_target };
+        if (validator.isUUID(this.state.uuid_family_member)) {
+          const request = { target: this.state.uuid_family_member };
 
           axios
             .post("http://localhost:5000/get_target_data/", request, {
@@ -51,9 +54,10 @@ class IdCard extends Component {
                 authorization: this.context.jwt,
               },
             })
-            .then((resp) => {
-              this.setState(resp.data, () => {
-                this.context.setFocus(this.state.uuid_target);
+            .then((data) => {
+              this.setState(data.data, () => {
+                console.log(this.state);
+                this.context.setFocus(this.state.uuid_family_member);
               });
             });
         }
@@ -65,9 +69,9 @@ class IdCard extends Component {
     e.preventDefault();
     if (e.target.getAttribute("uuid") !== "") {
       if (e.target.getAttribute("uuid")) {
-        if (e.target.getAttribute("uuid") !== this.state.uuid_target) {
+        if (e.target.getAttribute("uuid") !== this.state.uuid_family_member) {
           this.setState({
-            uuid_target: e.target.getAttribute("uuid"),
+            uuid_family_member: e.target.getAttribute("uuid"),
           });
         }
       }
@@ -76,19 +80,19 @@ class IdCard extends Component {
     }
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    this.setState((prevState) => ({
-      uuid_target: prevState.uuid_box,
-    }));
-  }
+  // handleSubmit(e) {
+  //   e.preventDefault();
+  //   this.setState((prevState) => ({
+  //     uuid_target: prevState.uuid_box,
+  //   }));
+  // }
 
-  handleChange(e) {
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value,
-    });
-  }
+  // handleChange(e) {
+  //   const { name, value } = e.target;
+  //   this.setState({
+  //     [name]: value,
+  //   });
+  // }
 
   showNewChild(parentGender) {
     console.log(parentGender);
@@ -219,29 +223,29 @@ class IdCard extends Component {
         <div className="top_sect">
           <ParentsBox
             handleUpd={this.updateTarget}
-            mother={this.state.mother}
-            father={this.state.father}
+            mother={this.state.mothe}
+            father={this.state.fathe}
           />
         </div>
         <div className="mid_sect">
           <div className="family_image">
             <img src={harold} alt="photograph of family member" />
           </div>
-          <TargetBox target={this.state.target} />
-          <div className="uuid_form">
+          {/* <TargetBox target={this.state.target} /> */}
+          {/* <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>
               <input
                 type="text"
                 name="uuid_box"
-                value={this.state.uuid_box}
+                value={this.state.uuid_family_member}
                 onChange={this.handleChange}
               ></input>
               <input type="submit" value="Submit" />
             </form>
-          </div>
+          </div> */}
         </div>
         <div className="btm_sect">
-          <MarriedBox
+          {/* <MarriedBox
             spouses={this.state.spouses}
             handleUpd={this.updateTarget}
             showNewSpouse={this.showNewSpouse}
@@ -250,7 +254,7 @@ class IdCard extends Component {
             children={this.state.children}
             handleUpd={this.updateTarget}
             showNewChild={this.showNewChild}
-          />
+          /> */}
         </div>
       </div>
     );

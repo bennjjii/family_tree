@@ -2,11 +2,25 @@ import FamilyMember from "./FamilyMember";
 
 class StateTemplate {
   constructor() {
-    //this.uuid_box = "704459f2-c51b-4433-9991-30a4ef63c63f";
-    this.uuid_target = "";
-    this.target = new FamilyMember();
-    this.mother = new FamilyMember();
-    this.father = new FamilyMember();
+    this.uuid_family_member = null;
+    this.first_name = "";
+    this.middle_name = "";
+    this.last_name = "";
+    this.d_o_b = null;
+    this.d_o_d = null;
+    this.gender = null;
+    this.mothe = {
+      uuid_family_member: "",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+    };
+    this.fathe = {
+      uuid_family_member: "",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+    };
     this.children = [];
     this.spouses = [];
     this.UIstate = {
