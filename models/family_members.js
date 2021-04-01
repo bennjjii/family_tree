@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       d_o_d: {
         type: DataTypes.DATEONLY,
-        allowNull: false,
+        allowNull: true,
       },
 
       notes: {

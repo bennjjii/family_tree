@@ -38,25 +38,6 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
 
-    //births
-
-    family_tree.hasMany(models.birth, {
-      as: "birt",
-      foreignKey: {
-        name: "uuid_family_tree",
-        allowNull: false,
-      },
-    });
-
-    //deaths
-
-    family_tree.hasMany(models.death, {
-      foreignKey: {
-        name: "uuid_family_tree",
-        allowNull: false,
-      },
-    });
-
     //marriages
 
     family_tree.hasMany(models.marriage, {
