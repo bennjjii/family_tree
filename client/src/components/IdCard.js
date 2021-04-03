@@ -79,7 +79,6 @@ class IdCard extends Component {
 
   updateTarget(e) {
     e.preventDefault();
-    console.log(e.target.getAttribute("uuid"));
     if (e.target.getAttribute("uuid")) {
       if (e.target.getAttribute("uuid")) {
         if (e.target.getAttribute("uuid") !== this.state.uuid_family_member) {
