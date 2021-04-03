@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 import DatePicker from "react-datepicker";
 
+//this should add a new person and d_o_b, with the target as one parent,
+// and an option of a married partner, or a partner who has already also been a parent of a sibling
+
 const NewChild = (props) => {
   const [formData, setFormData] = useState({
     first_name: "",

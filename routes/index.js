@@ -5,7 +5,7 @@ let { authenticateToken } = require("../controllers/auth");
 
 let { get_target_data } = require("../controllers/get_target_data_2");
 let { create_new_child } = require("../controllers/create_new_child");
-let { create_new_parent } = require("../controllers/create_new_parent");
+let { create_new_parent } = require("../controllers/create_new_parent_2");
 let { create_new_spouse } = require("../controllers/create_new_spouse");
 
 router.post("/get_target_data", authenticateToken, get_target_data);

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 import DatePicker from "react-datepicker";
 
+//this should allow the creation of a marriage to a partner who has already been
+//employed as a parent, or a new person
+
 const NewSpouse = (props) => {
   const [formData, setFormData] = useState({
     first_name: "",

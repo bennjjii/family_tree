@@ -23,6 +23,7 @@ class IdCard extends Component {
     // this.handleChange = this.handleChange.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTarget = this.updateTarget.bind(this);
+    this.refreshData = this.refreshData.bind(this);
     this.showNewChild = this.showNewChild.bind(this);
     this.submitNewChild = this.submitNewChild.bind(this);
     this.showNewParent = this.showNewParent.bind(this);
@@ -37,32 +38,49 @@ class IdCard extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.uuid_family_member !== prevState.uuid_family_member) {
-      this.setState({}, () => {
-        if (validator.isUUID(this.state.uuid_family_member)) {
-          const request = { target: this.state.uuid_family_member };
-
-          axios
-            .post("http://localhost:5000/get_target_data/", request, {
-              headers: {
-                authorization: this.context.jwt,
-              },
-            })
-            .then((data) => {
-              this.setState(data.data, () => {
-                console.log(this.state.children);
-                this.context.setFocus(this.state.uuid_family_member);
-              });
-            });
+  async refreshData(prevState) {
+    if (prevState) {
+      if (this.state.uuid_family_member !== prevState.uuid_family_member) {
+        const request = { target: this.state.uuid_family_member };
+        const data = await axios.post(
+          "http://localhost:5000/get_target_data/",
+          request,
+          {
+            headers: {
+              authorization: this.context.jwt,
+            },
+          }
+        );
+        this.setState(data.data, () => {
+          this.context.setFocus(this.state.uuid_family_member);
+        });
+      }
+    } else {
+      const request = { target: this.state.uuid_family_member };
+      const data = await axios.post(
+        "http://localhost:5000/get_target_data/",
+        request,
+        {
+          headers: {
+            authorization: this.context.jwt,
+          },
         }
+      );
+      this.setState(data.data, () => {
+        this.context.setFocus(this.state.uuid_family_member);
       });
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    this.refreshData(prevState);
+    console.log(this.state);
+  }
+
   updateTarget(e) {
     e.preventDefault();
-    if (e.target.getAttribute("uuid") !== "") {
+    console.log(e.target.getAttribute("uuid"));
+    if (e.target.getAttribute("uuid")) {
       if (e.target.getAttribute("uuid")) {
         if (e.target.getAttribute("uuid") !== this.state.uuid_family_member) {
           this.setState({
@@ -139,23 +157,27 @@ class IdCard extends Component {
     });
   }
 
-  submitNewParent(newParentDetails) {
-    newParentDetails.uuid_birth = this.state.target.birth_uuid;
-    axios
-      .post("http://localhost:5000/create_new_parent", newParentDetails, {
+  async submitNewParent(newParentDetails) {
+    await axios.post(
+      "http://localhost:5000/create_new_parent",
+      newParentDetails,
+      {
         headers: {
           authorization: this.context.jwt,
         },
-      })
-      .then((response) => {
-        console.log(response);
-        this.setState(response.data);
-        this.setState({
-          UIstate: {
-            editNewParent: false,
-          },
-        });
-      });
+      }
+    );
+
+    this.setState(
+      {
+        UIstate: {
+          editNewParent: false,
+        },
+      },
+      () => {
+        this.refreshData();
+      }
+    );
   }
 
   showNewSpouse() {
