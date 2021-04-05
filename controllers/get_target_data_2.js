@@ -32,6 +32,16 @@ exports.get_target_data = async (req, res) => {
               { father: target.uuid_family_member },
             ],
           },
+          include: [
+            {
+              model: models.family_member,
+              as: "mothe",
+            },
+            {
+              model: models.family_member,
+              as: "fathe",
+            },
+          ],
         })
       )
     );

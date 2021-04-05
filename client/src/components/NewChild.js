@@ -6,6 +6,62 @@ import DatePicker from "react-datepicker";
 // and an option of a married partner, or a partner who has already also been a parent of a sibling
 
 const NewChild = (props) => {
+  //figure out possible mothers/fathers
+
+  const allParents = [
+    ...props.state.children.map((child) => {
+      return {
+        name:
+          props.state.gender === "Male"
+            ? child.mothe.first_name +
+              " " +
+              child.mothe.middle_name +
+              " " +
+              child.mothe.last_name
+            : child.fathe.first_name +
+              " " +
+              child.fathe.middle_name +
+              " " +
+              child.fathe.last_name,
+        uuid:
+          props.state.gender === "Male"
+            ? child.mothe.uuid_family_member
+            : child.fathe.uuid_family_member,
+      };
+    }),
+    ...props.state.spouses.map((spouse) => {
+      return {
+        name:
+          props.state.gender === "Male"
+            ? spouse.brid.first_name +
+              " " +
+              spouse.brid.middle_name +
+              " " +
+              spouse.brid.last_name
+            : spouse.groo.first_name +
+              " " +
+              spouse.groo.middle_name +
+              " " +
+              spouse.groo.last_name,
+        uuid:
+          props.state.gender === "Male"
+            ? spouse.brid.uuid_family_member
+            : spouse.groo.uuid_family_member,
+      };
+    }),
+  ];
+  //remove duplicates
+  let temp = {};
+  for (let i = 0; i < allParents.length; i++) {
+    temp[allParents[i].uuid] = allParents[i].name;
+  }
+  let reducedParents = [];
+  for (let i in temp) {
+    reducedParents.push({ name: temp[i], uuid: i });
+  }
+
+  console.log(reducedParents);
+
   const [formData, setFormData] = useState({
     first_name: "",
     middle_name: "",
@@ -13,17 +69,11 @@ const NewChild = (props) => {
     d_o_b: null,
     gender: null,
     father:
-      props.state.target.gender === "Male"
-        ? props.state.target.uuid
-        : props.state.spouses[0]
-        ? props.state.spouses[0].uuid
-        : null,
+      props.state.gender === "Male" ? props.state.uuid : reducedParents[0].uuid,
     mother:
-      props.state.target.gender === "Female"
-        ? props.state.target.uuid
-        : props.state.spouses[0]
-        ? props.state.spouses[0].uuid
-        : null,
+      props.state.gender === "Female"
+        ? props.state.uuid
+        : reducedParents[0].uuid,
   });
 
   const handleChange = (e) => {
@@ -127,21 +177,18 @@ const NewChild = (props) => {
         <br />
 
         <label>
-          {props.state.target.gender !== "Male" ? "Father" : "Mother"}
+          {props.state.gender !== "Male" ? "Father" : "Mother"}
           <br />
+          {/* //here gives you option to choose spouse or if another child exists  */}
           <select
-            name={props.state.target.gender !== "Male" ? "father" : "mother"}
+            name={props.state.gender !== "Male" ? "father" : "mother"}
             value={
-              props.state.target.gender !== "Male"
-                ? formData.father
-                : formData.mother
+              props.state.gender !== "Male" ? formData.father : formData.mother
             }
             onChange={handleChange}
           >
-            {props.state.spouses.map((spouse) => {
-              return (
-                <option value={spouse.uuid}>{spouse.name.join(" ")}</option>
-              );
+            {reducedParents.map((parent) => {
+              return <option value={parent.uuid}>{parent.name}</option>;
             })}
           </select>
         </label>
