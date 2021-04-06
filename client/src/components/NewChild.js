@@ -51,16 +51,17 @@ const NewChild = (props) => {
     }),
   ];
   //remove duplicates
-  let temp = {};
+  let t = {};
   for (let i = 0; i < allParents.length; i++) {
-    temp[allParents[i].uuid] = allParents[i].name;
+    t[allParents[i].uuid] = allParents[i].name;
   }
   let reducedParents = [];
-  for (let i in temp) {
-    reducedParents.push({ name: temp[i], uuid: i });
+  for (let i in t) {
+    //output reduced list
+    reducedParents.push({ name: t[i], uuid: i });
   }
 
-  console.log(reducedParents);
+  //console.log(reducedParents);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -69,10 +70,12 @@ const NewChild = (props) => {
     d_o_b: null,
     gender: null,
     father:
-      props.state.gender === "Male" ? props.state.uuid : reducedParents[0].uuid,
+      props.state.gender === "Male"
+        ? props.state.uuid_family_member
+        : reducedParents[0].uuid,
     mother:
       props.state.gender === "Female"
-        ? props.state.uuid
+        ? props.state.uuid_family_member
         : reducedParents[0].uuid,
   });
 
@@ -93,16 +96,7 @@ const NewChild = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const response = {
-      first_name: formData.first_name,
-      middle_name: formData.middle_name,
-      last_name: formData.last_name,
-      father: formData.father,
-      mother: formData.mother,
-      d_o_b: formData.d_o_b,
-      gender: formData.gender,
-    };
-    props.submitNewChild(response);
+    props.submitNewChild(formData);
   };
 
   return (

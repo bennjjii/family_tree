@@ -120,30 +120,27 @@ class IdCard extends Component {
     );
   }
 
-  submitNewChild(newChildDetails) {
-    axios
-      .post("http://localhost:5000/create_new_child", newChildDetails, {
+  async submitNewChild(newChildDetails) {
+    console.log(newChildDetails);
+    await axios.post(
+      "http://localhost:5000/create_new_child",
+      newChildDetails,
+      {
         headers: {
           authorization: this.context.jwt,
         },
-      })
-      .then((response) => {
-        const child = {
-          name: [
-            response.data.chil.first_name,
-            response.data.chil.middle_name,
-            response.data.chil.last_name,
-          ],
-          d_o_b: response.data.d_o_b,
-          uuid: response.data.chil.uuid_family_member,
-        };
-        const children = [...this.state.children];
-        children.push(child);
-        this.setState({
-          children: children,
-          UIstate: { editNewChild: false },
-        });
-      });
+      }
+    );
+    this.setState(
+      {
+        UIstate: {
+          editNewChild: false,
+        },
+      },
+      () => {
+        this.refreshData();
+      }
+    );
   }
 
   showNewParent(gender) {
