@@ -10,6 +10,87 @@ import DatePicker from "react-datepicker";
 export const NewParent = (props) => {
   //enumerate possible other parents
 
+  let reducedParents = null;
+  let allParents = [
+    //siblingsViaParents
+    ...(props.state.siblingsViaFather
+      ? props.state.siblingsViaFather.reduce((total, sibling) => {
+          if (sibling.mothe) {
+            return total.concat({
+              name:
+                sibling.mothe.first_name +
+                " " +
+                sibling.mothe.middle_name +
+                " " +
+                sibling.mothe.last_name,
+              uuid: sibling.mothe.uuid_family_member,
+            });
+          } else {
+            return total;
+          }
+        }, [])
+      : []),
+    ...(props.state.siblingsViaMother
+      ? props.state.siblingsViaMother.reduce((total, sibling) => {
+          if (sibling.fathe) {
+            return total.concat({
+              name:
+                sibling.fathe.first_name +
+                " " +
+                sibling.fathe.middle_name +
+                " " +
+                sibling.fathe.last_name,
+
+              uuid: sibling.mothe.uuid_family_member,
+            });
+          } else {
+            return total;
+          }
+        }, [])
+      : []),
+    //spouses
+    ...(props.state.fathersWife
+      ? props.state.fathersWife.map((marriage) => {
+          return {
+            name:
+              marriage.brid.first_name +
+              " " +
+              marriage.brid.middle_name +
+              " " +
+              marriage.brid.last_name,
+            uuid: marriage.brid.uuid_family_member,
+          };
+        })
+      : []),
+    ...(props.state.mothersHusband
+      ? props.state.mothersHusband.map((marriage) => {
+          return {
+            name:
+              marriage.groo.first_name +
+              " " +
+              marriage.groo.middle_name +
+              " " +
+              marriage.groo.last_name,
+            uuid: marriage.groo.uuid_family_member,
+          };
+        })
+      : []),
+  ];
+
+  // console.log(allParents);
+  //remove duplicates
+  let t = {};
+  for (let i = 0; i < allParents.length; i++) {
+    t[allParents[i].uuid] = allParents[i].name;
+  }
+  reducedParents = [];
+  for (let i in t) {
+    //output reduced list
+    reducedParents.push({ name: t[i], uuid: i });
+  }
+
+  console.log(reducedParents);
+
   const [formData, setFormData] = useState({
     first_name: "",
     middle_name: "",
@@ -62,6 +143,15 @@ export const NewParent = (props) => {
     <div className="new-child">
       <h3>Add parent</h3>
       <form onSubmit={handleSubmit}>
+        <label>
+          Existing parent
+          <br />
+          <select name={"existing_parent"} onChange={handleChange}>
+            {reducedParents.map((parent) => {
+              return <option value={parent.uuid}>{parent.name}</option>;
+            })}
+          </select>
+        </label>
         <label>
           First name
           <br />

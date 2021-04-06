@@ -11,7 +11,6 @@ const NewChild = (props) => {
   //figure out possible mothers/fathers
 
   let reducedParents = null;
-
   let allParents = [
     ...(props.state.mothe || props.state.fathe
       ? props.state.children.map((child) => {
@@ -67,12 +66,6 @@ const NewChild = (props) => {
   for (let i in t) {
     //output reduced list
     reducedParents.push({ name: t[i], uuid: i });
-  }
-
-  if (reducedParents.length) {
-    console.log("poo");
-  } else {
-    console.log("wee");
   }
 
   const [formData, setFormData] = useState({
