@@ -5,30 +5,36 @@ import DatePicker from "react-datepicker";
 //this should add a new person and d_o_b, with the target as one parent,
 // and an option of a married partner, or a partner who has already also been a parent of a sibling
 
+//now need to be able to add a child if there is only one parent
+
 const NewChild = (props) => {
   //figure out possible mothers/fathers
 
-  const allParents = [
-    ...props.state.children.map((child) => {
-      return {
-        name:
-          props.state.gender === "Male"
-            ? child.mothe.first_name +
-              " " +
-              child.mothe.middle_name +
-              " " +
-              child.mothe.last_name
-            : child.fathe.first_name +
-              " " +
-              child.fathe.middle_name +
-              " " +
-              child.fathe.last_name,
-        uuid:
-          props.state.gender === "Male"
-            ? child.mothe.uuid_family_member
-            : child.fathe.uuid_family_member,
-      };
-    }),
+  let reducedParents = null;
+
+  let allParents = [
+    ...(props.state.mothe || props.state.fathe
+      ? props.state.children.map((child) => {
+          return {
+            name:
+              props.state.gender === "Male"
+                ? child.mothe.first_name +
+                  " " +
+                  child.mothe.middle_name +
+                  " " +
+                  child.mothe.last_name
+                : child.fathe.first_name +
+                  " " +
+                  child.fathe.middle_name +
+                  " " +
+                  child.fathe.last_name,
+            uuid:
+              props.state.gender === "Male"
+                ? child.mothe.uuid_family_member
+                : child.fathe.uuid_family_member,
+          };
+        })
+      : []),
     ...props.state.spouses.map((spouse) => {
       return {
         name:
@@ -50,18 +56,24 @@ const NewChild = (props) => {
       };
     }),
   ];
+
+  console.log(allParents);
   //remove duplicates
   let t = {};
   for (let i = 0; i < allParents.length; i++) {
     t[allParents[i].uuid] = allParents[i].name;
   }
-  let reducedParents = [];
+  reducedParents = [];
   for (let i in t) {
     //output reduced list
     reducedParents.push({ name: t[i], uuid: i });
   }
 
-  //console.log(reducedParents);
+  if (reducedParents.length) {
+    console.log("poo");
+  } else {
+    console.log("wee");
+  }
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -72,11 +84,15 @@ const NewChild = (props) => {
     father:
       props.state.gender === "Male"
         ? props.state.uuid_family_member
-        : reducedParents[0].uuid,
+        : reducedParents.length
+        ? reducedParents[0].uuid
+        : null,
     mother:
       props.state.gender === "Female"
         ? props.state.uuid_family_member
-        : reducedParents[0].uuid,
+        : reducedParents.length
+        ? reducedParents[0].uuid
+        : null,
   });
 
   const handleChange = (e) => {

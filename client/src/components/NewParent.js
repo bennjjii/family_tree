@@ -5,13 +5,17 @@ import DatePicker from "react-datepicker";
 //this should add a new parent, d_o_b, and give the option to add a marriage if the other parent exists
 //it should also give the option to set a married person as the other parent
 
+//this should have a select which allows the selection of a parent's spouse, or a siblings parent
+
 export const NewParent = (props) => {
+  //enumerate possible other parents
+
   const [formData, setFormData] = useState({
     first_name: "",
     middle_name: "",
     last_name: "",
     d_o_b: null,
-    gender: props.state.UIstate.newParentGender,
+    gender: props.UIstate.newParentGender,
     uuid_target: props.state.uuid_family_member,
     married_link_visible: props.state.mothe || props.state.fathe ? true : false,
     generate_marriage: props.state.mothe || props.state.fathe ? true : false,

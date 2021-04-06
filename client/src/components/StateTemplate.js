@@ -1,28 +1,31 @@
-import FamilyMember from "./FamilyMember";
+//import DataStateTemplate from "./DataStateTemplate";
 
 class StateTemplate {
   constructor() {
-    this.uuid_family_member = null;
-    this.first_name = "";
-    this.middle_name = "";
-    this.last_name = "";
-    this.d_o_b = null;
-    this.d_o_d = null;
-    this.gender = null;
-    this.mothe = {
-      uuid_family_member: "",
+    //this.dataState = new DataStateTemplate();
+    this.dataState = {
+      uuid_family_member: null,
       first_name: "",
       middle_name: "",
       last_name: "",
+      d_o_b: null,
+      d_o_d: null,
+      gender: null,
+      mothe: {
+        uuid_family_member: "",
+        first_name: "",
+        middle_name: "",
+        last_name: "",
+      },
+      fathe: {
+        uuid_family_member: "",
+        first_name: "",
+        middle_name: "",
+        last_name: "",
+      },
+      children: [],
+      spouses: [],
     };
-    this.fathe = {
-      uuid_family_member: "",
-      first_name: "",
-      middle_name: "",
-      last_name: "",
-    };
-    this.children = [];
-    this.spouses = [];
     this.UIstate = {
       editMode: false,
       editNewChild: false,

@@ -2,8 +2,9 @@ const models = require("../models");
 const { Op } = require("sequelize");
 
 exports.get_target_data = async (req, res) => {
+  let target = {};
   try {
-    const target = JSON.parse(
+    target = JSON.parse(
       JSON.stringify(
         await models.family_member.findOne({
           where: {
@@ -22,6 +23,75 @@ exports.get_target_data = async (req, res) => {
         })
       )
     );
+
+    //need this to support edge case where we need to add a target's mother or father from their other siblings
+    if (target.mothe) {
+      target.siblingsViaMother = JSON.parse(
+        JSON.stringify(
+          await models.family_member.findAll({
+            where: {
+              mother: target.mothe.uuid_family_member,
+            },
+            include: [
+              {
+                model: models.family_member,
+                as: "fathe",
+              },
+            ],
+          })
+        )
+      );
+      target.mothersHusband = JSON.parse(
+        JSON.stringify(
+          await models.marriage.findAll({
+            where: {
+              bride: target.mothe.uuid_family_member,
+            },
+            include: [
+              {
+                model: models.family_member,
+
+                as: "groo",
+              },
+            ],
+          })
+        )
+      );
+    }
+
+    if (target.fathe) {
+      target.siblingsViaFather = JSON.parse(
+        JSON.stringify(
+          await models.family_member.findAll({
+            where: {
+              father: target.fathe.uuid_family_member,
+            },
+            include: [
+              {
+                model: models.family_member,
+                as: "mothe",
+              },
+            ],
+          })
+        )
+      );
+      target.fathersWife = JSON.parse(
+        JSON.stringify(
+          await models.marriage.findAll({
+            where: {
+              groom: target.fathe.uuid_family_member,
+            },
+            include: [
+              {
+                model: models.family_member,
+
+                as: "brid",
+              },
+            ],
+          })
+        )
+      );
+    }
 
     target.children = JSON.parse(
       JSON.stringify(

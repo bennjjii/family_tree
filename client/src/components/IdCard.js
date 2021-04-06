@@ -33,15 +33,26 @@ class IdCard extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      uuid_family_member: this.context.focus,
-    });
+    this.setState(
+      {
+        dataState: {
+          ...this.state.dataState,
+          uuid_family_member: this.context.focus,
+        },
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   }
 
   async refreshData(prevState) {
     if (prevState) {
-      if (this.state.uuid_family_member !== prevState.uuid_family_member) {
-        const request = { target: this.state.uuid_family_member };
+      if (
+        this.state.dataState.uuid_family_member !==
+        prevState.dataState.uuid_family_member
+      ) {
+        const request = { target: this.state.dataState.uuid_family_member };
         const data = await axios.post(
           "http://localhost:5000/get_target_data/",
           request,
@@ -51,12 +62,12 @@ class IdCard extends Component {
             },
           }
         );
-        this.setState(data.data, () => {
-          this.context.setFocus(this.state.uuid_family_member);
+        this.setState({ dataState: data.data }, () => {
+          this.context.setFocus(this.state.dataState.uuid_family_member);
         });
       }
     } else {
-      const request = { target: this.state.uuid_family_member };
+      const request = { target: this.state.dataState.uuid_family_member };
       const data = await axios.post(
         "http://localhost:5000/get_target_data/",
         request,
@@ -66,8 +77,8 @@ class IdCard extends Component {
           },
         }
       );
-      this.setState(data.data, () => {
-        this.context.setFocus(this.state.uuid_family_member);
+      this.setState({ dataState: data.data }, () => {
+        this.context.setFocus(this.state.dataState.uuid_family_member);
       });
     }
   }
@@ -81,9 +92,15 @@ class IdCard extends Component {
     e.preventDefault();
     if (e.target.getAttribute("uuid")) {
       if (e.target.getAttribute("uuid")) {
-        if (e.target.getAttribute("uuid") !== this.state.uuid_family_member) {
+        if (
+          e.target.getAttribute("uuid") !==
+          this.state.dataState.uuid_family_member
+        ) {
           this.setState({
-            uuid_family_member: e.target.getAttribute("uuid"),
+            dataState: {
+              ...this.state.dataState,
+              uuid_family_member: e.target.getAttribute("uuid"),
+            },
           });
         }
       }
@@ -183,6 +200,7 @@ class IdCard extends Component {
   }
 
   submitNewSpouse(newSpouseDetails) {
+    //total update
     axios
       .post("http://localhost:5000/create_new_spouse", newSpouseDetails, {
         headers: {
@@ -209,42 +227,52 @@ class IdCard extends Component {
     let newChildComponent;
     if (this.state.UIstate.editNewChild) {
       newChildComponent = (
-        <NewChild state={this.state} submitNewChild={this.submitNewChild} />
+        <NewChild
+          state={this.state.dataState}
+          submitNewChild={this.submitNewChild}
+        />
       );
     }
 
     let newParentComponent;
     if (this.state.UIstate.editNewParent) {
       newParentComponent = (
-        <NewParent state={this.state} submitNewParent={this.submitNewParent} />
+        <NewParent
+          state={this.state.dataState}
+          UIstate={this.state.UIstate}
+          submitNewParent={this.submitNewParent}
+        />
       );
     }
 
-    let newSpouseComponent;
-    if (this.state.UIstate.editNewSpouse) {
-      newSpouseComponent = (
-        <NewSpouse state={this.state} submitNewSpouse={this.submitNewSpouse} />
-      );
-    }
+    // let newSpouseComponent;
+    // if (this.state.UIstate.editNewSpouse) {
+    //   newSpouseComponent = (
+    //     <NewSpouse
+    //       state={this.state.dataState}
+    //       submitNewSpouse={this.submitNewSpouse}
+    //     />
+    //   );
+    // }
 
     return (
       <div className="IdCard">
         {newChildComponent}
         {newParentComponent}
-        {newSpouseComponent}
+        {/* {newSpouseComponent} */}
 
         <div className="top_sect">
           <ParentsBox
             handleUpd={this.updateTarget}
-            mother={this.state.mothe}
-            father={this.state.fathe}
+            mother={this.state.dataState.mothe}
+            father={this.state.dataState.fathe}
           />
         </div>
         <div className="mid_sect">
           <div className="family_image">
             <img src={harold} alt="photograph of family member" />
           </div>
-          <TargetBox target={this.state} />
+          <TargetBox target={this.state.dataState} />
           {/* <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>
               <input
@@ -259,12 +287,12 @@ class IdCard extends Component {
         </div>
         <div className="btm_sect">
           <MarriedBox
-            spouses={this.state.spouses}
+            spouses={this.state.dataState.spouses}
             handleUpd={this.updateTarget}
             showNewSpouse={this.showNewSpouse}
           />
           <ChildrenBox
-            children={this.state.children}
+            children={this.state.dataState.children}
             updateTarget={this.updateTarget}
             showNewChild={this.showNewChild}
           />
