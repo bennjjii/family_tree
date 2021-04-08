@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import DatePicker from "react-datepicker";
 
@@ -7,32 +7,59 @@ import DatePicker from "react-datepicker";
 
 //now need to be able to add a child if there is only one parent
 
+//and need to be able to choose to add a child without a mother even if one exists
+
 const NewChild = (props) => {
   //figure out possible mothers/fathers
 
   let reducedParents = null;
   let allParents = [
     ...(props.state.mothe || props.state.fathe
-      ? props.state.children.map((child) => {
-          return {
-            name:
-              props.state.gender === "Male"
-                ? child.mothe.first_name +
-                  " " +
-                  child.mothe.middle_name +
-                  " " +
-                  child.mothe.last_name
-                : child.fathe.first_name +
-                  " " +
-                  child.fathe.middle_name +
-                  " " +
-                  child.fathe.last_name,
-            uuid:
-              props.state.gender === "Male"
-                ? child.mothe.uuid_family_member
-                : child.fathe.uuid_family_member,
-          };
-        })
+      ? props.state.children.reduce((acc, child) => {
+          if (props.state.gender === "Male" && child.mothe) {
+            return acc.concat({
+              name:
+                child.mothe.first_name +
+                " " +
+                child.mothe.middle_name +
+                " " +
+                child.mothe.last_name,
+              uuid: child.mothe.uuid_family_member,
+            });
+          }
+          if (props.state.gender === "Female" && child.fathe) {
+            return acc.concat({
+              name:
+                child.fathe.first_name +
+                " " +
+                child.fathe.middle_name +
+                " " +
+                child.fathe.last_name,
+              uuid: child.fathe.uuid_family_member,
+            });
+          }
+
+          return acc;
+
+          // return {
+          //   name:
+          //     props.state.gender === "Male"
+          //       ? child.mothe.first_name +
+          //         " " +
+          //         child.mothe.middle_name +
+          //         " " +
+          //         child.mothe.last_name
+          //       : child.fathe.first_name +
+          //         " " +
+          //         child.fathe.middle_name +
+          //         " " +
+          //         child.fathe.last_name,
+          //   uuid:
+          //     props.state.gender === "Male"
+          //       ? child.mothe.uuid_family_member
+          //       : child.fathe.uuid_family_member,
+          // };
+        }, [])
       : []),
     ...props.state.spouses.map((spouse) => {
       return {
@@ -56,7 +83,7 @@ const NewChild = (props) => {
     }),
   ];
 
-  console.log(allParents);
+  //console.log(allParents);
   //remove duplicates
   let t = {};
   for (let i = 0; i < allParents.length; i++) {
@@ -88,8 +115,16 @@ const NewChild = (props) => {
         : null,
   });
 
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+    //console.log(eval(value));
+    if (value == 0) {
+      value = null;
+    }
     setFormData({
       ...formData,
       [name]: value,
@@ -193,6 +228,7 @@ const NewChild = (props) => {
             {reducedParents.map((parent) => {
               return <option value={parent.uuid}>{parent.name}</option>;
             })}
+            <option value={0}>No other parent</option>
           </select>
         </label>
         <br />

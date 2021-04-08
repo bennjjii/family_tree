@@ -57,6 +57,9 @@ exports.get_target_data = async (req, res) => {
           })
         )
       );
+      // if (target.mothersHusband.length === 0) {
+      //   target.mothersHusband = null;
+      // }
     }
 
     if (target.fathe) {
@@ -91,6 +94,9 @@ exports.get_target_data = async (req, res) => {
           })
         )
       );
+      // if (target.fathersWife.length === 0) {
+      //   target.fathersWife = null;
+      // }
     }
 
     target.children = JSON.parse(
@@ -139,10 +145,10 @@ exports.get_target_data = async (req, res) => {
     if (req.user.uuid_family_tree !== target.uuid_family_tree) {
       throw new Error("User not authorised to access this family tree");
     }
-    console.log(target);
+    //console.log(target);
     res.json(target);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.sendStatus(403);
   }
 };
