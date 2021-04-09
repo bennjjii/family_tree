@@ -40,25 +40,6 @@ const NewChild = (props) => {
           }
 
           return acc;
-
-          // return {
-          //   name:
-          //     props.state.gender === "Male"
-          //       ? child.mothe.first_name +
-          //         " " +
-          //         child.mothe.middle_name +
-          //         " " +
-          //         child.mothe.last_name
-          //       : child.fathe.first_name +
-          //         " " +
-          //         child.fathe.middle_name +
-          //         " " +
-          //         child.fathe.last_name,
-          //   uuid:
-          //     props.state.gender === "Male"
-          //       ? child.mothe.uuid_family_member
-          //       : child.fathe.uuid_family_member,
-          // };
         }, [])
       : []),
     ...props.state.spouses.map((spouse) => {

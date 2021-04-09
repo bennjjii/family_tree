@@ -245,21 +245,21 @@ class IdCard extends Component {
       );
     }
 
-    // let newSpouseComponent;
-    // if (this.state.UIstate.editNewSpouse) {
-    //   newSpouseComponent = (
-    //     <NewSpouse
-    //       state={this.state.dataState}
-    //       submitNewSpouse={this.submitNewSpouse}
-    //     />
-    //   );
-    // }
+    let newSpouseComponent;
+    if (this.state.UIstate.editNewSpouse) {
+      newSpouseComponent = (
+        <NewSpouse
+          state={this.state.dataState}
+          submitNewSpouse={this.submitNewSpouse}
+        />
+      );
+    }
 
     return (
       <div className="IdCard">
         {newChildComponent}
         {newParentComponent}
-        {/* {newSpouseComponent} */}
+        {newSpouseComponent}
 
         <div className="top_sect">
           <ParentsBox

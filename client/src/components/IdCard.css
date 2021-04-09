@@ -32,7 +32,8 @@
   padding: 10px;
 }
 
-.new-child {
+.new-child,
+.new-spouse-component {
   align-self: center;
   position: absolute;
   margin: 5px;

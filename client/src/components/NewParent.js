@@ -142,6 +142,7 @@ export const NewParent = (props) => {
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
     if (type === "checkbox") {
+      console.log(name);
       setFormData({
         ...formData,
         [name]: checked,
@@ -267,12 +268,12 @@ export const NewParent = (props) => {
           <br />
           <input
             type="checkbox"
-            name="generate_marriage"
+            name="marriage_checked"
             checked={formData.marriage_checked}
             onChange={handleChange}
           ></input>
           &nbsp;
-          <label htmlFor="generate_marriage">
+          <label htmlFor="marriage_checked">
             Married to&nbsp;
             {props.state.fathe
               ? props.state.fathe.first_name + " " + props.state.fathe.last_name
