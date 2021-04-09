@@ -16,6 +16,8 @@ import DatePicker from "react-datepicker";
 //this should grey out create marriage box if parents are already married
 //otherwise we create two of the same marriages
 
+//crossover bug exists here - when we add a siblings parent it replaces the wrong parent
+
 export const NewParent = (props) => {
   ////////////////////////////
   //enumerate possible other parents
@@ -128,7 +130,7 @@ export const NewParent = (props) => {
     }
     if (props.state.mothe) {
       props.state.mothersHusband.forEach((marriage) => {
-        if (marriage.grom.uuid_family_member === formData.existing_parent) {
+        if (marriage.groo.uuid_family_member === formData.existing_parent) {
           alreadyMarried = true;
         }
       });
@@ -142,7 +144,6 @@ export const NewParent = (props) => {
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
     if (type === "checkbox") {
-      console.log(name);
       setFormData({
         ...formData,
         [name]: checked,

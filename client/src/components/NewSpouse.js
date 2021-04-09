@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import DatePicker from "react-datepicker";
 
 //this should allow the creation of a marriage to a partner who has already been
 //employed as a parent, or a new person
+
+//this should also give option to gather other children and insert as new spouses children
+//if spouse being created is the first spouse
 
 const NewSpouse = (props) => {
   //so check children for other parents
@@ -153,22 +156,40 @@ const NewSpouse = (props) => {
     first_name: "",
     middle_name: "",
     last_name: "",
-    gender: "",
+    //gender convention here is opposite of new parent
+    target_gender: props.state.gender,
     d_o_b: null,
     uuid_target: props.state.uuid_family_member,
     d_o_mar: null,
     selected_parent: filteredParents.length ? filteredParents[0].uuid : null,
+    add_existing_children: false,
+    existing_children: props.state.children.map((child) => {
+      return child.uuid_family_member;
+    }),
   });
 
+  useEffect(() => {
+    //check here whether already married
+    //bloated and can be refactored but right now this works so do it later
+    console.log(formData);
+  }, [formData]);
+
   const handleChange = (e) => {
-    let { name, value } = e.target;
-    if (value == 0) {
-      value = null;
+    let { name, value, checked, type } = e.target;
+    if (type === "checkbox") {
+      setFormData({
+        ...formData,
+        [name]: checked,
+      });
+    } else {
+      if (value == 0) {
+        value = null;
+      }
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
     }
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
   };
 
   const handleChangeMarriageDate = (date) => {
@@ -276,7 +297,7 @@ const NewSpouse = (props) => {
           <br />
           <br />
 
-          <label>
+          {/* <label>
             Gender
             <br />
             <select
@@ -291,7 +312,7 @@ const NewSpouse = (props) => {
               <option>Male</option>
               <option>Female</option>
             </select>
-          </label>
+          </label> */}
 
           <br />
         </div>
@@ -309,6 +330,27 @@ const NewSpouse = (props) => {
           selected={formData.d_o_mar}
           maxDate={new Date()}
         />
+        <br /> <br />
+        <div
+          id="add-children"
+          style={
+            props.state.spouses.length
+              ? { display: "none" }
+              : { display: "block" }
+          }
+        >
+          {/* only selectable if 0 spouses exist */}
+          <input
+            type="checkbox"
+            name="add_existing_children"
+            checked={formData.add_existing_children}
+            onChange={handleChange}
+          ></input>{" "}
+          <label htmlFor="add_existing_children">
+            Add all children of&nbsp;
+            {props.state.first_name}?
+          </label>
+        </div>
         <br /> <br />
         <input type="submit" value="Save"></input>
       </form>

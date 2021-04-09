@@ -201,26 +201,22 @@ class IdCard extends Component {
 
   submitNewSpouse(newSpouseDetails) {
     //total update
-    axios
-      .post("http://localhost:5000/create_new_spouse", newSpouseDetails, {
-        headers: {
-          authorization: this.context.jwt,
+    axios.post("http://localhost:5000/create_new_spouse", newSpouseDetails, {
+      headers: {
+        authorization: this.context.jwt,
+      },
+    });
+
+    this.setState(
+      {
+        UIstate: {
+          editNewSpouse: false,
         },
-      })
-      .then((resp) => {
-        console.log(resp.data);
-
-        this.setState((prevState, prevProps) => ({
-          spouses: [...prevState.spouses, resp.data],
-        }));
-
-        //unfinished - handle the returned new spouse + insert into the data structure
-        this.setState({
-          UIstate: {
-            editNewSpouse: false,
-          },
-        });
-      });
+      },
+      () => {
+        this.refreshData();
+      }
+    );
   }
 
   render() {

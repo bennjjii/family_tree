@@ -55,6 +55,8 @@ const Child = (props) => {
 
         <br />
         {props.child.d_o_b}
+        <br />
+        {props.child.gender}
         <i onClick={handleClick} className="far fa-edit"></i>
       </button>
 

@@ -14,34 +14,34 @@ const NewChild = (props) => {
 
   let reducedParents = null;
   let allParents = [
-    ...(props.state.mothe || props.state.fathe
-      ? props.state.children.reduce((acc, child) => {
-          if (props.state.gender === "Male" && child.mothe) {
-            return acc.concat({
-              name:
-                child.mothe.first_name +
-                " " +
-                child.mothe.middle_name +
-                " " +
-                child.mothe.last_name,
-              uuid: child.mothe.uuid_family_member,
-            });
-          }
-          if (props.state.gender === "Female" && child.fathe) {
-            return acc.concat({
-              name:
-                child.fathe.first_name +
-                " " +
-                child.fathe.middle_name +
-                " " +
-                child.fathe.last_name,
-              uuid: child.fathe.uuid_family_member,
-            });
-          }
+    //possible mothers via other children
+    ...props.state.children.reduce((acc, child) => {
+      if (props.state.gender === "Male" && child.mothe) {
+        return acc.concat({
+          name:
+            child.mothe.first_name +
+            " " +
+            child.mothe.middle_name +
+            " " +
+            child.mothe.last_name,
+          uuid: child.mothe.uuid_family_member,
+        });
+      }
+      if (props.state.gender === "Female" && child.fathe) {
+        return acc.concat({
+          name:
+            child.fathe.first_name +
+            " " +
+            child.fathe.middle_name +
+            " " +
+            child.fathe.last_name,
+          uuid: child.fathe.uuid_family_member,
+        });
+      }
 
-          return acc;
-        }, [])
-      : []),
+      return acc;
+    }, []),
+    //possible mothers via spouses
     ...props.state.spouses.map((spouse) => {
       return {
         name:
@@ -64,7 +64,7 @@ const NewChild = (props) => {
     }),
   ];
 
-  //console.log(allParents);
+  console.log(allParents);
   //remove duplicates
   let t = {};
   for (let i = 0; i < allParents.length; i++) {
@@ -85,7 +85,8 @@ const NewChild = (props) => {
     father:
       props.state.gender === "Male"
         ? props.state.uuid_family_member
-        : reducedParents.length
+        : //are these always gonna be male if the target gender is female?
+        reducedParents.length
         ? reducedParents[0].uuid
         : null,
     mother:
@@ -98,6 +99,7 @@ const NewChild = (props) => {
 
   useEffect(() => {
     console.log(formData);
+    console.log(reducedParents);
   }, [formData]);
 
   const handleChange = (e) => {

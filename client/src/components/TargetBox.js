@@ -9,6 +9,7 @@ const TargetBox = (props) => {
           props.target.last_name}
       </h4>
       <h6>Born: {props.target.d_o_b}</h6>
+      <h6>Gender: {props.target.gender}</h6>
     </div>
   );
 };
