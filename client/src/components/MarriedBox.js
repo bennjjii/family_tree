@@ -10,18 +10,28 @@ function MarriedBox(props) {
       {props.spouses &&
         props.spouses.map((spouse) => {
           return (
-            <>
+            <div
+              key={
+                spouse.brid
+                  ? spouse.brid.uuid_family_member + "married"
+                  : spouse.groo.uuid_family_member + "married"
+              }
+            >
               <button
                 className="parents-btn"
-                uuid={spouse.uuid}
+                uuid={
+                  spouse.brid
+                    ? spouse.brid.uuid_family_member
+                    : spouse.groo.uuid_family_member
+                }
                 onClick={props.handleUpd}
               >
-                {spouse.name.join(" ")}
+                {spouse.brid ? spouse.brid.first_name : spouse.groo.first_name}
                 <br />
                 {spouse.d_o_mar}
               </button>
               <br />
-            </>
+            </div>
           );
         })}
     </div>

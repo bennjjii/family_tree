@@ -31,28 +31,37 @@ const Child = (props) => {
   };
 
   return (
-    <>
+    <div key={props.child.uuid_family_member + "child"}>
       <button
         className="parents-btn"
-        name={props.name}
-        onClick={props.handleUpdate}
-        uuid={props.uuid}
-        key={props.key + "btn"}
+        name={props.child.first_name}
+        onClick={props.updateTarget}
+        uuid={props.child.uuid_family_member}
       >
         <form>
           <input style={inputStyle}></input>
         </form>
-        <span style={textStyle} uuid={props.uuid} className="child-name">
-          {props.name.join(" ")}
+        <span
+          style={textStyle}
+          uuid={props.child.uuid_family_member}
+          className="child-name"
+        >
+          {props.child.first_name +
+            " " +
+            props.child.middle_name +
+            " " +
+            props.child.last_name}
         </span>
 
-        <br key={props.key + "br1"} />
-        {props.d_o_b}
+        <br />
+        {props.child.d_o_b}
+        <br />
+        {props.child.gender}
         <i onClick={handleClick} className="far fa-edit"></i>
       </button>
 
-      <br key={props.key + "br2"} />
-    </>
+      <br />
+    </div>
   );
 };
 

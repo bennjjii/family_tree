@@ -22,6 +22,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      d_o_b: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+      },
+      d_o_d: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+      },
 
       notes: {
         type: DataTypes.STRING(500),
@@ -56,31 +64,21 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
 
-    //births
+    //parents and children
 
-    family_member.hasMany(models.birth, {
-      as: "mothe",
-      foreignKey: "mother",
-    });
-    family_member.hasMany(models.birth, {
+    family_member.belongsTo(models.family_member, {
       as: "fathe",
-      foreignKey: "father",
-    });
-    family_member.hasOne(models.birth, {
-      as: "chil",
       foreignKey: {
-        name: "child",
-        allowNull: false,
+        name: "father",
+        allowNull: true,
       },
     });
 
-    //deaths
-
-    family_member.hasOne(models.death, {
-      as: "die",
+    family_member.belongsTo(models.family_member, {
+      as: "mothe",
       foreignKey: {
-        name: "died",
-        allowNull: false,
+        name: "mother",
+        allowNull: true,
       },
     });
 

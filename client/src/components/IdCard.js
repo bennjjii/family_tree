@@ -20,9 +20,10 @@ class IdCard extends Component {
 
     this.state = new StateTemplate();
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTarget = this.updateTarget.bind(this);
+    this.refreshData = this.refreshData.bind(this);
     this.showNewChild = this.showNewChild.bind(this);
     this.submitNewChild = this.submitNewChild.bind(this);
     this.showNewParent = this.showNewParent.bind(this);
@@ -32,42 +33,74 @@ class IdCard extends Component {
   }
 
   componentDidMount() {
-    if (this.state.uuid_target === "") {
-      this.setState({
-        uuid_target: this.context.focus,
+    this.setState(
+      {
+        dataState: {
+          ...this.state.dataState,
+          uuid_family_member: this.context.focus,
+        },
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
+  }
+
+  async refreshData(prevState) {
+    if (prevState) {
+      if (
+        this.state.dataState.uuid_family_member !==
+        prevState.dataState.uuid_family_member
+      ) {
+        const request = { target: this.state.dataState.uuid_family_member };
+        const data = await axios.post(
+          "http://localhost:5000/get_target_data/",
+          request,
+          {
+            headers: {
+              authorization: this.context.jwt,
+            },
+          }
+        );
+        this.setState({ dataState: data.data }, () => {
+          this.context.setFocus(this.state.dataState.uuid_family_member);
+        });
+      }
+    } else {
+      const request = { target: this.state.dataState.uuid_family_member };
+      const data = await axios.post(
+        "http://localhost:5000/get_target_data/",
+        request,
+        {
+          headers: {
+            authorization: this.context.jwt,
+          },
+        }
+      );
+      this.setState({ dataState: data.data }, () => {
+        this.context.setFocus(this.state.dataState.uuid_family_member);
       });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.uuid_target !== prevState.uuid_target) {
-      this.setState({}, () => {
-        if (validator.isUUID(this.state.uuid_target)) {
-          const request = { target: this.state.uuid_target };
-
-          axios
-            .post("http://localhost:5000/get_target_data/", request, {
-              headers: {
-                authorization: this.context.jwt,
-              },
-            })
-            .then((resp) => {
-              this.setState(resp.data, () => {
-                this.context.setFocus(this.state.uuid_target);
-              });
-            });
-        }
-      });
-    }
+    this.refreshData(prevState);
+    console.log(this.state);
   }
 
   updateTarget(e) {
     e.preventDefault();
-    if (e.target.getAttribute("uuid") !== "") {
+    if (e.target.getAttribute("uuid")) {
       if (e.target.getAttribute("uuid")) {
-        if (e.target.getAttribute("uuid") !== this.state.uuid_target) {
+        if (
+          e.target.getAttribute("uuid") !==
+          this.state.dataState.uuid_family_member
+        ) {
           this.setState({
-            uuid_target: e.target.getAttribute("uuid"),
+            dataState: {
+              ...this.state.dataState,
+              uuid_family_member: e.target.getAttribute("uuid"),
+            },
           });
         }
       }
@@ -76,19 +109,19 @@ class IdCard extends Component {
     }
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    this.setState((prevState) => ({
-      uuid_target: prevState.uuid_box,
-    }));
-  }
+  // handleSubmit(e) {
+  //   e.preventDefault();
+  //   this.setState((prevState) => ({
+  //     uuid_target: prevState.uuid_box,
+  //   }));
+  // }
 
-  handleChange(e) {
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value,
-    });
-  }
+  // handleChange(e) {
+  //   const { name, value } = e.target;
+  //   this.setState({
+  //     [name]: value,
+  //   });
+  // }
 
   showNewChild(parentGender) {
     console.log(parentGender);
@@ -104,30 +137,27 @@ class IdCard extends Component {
     );
   }
 
-  submitNewChild(newChildDetails) {
-    axios
-      .post("http://localhost:5000/create_new_child", newChildDetails, {
+  async submitNewChild(newChildDetails) {
+    console.log(newChildDetails);
+    await axios.post(
+      "http://localhost:5000/create_new_child",
+      newChildDetails,
+      {
         headers: {
           authorization: this.context.jwt,
         },
-      })
-      .then((response) => {
-        const child = {
-          name: [
-            response.data.chil.first_name,
-            response.data.chil.middle_name,
-            response.data.chil.last_name,
-          ],
-          d_o_b: response.data.d_o_b,
-          uuid: response.data.chil.uuid_family_member,
-        };
-        const children = [...this.state.children];
-        children.push(child);
-        this.setState({
-          children: children,
-          UIstate: { editNewChild: false },
-        });
-      });
+      }
+    );
+    this.setState(
+      {
+        UIstate: {
+          editNewChild: false,
+        },
+      },
+      () => {
+        this.refreshData();
+      }
+    );
   }
 
   showNewParent(gender) {
@@ -140,23 +170,27 @@ class IdCard extends Component {
     });
   }
 
-  submitNewParent(newParentDetails) {
-    newParentDetails.uuid_birth = this.state.target.birth_uuid;
-    axios
-      .post("http://localhost:5000/create_new_parent", newParentDetails, {
+  async submitNewParent(newParentDetails) {
+    await axios.post(
+      "http://localhost:5000/create_new_parent",
+      newParentDetails,
+      {
         headers: {
           authorization: this.context.jwt,
         },
-      })
-      .then((response) => {
-        console.log(response);
-        this.setState(response.data);
-        this.setState({
-          UIstate: {
-            editNewParent: false,
-          },
-        });
-      });
+      }
+    );
+
+    this.setState(
+      {
+        UIstate: {
+          editNewParent: false,
+        },
+      },
+      () => {
+        this.refreshData();
+      }
+    );
   }
 
   showNewSpouse() {
@@ -166,47 +200,54 @@ class IdCard extends Component {
   }
 
   submitNewSpouse(newSpouseDetails) {
-    axios
-      .post("http://localhost:5000/create_new_spouse", newSpouseDetails, {
-        headers: {
-          authorization: this.context.jwt,
+    //total update
+    axios.post("http://localhost:5000/create_new_spouse", newSpouseDetails, {
+      headers: {
+        authorization: this.context.jwt,
+      },
+    });
+
+    this.setState(
+      {
+        UIstate: {
+          editNewSpouse: false,
         },
-      })
-      .then((resp) => {
-        console.log(resp.data);
-
-        this.setState((prevState, prevProps) => ({
-          spouses: [...prevState.spouses, resp.data],
-        }));
-
-        //unfinished - handle the returned new spouse + insert into the data structure
-        this.setState({
-          UIstate: {
-            editNewSpouse: false,
-          },
-        });
-      });
+      },
+      () => {
+        this.refreshData();
+      }
+    );
   }
 
   render() {
     let newChildComponent;
     if (this.state.UIstate.editNewChild) {
       newChildComponent = (
-        <NewChild state={this.state} submitNewChild={this.submitNewChild} />
+        <NewChild
+          state={this.state.dataState}
+          submitNewChild={this.submitNewChild}
+        />
       );
     }
 
     let newParentComponent;
     if (this.state.UIstate.editNewParent) {
       newParentComponent = (
-        <NewParent state={this.state} submitNewParent={this.submitNewParent} />
+        <NewParent
+          state={this.state.dataState}
+          UIstate={this.state.UIstate}
+          submitNewParent={this.submitNewParent}
+        />
       );
     }
 
     let newSpouseComponent;
     if (this.state.UIstate.editNewSpouse) {
       newSpouseComponent = (
-        <NewSpouse state={this.state} submitNewSpouse={this.submitNewSpouse} />
+        <NewSpouse
+          state={this.state.dataState}
+          submitNewSpouse={this.submitNewSpouse}
+        />
       );
     }
 
@@ -219,36 +260,36 @@ class IdCard extends Component {
         <div className="top_sect">
           <ParentsBox
             handleUpd={this.updateTarget}
-            mother={this.state.mother}
-            father={this.state.father}
+            mother={this.state.dataState.mothe}
+            father={this.state.dataState.fathe}
           />
         </div>
         <div className="mid_sect">
           <div className="family_image">
             <img src={harold} alt="photograph of family member" />
           </div>
-          <TargetBox target={this.state.target} />
-          <div className="uuid_form">
+          <TargetBox target={this.state.dataState} />
+          {/* <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>
               <input
                 type="text"
                 name="uuid_box"
-                value={this.state.uuid_box}
+                value={this.state.uuid_family_member}
                 onChange={this.handleChange}
               ></input>
               <input type="submit" value="Submit" />
             </form>
-          </div>
+          </div> */}
         </div>
         <div className="btm_sect">
           <MarriedBox
-            spouses={this.state.spouses}
+            spouses={this.state.dataState.spouses}
             handleUpd={this.updateTarget}
             showNewSpouse={this.showNewSpouse}
           />
           <ChildrenBox
-            children={this.state.children}
-            handleUpd={this.updateTarget}
+            children={this.state.dataState.children}
+            updateTarget={this.updateTarget}
             showNewChild={this.showNewChild}
           />
         </div>

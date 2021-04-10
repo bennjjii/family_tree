@@ -1,58 +1,73 @@
 const models = require("../models");
 
-//this also needs to check user is not cross posting to another user's data area
-//this should give the option to also create a marriage if a second parent is available
-
 exports.create_new_parent = async (req, res) => {
-  let responses = [];
-
-  let genderSelector = null;
-  req.body.gender === "Male"
-    ? (genderSelector = "father")
-    : (genderSelector = "mother");
-
+  console.log(req.body);
+  let parent = null;
   try {
-    const newParent = await models.family_member.create({
-      first_name: req.body.first_name,
-      middle_name: req.body.middle_name,
-      last_name: req.body.last_name,
-      gender: req.body.gender,
-      uuid_family_tree: req.user.uuid_family_tree,
-    });
-    responses.push(JSON.parse(JSON.stringify(newParent)));
-    const updatedBirth = await models.birth.update(
-      {
-        [genderSelector]: responses[0].uuid_family_member,
-      },
-      {
-        where: {
-          uuid_birth: req.body.uuid_birth,
-        },
-      }
+    if (req.body.existing_parent === "new") {
+      console.log("new");
+      parent = JSON.parse(
+        JSON.stringify(
+          await models.family_member.create({
+            first_name: req.body.first_name,
+            middle_name: req.body.middle_name,
+            last_name: req.body.last_name,
+            gender: req.body.gender,
+            d_o_b: req.body.d_o_b,
+            uuid_family_tree: req.user.uuid_family_tree,
+          })
+        )
+      );
+    } else {
+      //console.log(req.body.existing_parent);
+      parent = JSON.parse(
+        JSON.stringify(
+          await models.family_member.findOne({
+            where: {
+              uuid_family_member: req.body.existing_parent,
+            },
+          })
+        )
+      );
+    }
+
+    const updateChildWithParent = JSON.parse(
+      JSON.stringify(
+        await models.family_member.update(
+          {
+            [parent.gender === "Male"
+              ? "father"
+              : "mother"]: parent.uuid_family_member,
+            uuid_family_tree: req.user.uuid_family_tree,
+          },
+          {
+            where: {
+              uuid_family_member: req.body.uuid_target,
+            },
+          }
+        )
+      )
     );
 
-    responses.push(JSON.parse(JSON.stringify(updatedBirth)));
+    if (req.body.marriage_checked && !req.body.already_married_to_selected) {
+      const newMarriage = JSON.parse(
+        JSON.stringify(
+          await models.marriage.create({
+            d_o_mar: req.body.d_o_mar,
+            uuid_family_tree: req.user.uuid_family_tree,
+            bride: req.body.bride ? req.body.bride : parent.uuid_family_member,
+            groom: req.body.groom ? req.body.groom : parent.uuid_family_member,
+          })
+        )
+      );
+      console.log(newMarriage);
+    }
 
-    const newParentBirth = await models.birth.create({
-      child: responses[0].uuid_family_member,
-      d_o_b: req.body.d_o_b.split("T")[0],
-      uuid_family_tree: req.user.uuid_family_tree,
-    });
-
-    responses.push(JSON.parse(JSON.stringify(newParentBirth)));
-    let response = {
-      [genderSelector]: {
-        name: [
-          responses[0].first_name,
-          responses[0].middle_name,
-          responses[0].last_name,
-        ],
-        uuid: responses[0].uuid_family_member,
-      },
-    };
-    return res.json(response);
+    console.log(parent);
+    console.log(updateChildWithParent);
+    return res.sendStatus(200);
   } catch (err) {
     console.log(err);
-    res.sendStatus(404);
+    return res.sendStatus(403);
   }
 };

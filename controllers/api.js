@@ -1,9 +1,4 @@
 const models = require("../models");
-const { Op } = require("sequelize");
-const { response } = require("express");
-const uuid_family_tree = "58ae4e8f-bd4e-482c-959c-747a97d1e2dc";
-const validator = require("validator");
-const { sequelize } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
@@ -36,28 +31,16 @@ exports.register = async (req, res) => {
     }
   );
 
-  const createdFamilyMember = await models.birth.create(
-    {
-      d_o_b: req.body.d_o_b,
-      chil: {
-        uuid_family_member: tempFamilyMemberUuid,
-        first_name: req.body.first_name,
-        middle_name: req.body.middle_name,
-        last_name: req.body.last_name,
-        gender: req.body.gender,
-        uuid_family_tree: tempFamilyTreeUuid,
-      },
-      uuid_family_tree: tempFamilyTreeUuid,
-    },
-    {
-      include: [
-        {
-          model: models.family_member,
-          as: "chil",
-        },
-      ],
-    }
-  );
+  const createdFamilyMember = await models.family_member.create({
+    d_o_b: req.body.d_o_b,
+
+    first_name: req.body.first_name,
+    middle_name: req.body.middle_name,
+    last_name: req.body.last_name,
+    gender: req.body.gender,
+    uuid_family_member: tempFamilyMemberUuid,
+    uuid_family_tree: tempFamilyTreeUuid,
+  });
 
   console.log(createdUser);
   console.log(createdFamilyMember);
@@ -170,12 +153,4 @@ exports.logout = async (req, res) => {
       res.cookie("refresh_token", "", { expires: new Date(0) });
       res.json({ success: true });
     });
-};
-
-exports.create_family_account = (req, res) => {
-  const acc_name = req.body["acc_name"];
-  return models.family_account
-    .create({ family_account_name: acc_name })
-    .then(res.json("Family account created!"))
-    .catch((err) => res.status(400).json("Error:" + err));
 };

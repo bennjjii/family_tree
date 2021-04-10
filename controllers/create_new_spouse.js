@@ -1,57 +1,66 @@
 const models = require("../models");
 
 exports.create_new_spouse = async (req, res) => {
-  let targetSpouseLabel = "groom";
-  let newSpouseLabel = "bride";
-
-  if (req.body.gender === "Male") {
-    targetSpouseLabel = "bride";
-    newSpouseLabel = "groom";
-  }
-
-  // these should be handled with an include like in create_new_child
-
-  console.log(targetSpouseLabel + "----" + newSpouseLabel);
-
+  console.log(req.body);
+  let newSpouse, updatedChildren;
   try {
-    const newMarriage = await models.marriage.create(
-      {
-        [targetSpouseLabel]: req.body.uuid_target,
-        d_o_mar: req.body.d_o_mar.split("T")[0],
-        uuid_family_tree: req.user.uuid_family_tree,
-        [newSpouseLabel.slice(0, -1)]: {
-          first_name: req.body.first_name,
-          middle_name: req.body.middle_name,
-          last_name: req.body.last_name,
-          gender: req.body.gender,
-          uuid_family_tree: req.user.uuid_family_tree,
-        },
-      },
-      {
-        include: {
-          model: models.family_member,
-          as: newSpouseLabel.slice(0, -1),
-        },
+    if (req.body.selected_parent === null) {
+      newSpouse = JSON.parse(
+        JSON.stringify(
+          await models.family_member.create({
+            first_name: req.body.first_name,
+            middle_name: req.body.middle_name,
+            last_name: req.body.last_name,
+            gender: req.body.target_gender === "Male" ? "Female" : "Male",
+            d_o_b: req.body.d_o_b,
+            uuid_family_tree: req.user.uuid_family_tree,
+          })
+        )
+      );
+      if (req.body.add_existing_children) {
+        updatedChildren = await req.body.existing_children.map((child) => {
+          return models.family_member.update(
+            {
+              [req.body.target_gender === "Male"
+                ? "mother"
+                : "father"]: newSpouse.uuid_family_member,
+            },
+            {
+              where: {
+                uuid_family_member: child,
+              },
+            }
+          );
+        });
       }
+    }
+
+    const newMarriage = JSON.parse(
+      JSON.stringify(
+        await models.marriage.create({
+          bride:
+            req.body.target_gender === "Female"
+              ? req.body.uuid_target
+              : req.body.selected_parent
+              ? req.body.selected_parent
+              : newSpouse.uuid_family_member,
+          groom:
+            req.body.target_gender === "Male"
+              ? req.body.uuid_target
+              : req.body.selected_parent
+              ? req.body.selected_parent
+              : newSpouse.uuid_family_member,
+          d_o_mar: req.body.d_o_mar,
+          uuid_family_tree: req.user.uuid_family_tree,
+        })
+      )
     );
-
-    const response = {
-      name: [
-        newMarriage[newSpouseLabel.slice(0, -1)].dataValues.first_name,
-        newMarriage[newSpouseLabel.slice(0, -1)].dataValues.middle_name,
-        newMarriage[newSpouseLabel.slice(0, -1)].dataValues.last_name,
-      ],
-      gender: newMarriage[newSpouseLabel.slice(0, -1)].dataValues.gender,
-      uuid:
-        newMarriage[newSpouseLabel.slice(0, -1)].dataValues.uuid_family_member,
-      d_o_mar: newMarriage.dataValues.d_o_mar,
-    };
-
-    console.log(response);
-
-    res.json(response);
+    console.log(newSpouse);
+    console.log(updatedChildren);
+    console.log(newMarriage);
+    res.sendStatus(200);
   } catch (err) {
     console.log(err);
-    res.sendStatus(404);
+    res.sendStatus(403);
   }
 };
