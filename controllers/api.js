@@ -131,7 +131,8 @@ exports.login = async (req, res) => {
     } else {
       console.log("Not Allowed");
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.status(500).send();
   }
 };
