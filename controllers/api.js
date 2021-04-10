@@ -1,9 +1,4 @@
 const models = require("../models");
-const { Op } = require("sequelize");
-const { response } = require("express");
-const uuid_family_tree = "58ae4e8f-bd4e-482c-959c-747a97d1e2dc";
-const validator = require("validator");
-const { sequelize } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
@@ -159,11 +154,3 @@ exports.logout = async (req, res) => {
       res.json({ success: true });
     });
 };
-
-// exports.create_family_account = (req, res) => {
-//   const acc_name = req.body["acc_name"];
-//   return models.family_account
-//     .create({ family_account_name: acc_name })
-//     .then(res.json("Family account created!"))
-//     .catch((err) => res.status(400).json("Error:" + err));
-// };

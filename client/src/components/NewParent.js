@@ -16,14 +16,11 @@ import DatePicker from "react-datepicker";
 //this should grey out create marriage box if parents are already married
 //otherwise we create two of the same marriages
 
-//crossover bug exists here - when we add a siblings parent it replaces the wrong parent
-
 export const NewParent = (props) => {
-  ////////////////////////////
-  //enumerate possible other parents
+  //enumerate other possible parents
 
   let allParents = [
-    //siblingsViaParents
+    //via other siblings
     ...(props.state.siblingsViaFather
       ? props.state.siblingsViaFather.reduce((total, sibling) => {
           if (sibling.mothe) {
@@ -118,7 +115,7 @@ export const NewParent = (props) => {
   useEffect(() => {
     //check here whether already married
     //bloated and can be refactored but right now this works so do it later
-    console.log(props.state);
+    console.log(formData);
     let alreadyMarried = false;
 
     if (props.state.fathersWife) {
@@ -178,23 +175,30 @@ export const NewParent = (props) => {
   return (
     <div className="new-child">
       <h3>Add parent</h3>
-      {formData.existing_parent}
+      {/* {formData.existing_parent} */}
       <form onSubmit={handleSubmit}>
-        <label>
-          Parent
+        <div
+          id="new-parent-select"
+          style={
+            reducedParents.length ? { display: "block" } : { display: "none" }
+          }
+        >
+          <label>
+            Parent
+            <br />
+            <select
+              name={"existing_parent"}
+              onChange={handleChange}
+              value={formData.existing_parent}
+            >
+              {reducedParents.map((parent) => {
+                return <option value={parent.uuid}>{parent.name}</option>;
+              })}
+              <option value={"new"}>New parent</option>
+            </select>
+          </label>
           <br />
-          <select
-            name={"existing_parent"}
-            onChange={handleChange}
-            value={formData.existing_parent}
-          >
-            {reducedParents.map((parent) => {
-              return <option value={parent.uuid}>{parent.name}</option>;
-            })}
-            <option value={"new"}>New parent</option>
-          </select>
-        </label>
-        <br />
+        </div>
         <div
           id="new-parent-details"
           style={
@@ -254,18 +258,22 @@ export const NewParent = (props) => {
             selected={formData.d_o_b}
           />
           <br /> <br />
+          {formData.already_married_to_selected
+            ? "Already married to" +
+              props.state.first_name +
+              " " +
+              props.state.last_name
+            : ""}
         </div>
         <div
           id="generate-marriage"
           style={
-            formData.married_link_visible
+            formData.married_link_visible &&
+            !formData.already_married_to_selected
               ? { display: "block" }
               : { display: "none" }
           }
         >
-          {formData.already_married_to_selected
-            ? "Already married to x"
-            : "not already married"}
           <br />
           <input
             type="checkbox"
