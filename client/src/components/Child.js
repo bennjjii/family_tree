@@ -1,4 +1,5 @@
 import { Component, useState } from "react";
+import _fn from "./fullName";
 
 const Child = (props) => {
   const [editMode, setEditMode] = useState(false);
@@ -46,11 +47,7 @@ const Child = (props) => {
           uuid={props.child.uuid_family_member}
           className="child-name"
         >
-          {props.child.first_name +
-            " " +
-            props.child.middle_name +
-            " " +
-            props.child.last_name}
+          {_fn(props.child)}
         </span>
 
         <br />

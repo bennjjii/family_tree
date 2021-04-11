@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 const ParentsBox = (props) => {
   return (
     <div className="parent_details">

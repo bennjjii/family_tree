@@ -12,6 +12,8 @@ import NewParent from "./NewParent";
 import NewSpouse from "./NewSpouse";
 import StateTemplate from "./StateTemplate";
 import { authContext } from "./ProvideAuth";
+import FamilyMemberImage from "./FamilyMemberImage";
+import CommonHttp from "./services/CommonHttp";
 
 class IdCard extends Component {
   static contextType = authContext;
@@ -30,9 +32,11 @@ class IdCard extends Component {
     this.submitNewParent = this.submitNewParent.bind(this);
     this.showNewSpouse = this.showNewSpouse.bind(this);
     this.submitNewSpouse = this.submitNewSpouse.bind(this);
+    this.submitPhoto = this.submitPhoto.bind(this);
   }
 
   componentDidMount() {
+    this._http = new CommonHttp(this.context);
     this.setState(
       {
         dataState: {
@@ -53,30 +57,14 @@ class IdCard extends Component {
         prevState.dataState.uuid_family_member
       ) {
         const request = { target: this.state.dataState.uuid_family_member };
-        const data = await axios.post(
-          "http://localhost:5000/get_target_data/",
-          request,
-          {
-            headers: {
-              authorization: this.context.jwt,
-            },
-          }
-        );
+        const data = await this._http.axios.post("/get_target_data", request);
         this.setState({ dataState: data.data }, () => {
           this.context.setFocus(this.state.dataState.uuid_family_member);
         });
       }
     } else {
       const request = { target: this.state.dataState.uuid_family_member };
-      const data = await axios.post(
-        "http://localhost:5000/get_target_data/",
-        request,
-        {
-          headers: {
-            authorization: this.context.jwt,
-          },
-        }
-      );
+      const data = await this._http.axios.post("/get_target_data", request);
       this.setState({ dataState: data.data }, () => {
         this.context.setFocus(this.state.dataState.uuid_family_member);
       });
@@ -90,38 +78,24 @@ class IdCard extends Component {
 
   updateTarget(e) {
     e.preventDefault();
+
     if (e.target.getAttribute("uuid")) {
-      if (e.target.getAttribute("uuid")) {
-        if (
-          e.target.getAttribute("uuid") !==
-          this.state.dataState.uuid_family_member
-        ) {
-          this.setState({
-            dataState: {
-              ...this.state.dataState,
-              uuid_family_member: e.target.getAttribute("uuid"),
-            },
-          });
-        }
-      }
+      //it's a double check but doesn't really seem necessary
+      // if (
+      //   e.target.getAttribute("uuid") !==
+      //   this.state.dataState.uuid_family_member
+      // ) {
+      this.setState({
+        dataState: {
+          ...this.state.dataState,
+          uuid_family_member: e.target.getAttribute("uuid"),
+        },
+      });
+      // }
     } else {
       this.showNewParent(e.target.getAttribute("name"));
     }
   }
-
-  // handleSubmit(e) {
-  //   e.preventDefault();
-  //   this.setState((prevState) => ({
-  //     uuid_target: prevState.uuid_box,
-  //   }));
-  // }
-
-  // handleChange(e) {
-  //   const { name, value } = e.target;
-  //   this.setState({
-  //     [name]: value,
-  //   });
-  // }
 
   showNewChild(parentGender) {
     console.log(parentGender);
@@ -139,15 +113,7 @@ class IdCard extends Component {
 
   async submitNewChild(newChildDetails) {
     console.log(newChildDetails);
-    await axios.post(
-      "http://localhost:5000/create_new_child",
-      newChildDetails,
-      {
-        headers: {
-          authorization: this.context.jwt,
-        },
-      }
-    );
+    await this._http.axios.post("/create_new_child", newChildDetails);
     this.setState(
       {
         UIstate: {
@@ -171,15 +137,7 @@ class IdCard extends Component {
   }
 
   async submitNewParent(newParentDetails) {
-    await axios.post(
-      "http://localhost:5000/create_new_parent",
-      newParentDetails,
-      {
-        headers: {
-          authorization: this.context.jwt,
-        },
-      }
-    );
+    await this._http.axios.post("/create_new_parent", newParentDetails);
 
     this.setState(
       {
@@ -199,13 +157,9 @@ class IdCard extends Component {
     });
   }
 
-  submitNewSpouse(newSpouseDetails) {
+  async submitNewSpouse(newSpouseDetails) {
     //total update
-    axios.post("http://localhost:5000/create_new_spouse", newSpouseDetails, {
-      headers: {
-        authorization: this.context.jwt,
-      },
-    });
+    await this._http.axios.post("/create_new_spouse", newSpouseDetails);
 
     this.setState(
       {
@@ -217,6 +171,11 @@ class IdCard extends Component {
         this.refreshData();
       }
     );
+  }
+
+  async submitPhoto(image) {
+    await this._http.post("/upload", image);
+    this.refreshData();
   }
 
   render() {
@@ -265,9 +224,11 @@ class IdCard extends Component {
           />
         </div>
         <div className="mid_sect">
-          <div className="family_image">
-            <img src={harold} alt="photograph of family member" />
-          </div>
+          <FamilyMemberImage
+            src={null}
+            state={this.state.dataState}
+            submitPhoto={this.submitPhoto}
+          />
           <TargetBox target={this.state.dataState} />
           {/* <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>

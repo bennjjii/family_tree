@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import _fn from "./fullName";
 
 import DatePicker from "react-datepicker";
 
@@ -18,23 +19,23 @@ const NewChild = (props) => {
     ...props.state.children.reduce((acc, child) => {
       if (props.state.gender === "Male" && child.mothe) {
         return acc.concat({
-          name:
-            child.mothe.first_name +
-            " " +
-            child.mothe.middle_name +
-            " " +
-            child.mothe.last_name,
+          name: _fn(child.mothe),
+          // child.mothe.first_name +
+          // " " +
+          // child.mothe.middle_name +
+          // " " +
+          // child.mothe.last_name,
           uuid: child.mothe.uuid_family_member,
         });
       }
       if (props.state.gender === "Female" && child.fathe) {
         return acc.concat({
-          name:
-            child.fathe.first_name +
-            " " +
-            child.fathe.middle_name +
-            " " +
-            child.fathe.last_name,
+          name: _fn(child.fathe),
+          // child.fathe.first_name +
+          // " " +
+          // child.fathe.middle_name +
+          // " " +
+          // child.fathe.last_name,
           uuid: child.fathe.uuid_family_member,
         });
       }
@@ -46,16 +47,19 @@ const NewChild = (props) => {
       return {
         name:
           props.state.gender === "Male"
-            ? spouse.brid.first_name +
-              " " +
-              spouse.brid.middle_name +
-              " " +
-              spouse.brid.last_name
-            : spouse.groo.first_name +
-              " " +
-              spouse.groo.middle_name +
-              " " +
-              spouse.groo.last_name,
+            ? _fn(spouse.brid)
+            : // spouse.brid.first_name +
+              //   " " +
+              //   spouse.brid.middle_name +
+              //   " " +
+              //   spouse.brid.last_name
+              _fn(spouse.groo),
+
+        // spouse.groo.first_name +
+        //   " " +
+        //   spouse.groo.middle_name +
+        //   " " +
+        //   spouse.groo.last_name,
         uuid:
           props.state.gender === "Male"
             ? spouse.brid.uuid_family_member
