@@ -1,3 +1,5 @@
+//this is redundant - delete after merge
+
 class FamilyMember {
   constructor() {
     this.uuid = null;

@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import harold from "./harold.png";
-import axios from "axios";
+// import axios from "axios";
 import "./IdCard.css";
 import ParentsBox from "./ParentsBox";
 import ChildrenBox from "./ChildrenBox";
 import MarriedBox from "./MarriedBox";
 import TargetBox from "./TargetBox";
-import validator from "validator";
 import NewChild from "./NewChild";
 import NewParent from "./NewParent";
 import NewSpouse from "./NewSpouse";
 import StateTemplate from "./StateTemplate";
-import { authContext } from "./ProvideAuth";
+import { authContext } from "./services/ProvideAuth";
 import FamilyMemberImage from "./FamilyMemberImage";
 import CommonHttp from "./services/CommonHttp";
+import UploadImages from "./UploadImages";
 
 class IdCard extends Component {
   static contextType = authContext;
@@ -36,7 +36,7 @@ class IdCard extends Component {
   }
 
   componentDidMount() {
-    this._http = new CommonHttp(this.context);
+    this._http = new CommonHttp(this.context.jwt);
     this.setState(
       {
         dataState: {
@@ -230,6 +230,7 @@ class IdCard extends Component {
             submitPhoto={this.submitPhoto}
           />
           <TargetBox target={this.state.dataState} />
+          <UploadImages />
           {/* <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>
               <input

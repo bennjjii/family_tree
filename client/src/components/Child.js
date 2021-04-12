@@ -1,4 +1,4 @@
-import { Component, useState } from "react";
+import { useState } from "react";
 import _fn from "./fullName";
 
 const Child = (props) => {

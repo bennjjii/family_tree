@@ -1,12 +1,15 @@
 import CommonHttp from "./CommonHttp";
 
 class FileUploadService {
-  upload(file, onUploadProgress) {
+  constructor(jwt) {
+    this._http = new CommonHttp(jwt);
+  }
+  upload(file, onUploadProgress, jwt) {
     let formData = new FormData();
 
     formData.append("file", file);
 
-    return http.post("/upload", formData, {
+    return this._http.axios.post("/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -15,8 +18,8 @@ class FileUploadService {
   }
 
   getFiles() {
-    return http.get("/files");
+    return this._http.axios.get("/files");
   }
 }
 
-export default new FileUploadService();
+export default FileUploadService;
