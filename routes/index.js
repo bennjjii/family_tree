@@ -19,7 +19,7 @@ router.post("/create_new_parent", authenticateToken, create_new_parent);
 router.post("/create_new_spouse", authenticateToken, create_new_spouse);
 router.post("/upload", authenticateToken, upload_controller);
 router.get("/files", getListFiles);
-router.get("/files/:name", download);
+router.get("/files/:name", authenticateToken, download);
 router.post("/register", api.register);
 router.post("/login", api.login);
 router.post("/logout", api.logout);

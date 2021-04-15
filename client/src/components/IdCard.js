@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, lazy } from "react";
 import harold from "./harold.png";
-// import axios from "axios";
+import axios from "axios";
 import "./IdCard.css";
 import ParentsBox from "./ParentsBox";
 import ChildrenBox from "./ChildrenBox";
@@ -11,7 +11,7 @@ import NewParent from "./NewParent";
 import NewSpouse from "./NewSpouse";
 import StateTemplate from "./StateTemplate";
 import { authContext } from "./services/ProvideAuth";
-import FamilyMemberImage from "./FamilyMemberImage";
+import FamilyMemberPhoto from "./FamilyMemberPhoto";
 import CommonHttp from "./services/CommonHttp";
 import UploadImages from "./UploadImages";
 
@@ -35,7 +35,7 @@ class IdCard extends Component {
     this.submitPhoto = this.submitPhoto.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._http = new CommonHttp(this.context.jwt);
     this.setState(
       {
@@ -46,6 +46,30 @@ class IdCard extends Component {
       },
       () => {
         console.log(this.state);
+      }
+    );
+    const lazyImage = await axios({
+      url:
+        "http://localhost:5000/files/6acff0d4-16cc-4a33-9e8d-cf785253896c.png",
+      method: "GET",
+      responseType: "blob",
+      headers: {
+        "Content-type": "application/json",
+        authorization: this.context.jwt,
+      },
+    });
+
+    console.log(lazyImage.data);
+    this.setState(
+      {
+        photo: lazyImage.data,
+      },
+      () => {
+        let urlCreator = window.URL || window.webkitURL;
+        let dynamicImgUrl = urlCreator.createObjectURL(this.state.photo);
+        this.setState({
+          photourl: dynamicImgUrl,
+        });
       }
     );
   }
@@ -224,8 +248,9 @@ class IdCard extends Component {
           />
         </div>
         <div className="mid_sect">
-          <FamilyMemberImage
-            src={null}
+          <FamilyMemberPhoto
+            photo={this.state.photo}
+            photourl={this.state.photourl}
             state={this.state.dataState}
             submitPhoto={this.submitPhoto}
           />

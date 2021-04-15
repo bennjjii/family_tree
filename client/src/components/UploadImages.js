@@ -21,7 +21,7 @@ export default class UploadImages extends Component {
   async componentDidMount() {
     this.uploadService = new UploadService(this.context.jwt);
     let resp = await this.uploadService.getFiles();
-    console.log("response");
+
     this.setState({
       imageInfos: resp.data,
     });
