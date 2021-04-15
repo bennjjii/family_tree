@@ -11,7 +11,7 @@ class FamilyMemberPhoto extends Component {
   }
 
   componentDidUpdate() {
-    console.log(this.props.photo);
+    console.log(this.props.photourl);
   }
   render() {
     return (

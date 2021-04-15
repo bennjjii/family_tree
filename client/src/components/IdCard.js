@@ -33,6 +33,7 @@ class IdCard extends Component {
     this.showNewSpouse = this.showNewSpouse.bind(this);
     this.submitNewSpouse = this.submitNewSpouse.bind(this);
     this.submitPhoto = this.submitPhoto.bind(this);
+    this.refreshPhoto = this.refreshPhoto.bind(this);
   }
 
   async componentDidMount() {
@@ -48,30 +49,45 @@ class IdCard extends Component {
         console.log(this.state);
       }
     );
-    const lazyImage = await axios({
-      url:
-        "http://localhost:5000/files/6acff0d4-16cc-4a33-9e8d-cf785253896c.png",
-      method: "GET",
-      responseType: "blob",
-      headers: {
-        "Content-type": "application/json",
-        authorization: this.context.jwt,
-      },
-    });
+  }
 
-    console.log(lazyImage.data);
-    this.setState(
-      {
-        photo: lazyImage.data,
-      },
-      () => {
-        let urlCreator = window.URL || window.webkitURL;
-        let dynamicImgUrl = urlCreator.createObjectURL(this.state.photo);
+  async refreshPhoto(prevState) {
+    if (
+      this.state.dataState.uuid_family_member !==
+      prevState.dataState.uuid_family_member
+    ) {
+      //do stuff
+      try {
+        const imageBlob = await axios({
+          url:
+            process.env.REACT_APP_BASE_URL +
+            `/files/${this.state.dataState.uuid_family_member}.png`,
+          method: "GET",
+          responseType: "blob",
+          headers: {
+            "Content-type": "application/json",
+            authorization: this.context.jwt,
+          },
+        });
+        this.setState(
+          {
+            photo: imageBlob.data,
+          },
+          () => {
+            const urlCreator = window.URL || window.webkitURL;
+            const dynamicImgUrl = urlCreator.createObjectURL(this.state.photo);
+            this.setState({
+              photoUrl: dynamicImgUrl,
+            });
+          }
+        );
+      } catch (err) {
         this.setState({
-          photourl: dynamicImgUrl,
+          photo: undefined,
+          photoUrl: undefined,
         });
       }
-    );
+    }
   }
 
   async refreshData(prevState) {
@@ -97,6 +113,7 @@ class IdCard extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     this.refreshData(prevState);
+    this.refreshPhoto(prevState);
     console.log(this.state);
   }
 
@@ -249,8 +266,7 @@ class IdCard extends Component {
         </div>
         <div className="mid_sect">
           <FamilyMemberPhoto
-            photo={this.state.photo}
-            photourl={this.state.photourl}
+            photourl={this.state.photoUrl}
             state={this.state.dataState}
             submitPhoto={this.submitPhoto}
           />

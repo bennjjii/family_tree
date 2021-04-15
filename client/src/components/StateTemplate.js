@@ -35,7 +35,7 @@ class StateTemplate {
       newParentGender: null,
     };
     this.photo = undefined;
-    this.photourl = undefined;
+    this.photoUrl = undefined;
   }
 }
 
