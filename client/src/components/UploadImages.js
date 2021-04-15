@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import FileUploadService from "./services/FileUploadService";
+import UploadService from "./services/UploadService";
 
 import { authContext } from "./services/ProvideAuth";
 
@@ -18,12 +18,12 @@ export default class UploadImages extends Component {
     this.upload = this.upload.bind(this);
   }
 
-  componentDidMount() {
-    this.uploadService = new FileUploadService(this.context.jwt);
-    this.uploadService.getFiles().then((response) => {
-      this.setState({
-        imageInfos: response.data,
-      });
+  async componentDidMount() {
+    this.uploadService = new UploadService(this.context.jwt);
+    let resp = await this.uploadService.getFiles();
+    console.log("response");
+    this.setState({
+      imageInfos: resp.data,
     });
   }
 
@@ -42,7 +42,7 @@ export default class UploadImages extends Component {
     });
 
     this.uploadService
-      .upload(this.state.currentFile, (event) => {
+      .upload(this.state.currentFile, this.props.target, (event) => {
         this.setState({
           progress: Math.round((100 * event.loaded) / event.total),
         });

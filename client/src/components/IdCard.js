@@ -230,7 +230,7 @@ class IdCard extends Component {
             submitPhoto={this.submitPhoto}
           />
           <TargetBox target={this.state.dataState} />
-          <UploadImages />
+          <UploadImages target={this.state.dataState.uuid_family_member} />
           {/* <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>
               <input

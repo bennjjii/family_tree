@@ -1,6 +1,9 @@
 const uploadFile = require("./middleware/upload");
+const fs = require("fs");
+const baseUrl = process.env.BASE_URL;
 
-const upload = async (req, res) => {
+const upload_controller = async (req, res) => {
+  //console.log(req);
   try {
     await uploadFile(req, res);
 
@@ -25,9 +28,11 @@ const upload = async (req, res) => {
 
 const getListFiles = (req, res) => {
   const directoryPath = __basedir + "/resources/static/assets/uploads/";
+  console.log(directoryPath);
 
   fs.readdir(directoryPath, function (err, files) {
     if (err) {
+      console.log(err);
       res.status(500).send({
         message: "Unable to scan files!",
       });
@@ -52,6 +57,7 @@ const download = (req, res) => {
 
   res.download(directoryPath + fileName, fileName, (err) => {
     if (err) {
+      console.log(err);
       res.status(500).send({
         message: "Could not download the file. " + err,
       });
@@ -60,7 +66,7 @@ const download = (req, res) => {
 };
 
 module.exports = {
-  upload,
+  upload_controller,
   getListFiles,
   download,
 };
