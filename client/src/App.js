@@ -17,7 +17,6 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import { ProvideAuth, authContext } from "./components/services/ProvideAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AddFamilyMember from "./components/AddFamilyMember";
 
 class App extends React.Component {
   constructor(props) {
@@ -36,7 +35,6 @@ class App extends React.Component {
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={Register} />
               <ProtectedRoute path="/app" exact component={IdCard} />
-              <Route path="/add" exact component={AddFamilyMember} />
             </Switch>
           </div>
         </Router>

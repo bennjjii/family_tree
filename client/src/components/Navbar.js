@@ -17,11 +17,7 @@ const Navbar = (props) => {
               App
             </Link>
           </li>
-          <li className="navbar-item">
-            <Link to="/add" className="nav-link">
-              Add family member
-            </Link>
-          </li>
+
           <li className="navbar-item">
             <Link to="/account" className="nav-link">
               Account
