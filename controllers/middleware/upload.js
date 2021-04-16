@@ -1,6 +1,6 @@
 const util = require("util");
 const multer = require("multer");
-const maxSize = 2 * 1024 * 1024;
+const maxSize = 2 * 4092 * 4092;
 
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -11,9 +11,20 @@ let storage = multer.diskStorage({
   },
 });
 
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb("Please uplaod only images.", false);
+  }
+};
+
+const multerMemoryStorage = multer.memoryStorage();
+
 let uploadFile = multer({
-  storage: storage,
+  storage: multerMemoryStorage,
   limits: { fileSize: maxSize },
+  fileFilter: multerFilter,
 }).single("file");
 
 let uploadFileMiddleware = util.promisify(uploadFile);

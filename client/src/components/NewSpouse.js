@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import _fn from "./fullName";
 
 import DatePicker from "react-datepicker";

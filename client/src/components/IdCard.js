@@ -1,4 +1,4 @@
-import React, { Component, lazy } from "react";
+import React, { Component } from "react";
 import harold from "./harold.png";
 import axios from "axios";
 import "./IdCard.css";
@@ -13,7 +13,6 @@ import StateTemplate from "./StateTemplate";
 import { authContext } from "./services/ProvideAuth";
 import FamilyMemberPhoto from "./FamilyMemberPhoto";
 import CommonHttp from "./services/CommonHttp";
-import UploadImages from "./UploadImages";
 
 class IdCard extends Component {
   static contextType = authContext;
@@ -44,10 +43,10 @@ class IdCard extends Component {
           ...this.state.dataState,
           uuid_family_member: this.context.focus,
         },
-      },
-      () => {
-        console.log(this.state);
       }
+      // () => {
+      //   console.log(this.state);
+      // }
     );
   }
 
@@ -61,7 +60,7 @@ class IdCard extends Component {
         const imageBlob = await axios({
           url:
             process.env.REACT_APP_BASE_URL +
-            `/files/${this.state.dataState.uuid_family_member}.png`,
+            `/files/${this.state.dataState.uuid_family_member}.jpeg`,
           method: "GET",
           responseType: "blob",
           headers: {
@@ -267,11 +266,10 @@ class IdCard extends Component {
         <div className="mid_sect">
           <FamilyMemberPhoto
             photourl={this.state.photoUrl}
-            state={this.state.dataState}
+            target={this.state.dataState.uuid_family_member}
             submitPhoto={this.submitPhoto}
           />
           <TargetBox target={this.state.dataState} />
-          <UploadImages target={this.state.dataState.uuid_family_member} />
           {/* <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>
               <input

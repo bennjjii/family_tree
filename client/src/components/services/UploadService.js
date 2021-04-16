@@ -4,7 +4,7 @@ class UploadService {
   constructor(jwt) {
     this._http = new CommonHttp(jwt);
   }
-  upload(file, target, onUploadProgress, jwt) {
+  upload(file, target, onUploadProgress) {
     let formData = new FormData();
     let splitFilename = file.name.split(".");
     let extension = "." + splitFilename[splitFilename.length - 1];

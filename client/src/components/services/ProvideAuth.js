@@ -16,6 +16,7 @@ function useProvideAuth() {
   const [focus, setFocus] = useState(null);
   const [uuidFamilyTree, setUuidFamilyTree] = useState(null);
   const [jwt, setJwt] = useState(null);
+  //this needs to set a timeout to refresh the access token after x minutes
   const getAccessToken = async (context) => {
     axios
       .post("http://localhost:5000/refresh")

@@ -2,7 +2,7 @@ const uploadFile = require("./middleware/upload");
 const fs = require("fs");
 const baseUrl = process.env.BASE_URL;
 
-const upload_controller = async (req, res) => {
+const upload_controller = async (req, res, next) => {
   //console.log(req);
   try {
     await uploadFile(req, res);
@@ -11,9 +11,13 @@ const upload_controller = async (req, res) => {
       return res.status(400).send({ message: "Please upload a file!" });
     }
 
-    res.status(200).send({
-      message: "Uploaded the file successfully: " + req.file.originalname,
-    });
+    //console.log(req.file);
+
+    // res.status(200).send({
+    //   message: "Uploaded the file successfully: " + req.file.originalname,
+    // });
+    //file is now buffered
+    next();
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {
       return res.status(500).send({
