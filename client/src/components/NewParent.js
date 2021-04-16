@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import _fn from "./fullName";
 
 import DatePicker from "react-datepicker";
 
@@ -25,12 +26,12 @@ export const NewParent = (props) => {
       ? props.state.siblingsViaFather.reduce((total, sibling) => {
           if (sibling.mothe) {
             return total.concat({
-              name:
-                sibling.mothe.first_name +
-                " " +
-                sibling.mothe.middle_name +
-                " " +
-                sibling.mothe.last_name,
+              name: _fn(sibling.mothe),
+              // sibling.mothe.first_name +
+              // " " +
+              // sibling.mothe.middle_name +
+              // " " +
+              // sibling.mothe.last_name,
               uuid: sibling.mothe.uuid_family_member,
             });
           } else {
@@ -42,12 +43,12 @@ export const NewParent = (props) => {
       ? props.state.siblingsViaMother.reduce((total, sibling) => {
           if (sibling.fathe) {
             return total.concat({
-              name:
-                sibling.fathe.first_name +
-                " " +
-                sibling.fathe.middle_name +
-                " " +
-                sibling.fathe.last_name,
+              name: _fn(sibling.fathe),
+              // sibling.fathe.first_name +
+              // " " +
+              // sibling.fathe.middle_name +
+              // " " +
+              // sibling.fathe.last_name,
 
               uuid: sibling.mothe.uuid_family_member,
             });
@@ -60,12 +61,12 @@ export const NewParent = (props) => {
     ...(props.state.fathersWife
       ? props.state.fathersWife.map((marriage) => {
           return {
-            name:
-              marriage.brid.first_name +
-              " " +
-              marriage.brid.middle_name +
-              " " +
-              marriage.brid.last_name,
+            name: _fn(marriage.brid),
+            // marriage.brid.first_name +
+            // " " +
+            // marriage.brid.middle_name +
+            // " " +
+            // marriage.brid.last_name,
             uuid: marriage.brid.uuid_family_member,
           };
         })
@@ -73,12 +74,12 @@ export const NewParent = (props) => {
     ...(props.state.mothersHusband
       ? props.state.mothersHusband.map((marriage) => {
           return {
-            name:
-              marriage.groo.first_name +
-              " " +
-              marriage.groo.middle_name +
-              " " +
-              marriage.groo.last_name,
+            name: _fn(marriage.groo),
+            // marriage.groo.first_name +
+            // " " +
+            // marriage.groo.middle_name +
+            // " " +
+            // marriage.groo.last_name,
             uuid: marriage.groo.uuid_family_member,
           };
         })

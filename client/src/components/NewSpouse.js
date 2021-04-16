@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import _fn from "./fullName";
 
 import DatePicker from "react-datepicker";
 
@@ -8,6 +9,8 @@ import DatePicker from "react-datepicker";
 //this should also give option to gather other children and insert as new spouses children
 //if spouse being created is the first spouse
 
+//checkbox for add all children should hide if target has no children -- done
+
 const NewSpouse = (props) => {
   //so check children for other parents
   let allParents = [
@@ -15,23 +18,23 @@ const NewSpouse = (props) => {
       ? props.state.children.reduce((acc, child) => {
           if (props.state.gender === "Male" && child.mothe) {
             return acc.concat({
-              name:
-                child.mothe.first_name +
-                " " +
-                child.mothe.middle_name +
-                " " +
-                child.mothe.last_name,
+              name: _fn(child.mothe),
+              // child.mothe.first_name +
+              // " " +
+              // child.mothe.middle_name +
+              // " " +
+              // child.mothe.last_name,
               uuid: child.mothe.uuid_family_member,
             });
           }
           if (props.state.gender === "Female" && child.fathe) {
             return acc.concat({
-              name:
-                child.fathe.first_name +
-                " " +
-                child.fathe.middle_name +
-                " " +
-                child.fathe.last_name,
+              name: _fn(child.fathe),
+              // child.fathe.first_name +
+              // " " +
+              // child.fathe.middle_name +
+              // " " +
+              // child.fathe.last_name,
               uuid: child.fathe.uuid_family_member,
             });
           }
@@ -55,17 +58,19 @@ const NewSpouse = (props) => {
 
   let allSpouses = props.state.spouses.map((spouse) => {
     return {
-      name: spouse.brid
-        ? spouse.brid.first_name +
-          " " +
-          spouse.brid.middle_name +
-          " " +
-          spouse.brid.last_name
-        : spouse.groo.first_name +
-          " " +
-          spouse.groo.middle_name +
-          " " +
-          spouse.groo.last_name,
+      name: spouse.brid ? _fn(spouse.brid) : _fn(spouse.groo),
+
+      // spouse.brid.first_name +
+      //   " " +
+      //   spouse.brid.middle_name +
+      //   " " +
+      //   spouse.brid.last_name
+      // spouse.groo.first_name +
+      //   " " +
+      //   spouse.groo.middle_name +
+      //   " " +
+      //   spouse.groo.last_name,
+
       uuid: spouse.brid
         ? spouse.brid.uuid_family_member
         : spouse.groo.uuid_family_member,
@@ -334,9 +339,9 @@ const NewSpouse = (props) => {
         <div
           id="add-children"
           style={
-            props.state.spouses.length
-              ? { display: "none" }
-              : { display: "block" }
+            !props.state.spouses.length && formData.existing_children.length
+              ? { display: "block" }
+              : { display: "none" }
           }
         >
           {/* only selectable if 0 spouses exist */}

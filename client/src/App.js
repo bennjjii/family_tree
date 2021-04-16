@@ -15,7 +15,7 @@ import Navbar from "./components/Navbar";
 import IdCard from "./components/IdCard";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import { ProvideAuth, authContext } from "./components/ProvideAuth";
+import { ProvideAuth, authContext } from "./components/services/ProvideAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddFamilyMember from "./components/AddFamilyMember";
 

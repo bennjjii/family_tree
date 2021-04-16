@@ -1,3 +1,5 @@
+//This is redundant, delete after merge
+
 class DataStateTemplate {
   constructor() {
     this.uuid_family_member = null;

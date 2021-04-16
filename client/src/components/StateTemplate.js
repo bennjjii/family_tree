@@ -8,6 +8,7 @@ class StateTemplate {
       first_name: "",
       middle_name: "",
       last_name: "",
+
       d_o_b: null,
       d_o_d: null,
       gender: null,
@@ -33,6 +34,8 @@ class StateTemplate {
       editNewSpouse: false,
       newParentGender: null,
     };
+    this.photo = undefined;
+    this.photoUrl = undefined;
   }
 }
 

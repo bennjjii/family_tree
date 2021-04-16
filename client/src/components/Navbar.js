@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "./ProvideAuth";
+import { useAuth } from "./services/ProvideAuth";
 
 const Navbar = (props) => {
   const auth = useAuth();
