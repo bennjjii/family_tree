@@ -33,6 +33,7 @@ const FamilyMemberPhoto = (props) => {
       {!props.photourl && (
         <div className="display-upload-form">
           <input type="file" accept="image/*" onChange={selectFile} />
+
           <button disabled={!currentFile} onClick={upload}>
             Upload
           </button>
