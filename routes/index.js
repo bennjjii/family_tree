@@ -14,6 +14,8 @@ let { create_new_child } = require("../controllers/create_new_child_2");
 let { create_new_parent } = require("../controllers/create_new_parent");
 let { create_new_spouse } = require("../controllers/create_new_spouse");
 
+let { delete_family_member } = require("../controllers/delete_family_member");
+
 router.post("/get_target_data", authenticateToken, get_target_data);
 router.post("/create_new_child", authenticateToken, create_new_child);
 router.post("/create_new_parent", authenticateToken, create_new_parent);
@@ -30,5 +32,7 @@ router.post("/register", api.register);
 router.post("/login", api.login);
 router.post("/logout", api.logout);
 router.post("/refresh", api.getAccessToken);
+
+router.delete("/delete", authenticateToken, delete_family_member);
 
 module.exports = router;
