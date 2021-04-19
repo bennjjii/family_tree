@@ -33,6 +33,7 @@ class IdCard extends Component {
     this.submitNewSpouse = this.submitNewSpouse.bind(this);
     this.submitPhoto = this.submitPhoto.bind(this);
     this.refreshPhoto = this.refreshPhoto.bind(this);
+    this.deleteFamilyMember = this.deleteFamilyMember.bind(this);
   }
 
   async componentDidMount() {
@@ -134,12 +135,18 @@ class IdCard extends Component {
         this.showNewParent(e.target.getAttribute("name"));
         break;
       case e.target.className === "edit-button":
-        console.log("uuid-to-edit");
+        console.log("edit " + e.target.getAttribute("uuid"));
         break;
       case e.target.className === "delete-button":
-        console.log("uuid-to-delete");
+        this.deleteFamilyMember(e.target.getAttribute("uuid"));
         break;
     }
+  }
+
+  async deleteFamilyMember(target_to_delete) {
+    console.log(target_to_delete);
+    await this._http.axios.post("/delete", { target_to_delete });
+    this.refreshData();
   }
 
   showNewChild(parentGender) {

@@ -3,7 +3,7 @@ const EditDelete = (props) => {
     <div className={"edit-delete"}>
       <button
         className="edit-button"
-        name={props.uuid}
+        uuid={props.uuid}
         onClick={props.handleUpd}
       >
         <i className="far fa-edit"></i>
@@ -11,7 +11,7 @@ const EditDelete = (props) => {
       {!props.onlyEdit && (
         <button
           className="delete-button"
-          name={props.uuid}
+          uuid={props.uuid}
           onClick={props.handleUpd}
         >
           <i className="far fa-trash-alt"></i>

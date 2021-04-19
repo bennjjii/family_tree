@@ -46,7 +46,7 @@ const Child = (props) => {
         {props.child.d_o_b}
         <br />
         {props.child.gender}
-        <EditDelete />
+        <EditDelete uuid={props.child.uuid_family_member} />
       </button>
 
       <br />

@@ -10,8 +10,8 @@ var indexRouter = require("./routes/index");
 var app = express();
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    origin: [process.env.SERVER_BASE_URL],
+    methods: ["GET", "POST", "DELETE"],
     credentials: true,
   })
 );

@@ -33,6 +33,6 @@ router.post("/login", api.login);
 router.post("/logout", api.logout);
 router.post("/refresh", api.getAccessToken);
 
-router.delete("/delete", authenticateToken, delete_family_member);
+router.post("/delete", authenticateToken, delete_family_member);
 
 module.exports = router;

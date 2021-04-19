@@ -30,7 +30,13 @@ function MarriedBox(props) {
                 {spouse.brid ? spouse.brid.first_name : spouse.groo.first_name}
                 <br />
                 {spouse.d_o_mar}
-                <EditDelete />
+                <EditDelete
+                  uuid={
+                    spouse.brid
+                      ? spouse.brid.uuid_family_member
+                      : spouse.groo.uuid_family_member
+                  }
+                />
               </button>
               <br />
             </div>
