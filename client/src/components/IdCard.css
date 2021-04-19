@@ -97,12 +97,7 @@
   height: 240px;
 }
 
-/* .family_image img {
-  border-radius: 20px;
-} */
-
 .person_details {
-  /* display: inline-block; */
   margin: 5px;
   float: left;
 
@@ -115,7 +110,6 @@
 }
 
 .uuid_form {
-  /* display: inline-block; */
   margin: 5px;
   float: left;
 
@@ -181,18 +175,13 @@
   flex-grow: 1;
 }
 
-/* .married_box:last-child {
-  margin-bottom: 0px;
-} */
-
 .plus_button {
   color: var(--blue3);
   background-color: yellowgreen;
   text-align: center;
   width: 35px;
   padding: 4px;
-  /* border-style: solid;
-  border-color: grey; */
+
   margin-top: 5px;
   border-radius: 5px;
   border-width: 1px;

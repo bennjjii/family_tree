@@ -1,8 +1,5 @@
-//import DataStateTemplate from "./DataStateTemplate";
-
 class StateTemplate {
   constructor() {
-    //this.dataState = new DataStateTemplate();
     this.dataState = {
       uuid_family_member: null,
       first_name: "",
