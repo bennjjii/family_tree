@@ -113,23 +113,32 @@ class IdCard extends Component {
   componentDidUpdate(prevProps, prevState) {
     this.refreshData(prevState);
     this.refreshPhoto(prevState);
-    console.log(this.state);
+    //console.log(this.state);
   }
 
   updateTarget(e) {
+    //this is the entry point for all UI navigation actions
+
     e.preventDefault();
+    switch (true) {
+      case e.target.className === "nav-btn" && !!e.target.getAttribute("uuid"):
+        this.setState({
+          dataState: {
+            ...this.state.dataState,
+            uuid_family_member: e.target.getAttribute("uuid"),
+          },
+        });
 
-    if (e.target.getAttribute("uuid")) {
-      //it's a double check but doesn't really seem necessary
-
-      this.setState({
-        dataState: {
-          ...this.state.dataState,
-          uuid_family_member: e.target.getAttribute("uuid"),
-        },
-      });
-    } else {
-      this.showNewParent(e.target.getAttribute("name"));
+        break;
+      case e.target.className === "nav-btn":
+        this.showNewParent(e.target.getAttribute("name"));
+        break;
+      case e.target.className === "edit-button":
+        console.log("uuid-to-edit");
+        break;
+      case e.target.className === "delete-button":
+        console.log("uuid-to-delete");
+        break;
     }
   }
 
@@ -163,7 +172,6 @@ class IdCard extends Component {
   }
 
   showNewParent(gender) {
-    console.log(gender);
     this.setState({
       UIstate: {
         editNewParent: true,
@@ -265,7 +273,10 @@ class IdCard extends Component {
             target={this.state.dataState.uuid_family_member}
             submitPhoto={this.submitPhoto}
           />
-          <TargetBox target={this.state.dataState} />
+          <TargetBox
+            target={this.state.dataState}
+            handleUpd={this.updateTarget}
+          />
           {/* <div className="uuid_form">
             <form onSubmit={this.handleSubmit}>
               <input

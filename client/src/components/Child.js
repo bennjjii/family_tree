@@ -35,21 +35,12 @@ const Child = (props) => {
   return (
     <div key={props.child.uuid_family_member + "child"}>
       <button
-        className="parents-btn"
+        className="nav-btn"
         name={props.child.first_name}
         onClick={props.updateTarget}
         uuid={props.child.uuid_family_member}
       >
-        <form>
-          <input style={inputStyle}></input>
-        </form>
-        <span
-          style={textStyle}
-          uuid={props.child.uuid_family_member}
-          className="child-name"
-        >
-          {_fn(props.child)}
-        </span>
+        {_fn(props.child)}
 
         <br />
         {props.child.d_o_b}

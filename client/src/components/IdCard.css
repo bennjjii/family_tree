@@ -139,7 +139,7 @@
   flex-grow: 1;
 }
 
-.parents-btn {
+.nav-btn {
   font-size: 1.25rem;
   border-style: none;
   background-color: var(--star-command-blue);
@@ -153,12 +153,12 @@
   text-align: left;
 }
 
-.parents-btn:focus {
+.nav-btn:focus {
   border-style: none;
   outline: none;
 }
 
-.parents-btn:active {
+.nav-btn:active {
   transform: translateY(4px);
   border-style: none;
   outline: none;
@@ -203,6 +203,19 @@
 
 .edit-delete {
   display: inline;
+}
+.edit-delete button {
+  background-color: Transparent;
+  border: none;
+  outline: none;
+}
+
+.edit-delete button:hover {
+  color: grey;
+}
+
+.edit-delete i {
+  pointer-events: none;
 }
 
 .fa-edit {

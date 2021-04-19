@@ -19,7 +19,7 @@ function MarriedBox(props) {
               }
             >
               <button
-                className="parents-btn"
+                className="nav-btn"
                 uuid={
                   spouse.brid
                     ? spouse.brid.uuid_family_member

@@ -7,7 +7,7 @@ const ParentsBox = (props) => {
       <div>
         <button
           name="Male"
-          className="parents-btn"
+          className="nav-btn"
           uuid={
             (props.father || {}).uuid_family_member &&
             props.father.uuid_family_member
@@ -25,7 +25,7 @@ const ParentsBox = (props) => {
         </button>
         <button
           name="Female"
-          className="parents-btn"
+          className="nav-btn"
           uuid={
             (props.mother || {}).uuid_family_member &&
             props.mother.uuid_family_member
