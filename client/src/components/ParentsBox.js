@@ -1,3 +1,5 @@
+import EditDelete from "./EditDelete";
+
 const ParentsBox = (props) => {
   return (
     <div className="parent_details">
@@ -19,6 +21,7 @@ const ParentsBox = (props) => {
               " " +
               props.father.last_name
             : "Add father"}
+          <EditDelete />
         </button>
         <button
           name="Female"
@@ -36,6 +39,7 @@ const ParentsBox = (props) => {
               " " +
               props.mother.last_name
             : "Add mother"}
+          <EditDelete />
         </button>
       </div>
     </div>

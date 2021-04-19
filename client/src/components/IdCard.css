@@ -201,12 +201,17 @@
   outline: none;
 }
 
-.fa-edit {
-  float: right;
-  transform: translateY(5px);
+.edit-delete {
+  display: inline;
 }
 
-.fa-edit:hover {
+.fa-edit {
+  margin-right: 5px;
+  margin-left: 10px;
+}
+
+.fa-edit:hover,
+.fa-trash-alt:hover {
   color: grey;
 }
 

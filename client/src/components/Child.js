@@ -1,4 +1,5 @@
 import { useState } from "react";
+import EditDelete from "./EditDelete";
 import _fn from "./fullName";
 
 const Child = (props) => {
@@ -54,7 +55,7 @@ const Child = (props) => {
         {props.child.d_o_b}
         <br />
         {props.child.gender}
-        <i onClick={handleClick} className="far fa-edit"></i>
+        <EditDelete />
       </button>
 
       <br />

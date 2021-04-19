@@ -1,4 +1,5 @@
 import React from "react";
+import EditDelete from "./EditDelete";
 
 function MarriedBox(props) {
   return (
@@ -29,6 +30,7 @@ function MarriedBox(props) {
                 {spouse.brid ? spouse.brid.first_name : spouse.groo.first_name}
                 <br />
                 {spouse.d_o_mar}
+                <EditDelete />
               </button>
               <br />
             </div>

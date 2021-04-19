@@ -121,17 +121,13 @@ class IdCard extends Component {
 
     if (e.target.getAttribute("uuid")) {
       //it's a double check but doesn't really seem necessary
-      // if (
-      //   e.target.getAttribute("uuid") !==
-      //   this.state.dataState.uuid_family_member
-      // ) {
+
       this.setState({
         dataState: {
           ...this.state.dataState,
           uuid_family_member: e.target.getAttribute("uuid"),
         },
       });
-      // }
     } else {
       this.showNewParent(e.target.getAttribute("name"));
     }
