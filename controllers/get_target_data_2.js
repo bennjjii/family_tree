@@ -1,6 +1,10 @@
 const models = require("../models");
 const { Op } = require("sequelize");
 
+//we need to identify the outside of the graph, and pass up a flag whether
+//a family member can be deleted in their current position
+//we need to check for both parents and all children
+
 exports.get_target_data = async (req, res) => {
   let target = {};
   try {
@@ -15,10 +19,30 @@ exports.get_target_data = async (req, res) => {
             {
               model: models.family_member,
               as: "mothe",
+              include: [
+                {
+                  model: models.family_member,
+                  as: "mothe",
+                },
+                {
+                  model: models.family_member,
+                  as: "fathe",
+                },
+              ],
             },
             {
               model: models.family_member,
               as: "fathe",
+              include: [
+                {
+                  model: models.family_member,
+                  as: "mothe",
+                },
+                {
+                  model: models.family_member,
+                  as: "fathe",
+                },
+              ],
             },
           ],
         })
@@ -101,7 +125,7 @@ exports.get_target_data = async (req, res) => {
       // }
     }
 
-    target.children = JSON.parse(
+    let children = JSON.parse(
       JSON.stringify(
         await models.family_member.findAll({
           where: {
@@ -122,6 +146,30 @@ exports.get_target_data = async (req, res) => {
           ],
         })
       )
+    );
+
+    // this gives us children's children which we use to check if delete is okay
+    target.children = await Promise.all(
+      children.map(async (child) => {
+        return {
+          ...child,
+
+          children: [
+            ...JSON.parse(
+              JSON.stringify(
+                await models.family_member.findAll({
+                  where: {
+                    [Op.or]: [
+                      { mother: child.uuid_family_member },
+                      { father: child.uuid_family_member },
+                    ],
+                  },
+                })
+              )
+            ),
+          ],
+        };
+      })
     );
 
     target.spouses = JSON.parse(

@@ -7,7 +7,7 @@ const ChildrenBox = (props) => {
         +
       </button>
       <h5>Children:</h5>
-      {props.children.map((child, index) => {
+      {props.dataState.children.map((child, index) => {
         return (
           <Child
             child={child}

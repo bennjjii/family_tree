@@ -1,4 +1,5 @@
 "use strict";
+const { Op } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   var family_member = sequelize.define(
@@ -81,6 +82,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
     });
+
+    // family_member.hasOne(models.family_member, {
+    //   as: "chil",
+    //   foreignKey: {
+    //     name: "father",
+    //     allowNull: true,
+    //   },
+    // });
 
     //marriage
 

@@ -21,10 +21,18 @@ const ParentsBox = (props) => {
               " " +
               props.father.last_name
             : "Add father"}
+
           <EditDelete
             uuid={
               (props.father || {}).uuid_family_member &&
               props.father.uuid_family_member
+            }
+            permitDelete={
+              props.father
+                ? props.father.father || props.father.mother
+                  ? false
+                  : true
+                : false
             }
           />
         </button>
@@ -44,10 +52,18 @@ const ParentsBox = (props) => {
               " " +
               props.mother.last_name
             : "Add mother"}
+
           <EditDelete
             uuid={
               (props.mother || {}).uuid_family_member &&
               props.mother.uuid_family_member
+            }
+            permitDelete={
+              props.mother
+                ? props.mother.father || props.mother.mother
+                  ? false
+                  : true
+                : false
             }
           />
         </button>

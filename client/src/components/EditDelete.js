@@ -13,6 +13,7 @@ const EditDelete = (props) => {
           className="delete-button"
           uuid={props.uuid}
           onClick={props.handleUpd}
+          disabled={!props.permitDelete}
         >
           <i className="far fa-trash-alt"></i>
         </button>

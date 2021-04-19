@@ -114,7 +114,7 @@ class IdCard extends Component {
   componentDidUpdate(prevProps, prevState) {
     this.refreshData(prevState);
     this.refreshPhoto(prevState);
-    //console.log(this.state);
+    console.log(this.state);
   }
 
   updateTarget(e) {
@@ -303,7 +303,7 @@ class IdCard extends Component {
             showNewSpouse={this.showNewSpouse}
           />
           <ChildrenBox
-            children={this.state.dataState.children}
+            dataState={this.state.dataState}
             updateTarget={this.updateTarget}
             showNewChild={this.showNewChild}
           />
