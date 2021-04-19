@@ -1,5 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-datepicker/dist/react-datepicker.css";
 import React, { useContext, createContext, useState } from "react";
 import {
   BrowserRouter as Router,
