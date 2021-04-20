@@ -31,11 +31,14 @@ function MarriedBox(props) {
                 <br />
                 {spouse.d_o_mar}
                 <EditDelete
+                  source={"marriage"}
                   uuid={
-                    spouse.brid
-                      ? spouse.brid.uuid_family_member
-                      : spouse.groo.uuid_family_member
+                    // spouse.brid
+                    //   ? spouse.brid.uuid_family_member
+                    //   : spouse.groo.uuid_family_member
+                    spouse.uuid_marriage
                   }
+                  permitDelete={true}
                 />
               </button>
               <br />

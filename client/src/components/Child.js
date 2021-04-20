@@ -47,6 +47,7 @@ const Child = (props) => {
         <br />
         {props.child.gender}
         <EditDelete
+          source="child"
           uuid={props.child.uuid_family_member}
           permitDelete={!props.child.children.length}
         />

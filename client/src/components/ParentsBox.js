@@ -1,4 +1,8 @@
 import EditDelete from "./EditDelete";
+import { useEffect } from "react";
+
+//parent could have other children
+//so it's not enough to check that they just don't have any parents
 
 const ParentsBox = (props) => {
   return (
@@ -23,15 +27,19 @@ const ParentsBox = (props) => {
             : "Add father"}
 
           <EditDelete
+            source="parent"
             uuid={
               (props.father || {}).uuid_family_member &&
               props.father.uuid_family_member
             }
             permitDelete={
-              props.father
-                ? props.father.father || props.father.mother
-                  ? false
-                  : true
+              (props.dataState.fathe
+                ? !(props.dataState.fathe.fathe || props.dataState.fathe.mothe)
+                : false) &&
+              (props.dataState.siblingsViaFather
+                ? props.dataState.siblingsViaFather.length <= 1
+                : false)
+                ? true
                 : false
             }
           />
@@ -52,17 +60,22 @@ const ParentsBox = (props) => {
               " " +
               props.mother.last_name
             : "Add mother"}
+          {}
 
           <EditDelete
+            source="parent"
             uuid={
               (props.mother || {}).uuid_family_member &&
               props.mother.uuid_family_member
             }
             permitDelete={
-              props.mother
-                ? props.mother.father || props.mother.mother
-                  ? false
-                  : true
+              (props.dataState.mothe
+                ? !(props.dataState.mothe.fathe || props.dataState.mothe.mothe)
+                : false) &&
+              (props.dataState.siblingsViaMother
+                ? props.dataState.siblingsViaMother.length <= 1
+                : false)
+                ? true
                 : false
             }
           />

@@ -2,6 +2,7 @@ const EditDelete = (props) => {
   return (
     <div className={"edit-delete"}>
       <button
+        source={props.source}
         className="edit-button"
         uuid={props.uuid}
         onClick={props.handleUpd}
@@ -10,6 +11,7 @@ const EditDelete = (props) => {
       </button>
       {!props.onlyEdit && (
         <button
+          source={props.source}
           className="delete-button"
           uuid={props.uuid}
           onClick={props.handleUpd}

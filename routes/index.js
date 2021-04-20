@@ -8,13 +8,12 @@ let {
   download,
 } = require("../controllers/upload_controller");
 let process_and_save_image = require("../controllers/middleware/process_and_save_image");
-
 let { get_target_data } = require("../controllers/get_target_data_2");
 let { create_new_child } = require("../controllers/create_new_child_2");
 let { create_new_parent } = require("../controllers/create_new_parent");
 let { create_new_spouse } = require("../controllers/create_new_spouse");
-
 let { delete_family_member } = require("../controllers/delete_family_member");
+let { delete_marriage } = require("../controllers/delete_marriage");
 
 router.post("/get_target_data", authenticateToken, get_target_data);
 router.post("/create_new_child", authenticateToken, create_new_child);
@@ -34,5 +33,6 @@ router.post("/logout", api.logout);
 router.post("/refresh", api.getAccessToken);
 
 router.post("/delete", authenticateToken, delete_family_member);
+router.post("/delete_marriage", authenticateToken, delete_marriage);
 
 module.exports = router;

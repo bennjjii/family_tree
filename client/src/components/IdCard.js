@@ -34,6 +34,7 @@ class IdCard extends Component {
     this.submitPhoto = this.submitPhoto.bind(this);
     this.refreshPhoto = this.refreshPhoto.bind(this);
     this.deleteFamilyMember = this.deleteFamilyMember.bind(this);
+    this.deleteMarriage = this.deleteMarriage.bind(this);
   }
 
   async componentDidMount() {
@@ -119,7 +120,7 @@ class IdCard extends Component {
 
   updateTarget(e) {
     //this is the entry point for all UI navigation actions
-
+    console.log(e.target.getAttribute("source"));
     e.preventDefault();
     switch (true) {
       case e.target.className === "nav-btn" && !!e.target.getAttribute("uuid"):
@@ -134,11 +135,21 @@ class IdCard extends Component {
       case e.target.className === "nav-btn":
         this.showNewParent(e.target.getAttribute("name"));
         break;
-      case e.target.className === "edit-button":
+      case e.target.className === "edit-button" &&
+        e.target.getAttribute("source") !== "marriage":
         console.log("edit " + e.target.getAttribute("uuid"));
         break;
-      case e.target.className === "delete-button":
+      case e.target.className === "edit-button" &&
+        e.target.getAttribute("source") === "marriage":
+        console.log("edit marriage of" + e.target.getAttribute("uuid"));
+        break;
+      case e.target.className === "delete-button" &&
+        e.target.getAttribute("source") !== "marriage":
         this.deleteFamilyMember(e.target.getAttribute("uuid"));
+        break;
+      case e.target.className === "delete-button" &&
+        e.target.getAttribute("source") === "marriage":
+        this.deleteMarriage(e.target.getAttribute("uuid"));
         break;
     }
   }
@@ -146,6 +157,12 @@ class IdCard extends Component {
   async deleteFamilyMember(target_to_delete) {
     console.log(target_to_delete);
     await this._http.axios.post("/delete", { target_to_delete });
+    this.refreshData();
+  }
+
+  async deleteMarriage(target_to_delete) {
+    console.log(target_to_delete);
+    await this._http.axios.post("/delete_marriage", { target_to_delete });
     this.refreshData();
   }
 
@@ -272,6 +289,7 @@ class IdCard extends Component {
             handleUpd={this.updateTarget}
             mother={this.state.dataState.mothe}
             father={this.state.dataState.fathe}
+            dataState={this.state.dataState}
           />
         </div>
         <div className="mid_sect">
