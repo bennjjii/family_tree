@@ -9,6 +9,7 @@ exports.get_target_data = async (req, res) => {
   let target = {};
   try {
     //change all routes to use destructuring rather than this parse stringify
+    //might also be able to pass plain = true
     target = JSON.parse(
       JSON.stringify(
         await models.family_member.findOne({

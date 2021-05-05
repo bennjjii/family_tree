@@ -33,8 +33,9 @@
 }
 
 .new-child,
-.new-spouse-component,
-.upload-dialog {
+.new-spouse,
+.upload-dialog,
+.edit-family-member {
   align-self: center;
   position: absolute;
   margin: 5px;
@@ -63,14 +64,6 @@
   justify-content: center;
   flex-wrap: wrap;
 }
-
-/* .family_image {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-
-  margin: 5px;
-  flex-shrink: 0;
-} */
 
 .family-member-photo {
   width: 240px;
@@ -227,11 +220,3 @@
 .fa-trash-alt:hover {
   color: grey;
 }
-
-/* .hidden-form {
-  display: none;
-}
-
-.child-name {
-  display: inline-block;
-} */

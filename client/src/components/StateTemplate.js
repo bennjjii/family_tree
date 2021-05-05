@@ -30,6 +30,8 @@ class StateTemplate {
       editNewParent: false,
       editNewSpouse: false,
       newParentGender: null,
+      editFamilyMember: false,
+      editMarriage: false,
     };
     this.photo = undefined;
     this.photoUrl = undefined;

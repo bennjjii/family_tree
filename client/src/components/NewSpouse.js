@@ -218,7 +218,7 @@ const NewSpouse = (props) => {
   };
 
   return (
-    <div className="new-spouse-component">
+    <div className="new-spouse">
       <h3>Add spouse</h3>
       <form onSubmit={handleSubmit}>
         <div

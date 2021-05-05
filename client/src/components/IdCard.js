@@ -13,6 +13,8 @@ import StateTemplate from "./StateTemplate";
 import { authContext } from "./services/ProvideAuth";
 import FamilyMemberPhoto from "./FamilyMemberPhoto";
 import CommonHttp from "./services/CommonHttp";
+import EditFamilyMember from "./EditFamilyMember";
+import EditMarriage from "./EditMarriage";
 
 class IdCard extends Component {
   static contextType = authContext;
@@ -35,6 +37,9 @@ class IdCard extends Component {
     this.refreshPhoto = this.refreshPhoto.bind(this);
     this.deleteFamilyMember = this.deleteFamilyMember.bind(this);
     this.deleteMarriage = this.deleteMarriage.bind(this);
+    this.showEditFamilyMember = this.showEditFamilyMember.bind(this);
+    this.editFamilyMember = this.editFamilyMember.bind(this);
+    // this.editMarriage = this.editMarriage.bind(this);
   }
 
   async componentDidMount() {
@@ -138,10 +143,12 @@ class IdCard extends Component {
       case e.target.className === "edit-button" &&
         e.target.getAttribute("source") !== "marriage":
         console.log("edit " + e.target.getAttribute("uuid"));
+        this.showEditFamilyMember();
         break;
       case e.target.className === "edit-button" &&
         e.target.getAttribute("source") === "marriage":
         console.log("edit marriage of" + e.target.getAttribute("uuid"));
+        this.showEditMarriage();
         break;
       case e.target.className === "delete-button" &&
         e.target.getAttribute("source") !== "marriage":
@@ -163,6 +170,18 @@ class IdCard extends Component {
   async deleteMarriage(target_to_delete) {
     console.log(target_to_delete);
     await this._http.axios.post("/delete_marriage", { target_to_delete });
+    this.refreshData();
+  }
+
+  async editFamilyMember(target_to_edit) {
+    console.log(target_to_edit);
+    await this._http.axios.post("/edit", { target_to_edit });
+    this.refreshData();
+  }
+
+  async editMarriage(target_to_edit) {
+    console.log(target_to_edit);
+    await this._http.axios.post("/edit_marriage", { target_to_edit });
     this.refreshData();
   }
 
@@ -246,6 +265,18 @@ class IdCard extends Component {
     this.refreshData();
   }
 
+  showEditFamilyMember() {
+    this.setState({
+      UIstate: { editFamilyMember: true },
+    });
+  }
+
+  showEditMarriage() {
+    this.setState({
+      UIstate: { editMarriage: true },
+    });
+  }
+
   render() {
     let newChildComponent;
     if (this.state.UIstate.editNewChild) {
@@ -278,11 +309,23 @@ class IdCard extends Component {
       );
     }
 
+    let editFamilyMemberComponent;
+    if (this.state.UIstate.editFamilyMember) {
+      editFamilyMemberComponent = (
+        <EditFamilyMember state={this.state.dataState} />
+      );
+    }
+    let editMarriageComponent;
+    if (this.state.UIstate.editMarriage) {
+      editMarriageComponent = <EditMarriage state={this.state.dataState} />;
+    }
+
     return (
       <div className="IdCard">
         {newChildComponent}
         {newParentComponent}
         {newSpouseComponent}
+        {editFamilyMemberComponent}
 
         <div className="top_sect">
           <ParentsBox
