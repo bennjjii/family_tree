@@ -50,20 +50,7 @@ const EditMarriage = (props) => {
           onChange={handleChangeBirth}
           selected={formData.d_o_b}
         />
-        <br />
 
-        <label>
-          Gender
-          <br />
-          <select name="gender" value={formData.gender} onChange={handleChange}>
-            {" "}
-            <option value="" selected disabled hidden>
-              ---
-            </option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-        </label>
         <br />
         <br />
         <input type="submit" value="Save"></input>

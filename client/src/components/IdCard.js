@@ -38,8 +38,9 @@ class IdCard extends Component {
     this.deleteFamilyMember = this.deleteFamilyMember.bind(this);
     this.deleteMarriage = this.deleteMarriage.bind(this);
     this.showEditFamilyMember = this.showEditFamilyMember.bind(this);
+    this.showEditMarriage = this.showEditMarriage.bind(this);
     this.editFamilyMember = this.editFamilyMember.bind(this);
-    // this.editMarriage = this.editMarriage.bind(this);
+    this.editMarriage = this.editMarriage.bind(this);
   }
 
   async componentDidMount() {
@@ -125,7 +126,6 @@ class IdCard extends Component {
 
   updateTarget(e) {
     //this is the entry point for all UI navigation actions
-    console.log(e.target.getAttribute("source"));
     e.preventDefault();
     switch (true) {
       case e.target.className === "nav-btn" && !!e.target.getAttribute("uuid"):
@@ -142,12 +142,13 @@ class IdCard extends Component {
         break;
       case e.target.className === "edit-button" &&
         e.target.getAttribute("source") !== "marriage":
-        console.log("edit " + e.target.getAttribute("uuid"));
-        this.showEditFamilyMember();
+        this.showEditFamilyMember(
+          e.target.getAttribute("source"),
+          e.target.getAttribute("uuid")
+        );
         break;
       case e.target.className === "edit-button" &&
         e.target.getAttribute("source") === "marriage":
-        console.log("edit marriage of" + e.target.getAttribute("uuid"));
         this.showEditMarriage();
         break;
       case e.target.className === "delete-button" &&
@@ -265,9 +266,13 @@ class IdCard extends Component {
     this.refreshData();
   }
 
-  showEditFamilyMember() {
+  showEditFamilyMember(mode, UUID) {
     this.setState({
-      UIstate: { editFamilyMember: true },
+      UIstate: {
+        editFamilyMember: true,
+        editFamilyMemberMode: mode,
+        editFamilyMemberUUID: UUID,
+      },
     });
   }
 
@@ -312,7 +317,11 @@ class IdCard extends Component {
     let editFamilyMemberComponent;
     if (this.state.UIstate.editFamilyMember) {
       editFamilyMemberComponent = (
-        <EditFamilyMember state={this.state.dataState} />
+        <EditFamilyMember
+          state={this.state.dataState}
+          mode={this.state.UIstate.editFamilyMemberMode}
+          UUID={this.state.UIstate.editFamilyMemberUUID}
+        />
       );
     }
     let editMarriageComponent;
@@ -326,6 +335,7 @@ class IdCard extends Component {
         {newParentComponent}
         {newSpouseComponent}
         {editFamilyMemberComponent}
+        {editMarriageComponent}
 
         <div className="top_sect">
           <ParentsBox

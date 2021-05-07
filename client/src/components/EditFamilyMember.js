@@ -3,11 +3,43 @@ import DatePicker from "react-datepicker";
 
 const EditFamilyMember = (props) => {
   const [formData, setFormData] = useState({
-    first_name: "",
-    middle_name: "",
-    last_name: "",
+    first_name: undefined,
+    middle_name: undefined,
+    last_name: undefined,
     d_o_b: null,
   });
+
+  useEffect(() => {
+    switch (props.mode) {
+      case "father":
+        setFormData({
+          first_name: props.state.fathe.first_name,
+          middle_name: props.state.fathe.middle_name,
+          last_name: props.state.fathe.last_name,
+          d_o_b: new Date(props.state.fathe.d_o_b),
+        });
+        break;
+      case "mother":
+        setFormData({
+          first_name: props.state.mothe.first_name,
+          middle_name: props.state.mothe.middle_name,
+          last_name: props.state.mothe.last_name,
+          d_o_b: new Date(props.state.mothe.d_o_b),
+        });
+        break;
+      case "child":
+        let selectedChild = props.state.children.filter((child) => {
+          return child.uuid_family_member === props.UUID;
+        })[0];
+        setFormData({
+          first_name: selectedChild.first_name,
+          middle_name: selectedChild.middle_name,
+          last_name: selectedChild.last_name,
+          d_o_b: new Date(selectedChild.d_o_b),
+        });
+        break;
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
@@ -29,6 +61,7 @@ const EditFamilyMember = (props) => {
       ...formData,
       d_o_b: date,
     });
+    console.log(formData.d_o_b);
   };
 
   const handleSubmit = (e) => {

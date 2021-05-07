@@ -27,7 +27,7 @@ const ParentsBox = (props) => {
             : "Add father"}
 
           <EditDelete
-            source="parent"
+            source="father"
             uuid={
               (props.father || {}).uuid_family_member &&
               props.father.uuid_family_member
@@ -63,7 +63,7 @@ const ParentsBox = (props) => {
           {}
 
           <EditDelete
-            source="parent"
+            source="mother"
             uuid={
               (props.mother || {}).uuid_family_member &&
               props.mother.uuid_family_member
