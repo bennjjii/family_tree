@@ -19,4 +19,5 @@ exports.edit_family_member = async (req, res) => {
     }
   );
   console.log(editedFamilyMember);
+  return res.sendStatus(200);
 };

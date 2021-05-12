@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import harold from "./harold.png";
 import axios from "axios";
 import "./IdCard.css";
 import ParentsBox from "./ParentsBox";

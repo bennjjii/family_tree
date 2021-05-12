@@ -10,4 +10,5 @@ exports.edit_marriage = async (req, res) => {
     },
     { where: { uuid_marriage } }
   );
+  return res.sendStatus(200);
 };
