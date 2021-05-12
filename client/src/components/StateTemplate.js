@@ -34,6 +34,7 @@ class StateTemplate {
       editFamilyMemberMode: undefined,
       editFamilyMemberUUID: undefined,
       editMarriage: false,
+      editMarriageUUID: undefined,
     };
     this.photo = undefined;
     this.photoUrl = undefined;

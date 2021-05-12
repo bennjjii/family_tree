@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 
 const EditFamilyMember = (props) => {
   const [formData, setFormData] = useState({
+    uuid_family_member: undefined,
     first_name: undefined,
     middle_name: undefined,
     last_name: undefined,
@@ -13,6 +14,7 @@ const EditFamilyMember = (props) => {
     switch (props.mode) {
       case "father":
         setFormData({
+          uuid_family_member: props.state.fathe.uuid_family_member,
           first_name: props.state.fathe.first_name,
           middle_name: props.state.fathe.middle_name,
           last_name: props.state.fathe.last_name,
@@ -21,6 +23,7 @@ const EditFamilyMember = (props) => {
         break;
       case "mother":
         setFormData({
+          uuid_family_member: props.state.mothe.uuid_family_member,
           first_name: props.state.mothe.first_name,
           middle_name: props.state.mothe.middle_name,
           last_name: props.state.mothe.last_name,
@@ -32,6 +35,7 @@ const EditFamilyMember = (props) => {
           return child.uuid_family_member === props.UUID;
         })[0];
         setFormData({
+          uuid_family_member: selectedChild.uuid_family_member,
           first_name: selectedChild.first_name,
           middle_name: selectedChild.middle_name,
           last_name: selectedChild.last_name,
@@ -66,7 +70,7 @@ const EditFamilyMember = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.submitNewFamilyMemberDetails(formData);
+    props.submitEditedFamilyMember(formData);
   };
 
   return (

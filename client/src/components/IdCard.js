@@ -149,7 +149,7 @@ class IdCard extends Component {
         break;
       case e.target.className === "edit-button" &&
         e.target.getAttribute("source") === "marriage":
-        this.showEditMarriage();
+        this.showEditMarriage(e.target.getAttribute("uuid"));
         break;
       case e.target.className === "delete-button" &&
         e.target.getAttribute("source") !== "marriage":
@@ -276,9 +276,9 @@ class IdCard extends Component {
     });
   }
 
-  showEditMarriage() {
+  showEditMarriage(UUID) {
     this.setState({
-      UIstate: { editMarriage: true },
+      UIstate: { editMarriage: true, editMarriageUUID: UUID },
     });
   }
 
@@ -321,12 +321,19 @@ class IdCard extends Component {
           state={this.state.dataState}
           mode={this.state.UIstate.editFamilyMemberMode}
           UUID={this.state.UIstate.editFamilyMemberUUID}
+          submitEditedFamilyMember={this.editFamilyMember}
         />
       );
     }
     let editMarriageComponent;
     if (this.state.UIstate.editMarriage) {
-      editMarriageComponent = <EditMarriage state={this.state.dataState} />;
+      editMarriageComponent = (
+        <EditMarriage
+          state={this.state.dataState}
+          UUID={this.state.UIstate.editMarriageUUID}
+          submitEditedMarriageDetails={this.editMarriage}
+        />
+      );
     }
 
     return (

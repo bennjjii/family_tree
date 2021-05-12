@@ -3,8 +3,19 @@ import DatePicker from "react-datepicker";
 
 const EditMarriage = (props) => {
   const [formData, setFormData] = useState({
-    d_o_mar: null,
+    uuid_marriage: undefined,
+    d_o_mar: undefined,
   });
+
+  useEffect(() => {
+    let selectedMarriage = props.state.spouses.filter((marriage) => {
+      return marriage.uuid_marriage === props.UUID;
+    })[0];
+    setFormData({
+      d_o_mar: new Date(selectedMarriage.d_o_mar),
+      uuid_marriage: selectedMarriage.uuid_marriage,
+    });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
@@ -21,16 +32,16 @@ const EditMarriage = (props) => {
     }
   };
 
-  const handleChangeBirth = (date) => {
+  const handleChangeMarriageDate = (date) => {
     setFormData({
       ...formData,
-      d_o_b: date,
+      d_o_mar: date,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.submitNewFamilyMemberDetails(formData);
+    props.submitEditedMarriageDetails(formData);
   };
 
   return (
@@ -39,7 +50,7 @@ const EditMarriage = (props) => {
         <h3>Edit marriage</h3>
 
         <DatePicker
-          id="birthday"
+          id="marriage"
           shouldCloseOnSelect={true}
           dateFormat="dd/MM/yyyy"
           showYearDropdown
@@ -47,8 +58,8 @@ const EditMarriage = (props) => {
           yearDropdownItemNumber={40}
           maxDate={new Date()}
           autoComplete="off"
-          onChange={handleChangeBirth}
-          selected={formData.d_o_b}
+          onChange={handleChangeMarriageDate}
+          selected={formData.d_o_mar}
         />
 
         <br />
