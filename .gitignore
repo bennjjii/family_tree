@@ -4,3 +4,4 @@ node_modules
 client/src/components/harold.png
 resources/static/assets/uploads
 seeders
+client/build

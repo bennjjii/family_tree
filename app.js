@@ -31,6 +31,7 @@ app.use(
   "/images",
   express.static(path.join(__dirname, "resources/static/assets/uploads"))
 );
+app.use(express.static(path.resolve(__dirname, "./client/build")));
 
 app.use("/", indexRouter);
 

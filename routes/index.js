@@ -17,6 +17,9 @@ let { delete_marriage } = require("../controllers/delete_marriage");
 let { edit_family_member } = require("../controllers/edit_family_member");
 let { edit_marriage } = require("../controllers/edit_marriage");
 
+router.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 router.post("/get_target_data", authenticateToken, get_target_data);
 router.post("/create_new_child", authenticateToken, create_new_child);
 router.post("/create_new_parent", authenticateToken, create_new_parent);
