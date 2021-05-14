@@ -19,15 +19,11 @@ function useProvideAuth() {
   //this needs to set a timeout to refresh the access token after x minutes
   const getAccessToken = async (context) => {
     axios
-      .post("http://localhost:5000/refresh")
+      .post("/refresh")
       .then((res) => {
         try {
-          const {
-            username,
-            uuid_user,
-            uuid_family_tree,
-            focal_member,
-          } = jwt_decode(res.data);
+          const { username, uuid_user, uuid_family_tree, focal_member } =
+            jwt_decode(res.data);
           setUser(username);
           setUuidUser(uuid_user);
           setUuidFamilyTree(uuid_family_tree);
@@ -41,7 +37,7 @@ function useProvideAuth() {
       .catch((err) => console.log(err));
   };
   const login = (loginDetails, context) => {
-    axios.post("http://localhost:5000/login", loginDetails).then((resp) => {
+    axios.post("/login", loginDetails).then((resp) => {
       if (resp.data.auth) {
         context.props.history.push("/app", { from: "Login" });
       }
@@ -50,16 +46,14 @@ function useProvideAuth() {
 
   const logout = async (context) => {
     console.log("Logout clicked");
-    await axios
-      .post("http://localhost:5000/logout", { username: user })
-      .then((resp) => {
-        console.log(resp);
-        if (resp.data.success) {
-          setUser(null);
-          setUuidUser(null);
-          setJwt(null);
-        }
-      });
+    await axios.post("/logout", { username: user }).then((resp) => {
+      console.log(resp);
+      if (resp.data.success) {
+        setUser(null);
+        setUuidUser(null);
+        setJwt(null);
+      }
+    });
   };
 
   return {
