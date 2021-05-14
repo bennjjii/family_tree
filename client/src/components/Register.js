@@ -25,11 +25,9 @@ const Login = (props) => {
       family_tree_name: familyTreeName,
     };
 
-    axios
-      .post("http://localhost:5000/register", userDetails)
-      .then((response) => {
-        props.history.push("/", { from: "Register" });
-      });
+    axios.post("/register", userDetails).then((response) => {
+      props.history.push("/", { from: "Register" });
+    });
 
     console.log(userDetails);
   };
