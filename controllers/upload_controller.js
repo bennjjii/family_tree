@@ -1,6 +1,14 @@
 const uploadFile = require("./middleware/upload");
 const fs = require("fs");
 const baseUrl = process.env.BASE_URL;
+const AWS = require("aws-sdk");
+// Configure aws
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+});
+
+let s3 = new AWS.S3();
 
 const upload_controller = async (req, res, next) => {
   //console.log(req);
@@ -69,8 +77,26 @@ const download = (req, res) => {
   });
 };
 
+const download_aws = async (req, res) => {
+  let data = await s3
+    .getObject({
+      Bucket: "geneolos3bucket",
+      Key: "user_images/union.png",
+    })
+    .promise();
+  let file = Buffer.from(data.Body).toString("base64");
+  console.log(file);
+
+  let image = "<img src='data:image/jpeg;base64," + file + "'" + "/>";
+
+  res.send(image);
+
+  //res.status(200).send();
+};
+
 module.exports = {
   upload_controller,
   getListFiles,
   download,
+  download_aws,
 };

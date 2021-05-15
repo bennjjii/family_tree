@@ -6,6 +6,7 @@ let {
   upload_controller,
   getListFiles,
   download,
+  download_aws,
 } = require("../controllers/upload_controller");
 let process_and_save_image = require("../controllers/middleware/process_and_save_image");
 let { get_target_data } = require("../controllers/get_target_data_2");
@@ -32,6 +33,7 @@ router.post(
 );
 router.get("/files", getListFiles);
 router.get("/files/:name", authenticateToken, download);
+router.get("/user_image", download_aws);
 router.post("/register", api.register);
 router.post("/login", api.login);
 router.post("/logout", api.logout);
