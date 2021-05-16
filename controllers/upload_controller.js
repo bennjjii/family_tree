@@ -19,12 +19,6 @@ const upload_controller = async (req, res, next) => {
       return res.status(400).send({ message: "Please upload a file!" });
     }
 
-    //console.log(req.file);
-
-    // res.status(200).send({
-    //   message: "Uploaded the file successfully: " + req.file.originalname,
-    // });
-    //file is now buffered
     next();
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {
@@ -77,26 +71,8 @@ const download = (req, res) => {
   });
 };
 
-const download_aws = async (req, res) => {
-  let data = await s3
-    .getObject({
-      Bucket: "geneolos3bucket",
-      Key: "user_images/union.png",
-    })
-    .promise();
-  let file = Buffer.from(data.Body).toString("base64");
-  console.log(file);
-
-  let image = "<img src='data:image/jpeg;base64," + file + "'" + "/>";
-
-  res.send(image);
-
-  //res.status(200).send();
-};
-
 module.exports = {
   upload_controller,
   getListFiles,
   download,
-  download_aws,
 };

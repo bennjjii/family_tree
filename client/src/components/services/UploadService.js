@@ -10,7 +10,7 @@ class UploadService {
     let extension = "." + splitFilename[splitFilename.length - 1];
     formData.append("file", file, target + extension);
 
-    return this._http.axios.post("/upload", formData, {
+    return this._http.axios.post("/upload_aws", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
