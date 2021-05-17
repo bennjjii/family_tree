@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 //all api requests must come as JSON, and must contain field
 // requesting_UUID_USER which can be checked here against the JWT contents
 
-exports.authenticateToken = (req, res, next) => {
+const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   //console.log("Header: " + authHeader);
   const token = authHeader;
@@ -19,3 +19,5 @@ exports.authenticateToken = (req, res, next) => {
     next();
   });
 };
+
+module.exports = authenticateToken;

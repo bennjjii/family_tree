@@ -1,12 +1,17 @@
 var express = require("express");
 var router = express.Router();
 let api = require("../controllers/api");
-let { authenticateToken } = require("../controllers/middleware/auth");
+let authenticateToken = require("../controllers/middleware/auth");
 let {
   upload_controller,
   getListFiles,
   download,
 } = require("../controllers/upload_controller");
+let {
+  download_aws,
+  multerMiddleware,
+  upload_aws,
+} = require("../controllers/middleware/aws_pipe");
 let process_and_save_image = require("../controllers/middleware/process_and_save_image");
 let { get_target_data } = require("../controllers/get_target_data_2");
 let { create_new_child } = require("../controllers/create_new_child_2");
@@ -29,9 +34,13 @@ router.post(
   authenticateToken,
   upload_controller,
   process_and_save_image
-);
-router.get("/files", getListFiles);
-router.get("/files/:name", authenticateToken, download);
+); //not used
+router.post("/upload_aws", authenticateToken, multerMiddleware, upload_aws);
+router.get("/download_aws/:name", authenticateToken, download_aws); //change to post - UUID sent as plaintext
+
+router.get("/files", getListFiles); //redundant
+router.get("/files/:name", authenticateToken, download); //not used
+
 router.post("/register", api.register);
 router.post("/login", api.login);
 router.post("/logout", api.logout);

@@ -66,8 +66,9 @@ class IdCard extends Component {
       try {
         const imageBlob = await axios({
           url:
-            process.env.REACT_APP_BASE_URL +
-            `/files/${this.state.dataState.uuid_family_member}.jpeg`,
+            //process.env.REACT_APP_BASE_URL +
+
+            `/download_aws/${this.state.dataState.uuid_family_member}.jpeg`,
           method: "GET",
           responseType: "blob",
           headers: {

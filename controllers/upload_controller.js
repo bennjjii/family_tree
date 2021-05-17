@@ -1,6 +1,14 @@
 const uploadFile = require("./middleware/upload");
 const fs = require("fs");
 const baseUrl = process.env.BASE_URL;
+const AWS = require("aws-sdk");
+// Configure aws
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+});
+
+let s3 = new AWS.S3();
 
 const upload_controller = async (req, res, next) => {
   //console.log(req);
@@ -11,12 +19,6 @@ const upload_controller = async (req, res, next) => {
       return res.status(400).send({ message: "Please upload a file!" });
     }
 
-    //console.log(req.file);
-
-    // res.status(200).send({
-    //   message: "Uploaded the file successfully: " + req.file.originalname,
-    // });
-    //file is now buffered
     next();
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {
