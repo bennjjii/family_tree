@@ -25,6 +25,7 @@ class StateTemplate {
       spouses: [],
     };
     this.UIstate = {
+      publicMode: false,
       editMode: false,
       editNewChild: false,
       editNewParent: false,
@@ -35,9 +36,12 @@ class StateTemplate {
       editFamilyMemberUUID: undefined,
       editMarriage: false,
       editMarriageUUID: undefined,
+      showSettings: false,
     };
     this.photo = undefined;
     this.photoUrl = undefined;
+    this.isPublic = undefined;
+    this.publicName = undefined;
   }
 }
 

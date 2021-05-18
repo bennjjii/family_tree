@@ -35,7 +35,8 @@
 .new-child,
 .new-spouse,
 .upload-dialog,
-.edit-family-member {
+.edit-family-member,
+.settings-dialogue {
   align-self: center;
   position: absolute;
   margin: 5px;
@@ -209,6 +210,16 @@
 
 .edit-delete i {
   pointer-events: none;
+}
+
+.settings-button {
+  background-color: Transparent;
+  border: none;
+  outline: none;
+}
+
+.settings-button:hover {
+  color: grey;
 }
 
 .fa-edit {

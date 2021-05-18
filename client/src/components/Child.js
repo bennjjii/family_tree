@@ -3,35 +3,6 @@ import EditDelete from "./EditDelete";
 import _fn from "./fullName";
 
 const Child = (props) => {
-  // const [editMode, setEditMode] = useState(false);
-  // const [inputStyle, setInputStyle] = useState({
-  //   display: "none",
-  // });
-  // const [textStyle, setTextStyle] = useState({
-  //   display: "inline-block",
-  // });
-
-  // const handleClick = (e) => {
-  //   console.log(e);
-  //   if (editMode === false) {
-  //     setEditMode(true);
-  //     setInputStyle({
-  //       display: "inline-block",
-  //     });
-  //     setTextStyle({
-  //       display: "none",
-  //     });
-  //   } else {
-  //     setEditMode(false);
-  //     setInputStyle({
-  //       display: "none",
-  //     });
-  //     setTextStyle({
-  //       display: "inline-block",
-  //     });
-  //   }
-  // };
-
   return (
     <div key={props.child.uuid_family_member + "child"}>
       <button

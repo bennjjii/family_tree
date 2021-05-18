@@ -21,6 +21,7 @@ let { delete_family_member } = require("../controllers/delete_family_member");
 let { delete_marriage } = require("../controllers/delete_marriage");
 let { edit_family_member } = require("../controllers/edit_family_member");
 let { edit_marriage } = require("../controllers/edit_marriage");
+let { getSettings, setSettings } = require("../controllers/settings");
 
 router.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
@@ -50,5 +51,14 @@ router.post("/delete", authenticateToken, delete_family_member);
 router.post("/delete_marriage", authenticateToken, delete_marriage);
 router.post("/edit", authenticateToken, edit_family_member);
 router.post("/edit_marriage", authenticateToken, edit_marriage);
+
+//account settings
+
+router.get("/getSettings", getSettings);
+router.post("/setSettings", setSettings);
+
+//accessing family trees that have been made public
+
+router.get("/public/:public_name");
 
 module.exports = router;

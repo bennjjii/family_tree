@@ -7,7 +7,25 @@ import { useEffect } from "react";
 const ParentsBox = (props) => {
   return (
     <div className="parent_details">
-      <h5>Parents: </h5>
+      <h5>
+        Parents:{" "}
+        <span
+          style={{
+            float: "right",
+            marginRight: "5px",
+          }}
+        >
+          <button
+            className="settings-button"
+            onClick={() => {
+              props.showSettings(true);
+            }}
+          >
+            <i class="fa fa-wrench" aria-hidden="true"></i>
+          </button>
+        </span>
+      </h5>
+
       <div>
         <button
           name="Male"
@@ -32,6 +50,7 @@ const ParentsBox = (props) => {
               (props.father || {}).uuid_family_member &&
               props.father.uuid_family_member
             }
+            disableEdit={props.dataState.fathe ? false : true}
             permitDelete={
               (props.dataState.fathe
                 ? !(props.dataState.fathe.fathe || props.dataState.fathe.mothe)
@@ -68,6 +87,7 @@ const ParentsBox = (props) => {
               (props.mother || {}).uuid_family_member &&
               props.mother.uuid_family_member
             }
+            disableEdit={props.dataState.mothe ? false : true}
             permitDelete={
               (props.dataState.mothe
                 ? !(props.dataState.mothe.fathe || props.dataState.mothe.mothe)

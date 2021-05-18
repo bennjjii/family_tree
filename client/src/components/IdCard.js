@@ -14,16 +14,13 @@ import FamilyMemberPhoto from "./FamilyMemberPhoto";
 import CommonHttp from "./services/CommonHttp";
 import EditFamilyMember from "./EditFamilyMember";
 import EditMarriage from "./EditMarriage";
+import SettingsDialogue from "./SettingsDialogue";
 
 class IdCard extends Component {
   static contextType = authContext;
   constructor() {
     super();
-
     this.state = new StateTemplate();
-
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTarget = this.updateTarget.bind(this);
     this.refreshData = this.refreshData.bind(this);
     this.showNewChild = this.showNewChild.bind(this);
@@ -40,6 +37,9 @@ class IdCard extends Component {
     this.showEditMarriage = this.showEditMarriage.bind(this);
     this.editFamilyMember = this.editFamilyMember.bind(this);
     this.editMarriage = this.editMarriage.bind(this);
+    this.showSettings = this.showSettings.bind(this);
+    this.getSettings = this.getSettings.bind(this);
+    this.setSettings = this.setSettings.bind(this);
   }
 
   async componentDidMount() {
@@ -282,6 +282,18 @@ class IdCard extends Component {
     });
   }
 
+  showSettings(show) {
+    this.setState({
+      UIstate: {
+        showSettings: show,
+      },
+    });
+  }
+
+  getSettings() {}
+
+  setSettings() {}
+
   render() {
     let newChildComponent;
     if (this.state.UIstate.editNewChild) {
@@ -336,6 +348,11 @@ class IdCard extends Component {
       );
     }
 
+    let settingsComponent;
+    if (this.state.UIstate.showSettings) {
+      settingsComponent = <SettingsDialogue />;
+    }
+
     return (
       <div className="IdCard">
         {newChildComponent}
@@ -343,6 +360,7 @@ class IdCard extends Component {
         {newSpouseComponent}
         {editFamilyMemberComponent}
         {editMarriageComponent}
+        {settingsComponent}
 
         <div className="top_sect">
           <ParentsBox
@@ -350,6 +368,7 @@ class IdCard extends Component {
             mother={this.state.dataState.mothe}
             father={this.state.dataState.fathe}
             dataState={this.state.dataState}
+            showSettings={this.showSettings}
           />
         </div>
         <div className="mid_sect">
