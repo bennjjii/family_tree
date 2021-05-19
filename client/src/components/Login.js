@@ -49,8 +49,19 @@ export class Login extends Component {
   render() {
     return (
       <>
+        <br />
+        <h2>Checkout these families:</h2>
+        <br />
+        <br />
+        <div style={this.flexStyle}>
+          <PublicTreeButton familyTreeName="Windsor" />
+          <PublicTreeButton familyTreeName="Jackson" />
+          <PublicTreeButton familyTreeName="Henry VIII" />
+          <PublicTreeButton familyTreeName="Some Japanese family" />
+        </div>
+
         <form onSubmit={this.onSubmit} className="loginForm">
-          <h2>Login</h2>
+          <h4>Or login and build your own</h4>
           <div className="form-group">
             <label>Username:</label>
             <input
@@ -81,13 +92,6 @@ export class Login extends Component {
           </Link>
         </form>
         <br />
-        <h4>Or checkout these families:</h4>
-        <div style={this.flexStyle}>
-          <PublicTreeButton familyTreeName="Windsor" />
-          <PublicTreeButton familyTreeName="Jackson" />
-          <PublicTreeButton familyTreeName="Henry VIII" />
-          <PublicTreeButton familyTreeName="Some Japanese family" />
-        </div>
       </>
     );
   }

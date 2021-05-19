@@ -184,6 +184,17 @@
   float: right;
 }
 
+.public-tree-button {
+  color: var(--blue3);
+  background-color: yellowgreen;
+  text-align: center;
+  border-radius: 5px;
+  border-width: 1px;
+  box-shadow: 1px 1px 3px hsl(0, 0%, 20%);
+  width: 100px;
+  margin-bottom: 10px;
+}
+
 .plus_button:focus {
   border-style: none;
   outline: none;
