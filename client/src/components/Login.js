@@ -4,6 +4,7 @@ import axios from "axios";
 
 import { Link, History } from "react-router-dom";
 import { authContext } from "./services/ProvideAuth";
+import PublicTreeButton from "./PublicTreeButton";
 
 export class Login extends Component {
   static contextType = authContext;
@@ -12,6 +13,13 @@ export class Login extends Component {
     this.state = {
       username: "",
       password: "",
+    };
+    this.flexStyle = {
+      maxWidth: "70%",
+      margin: "auto",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-between",
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -40,37 +48,47 @@ export class Login extends Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit} className="loginForm">
-        <h2>Login</h2>
-        <div className="form-group">
-          <label>Username:</label>
-          <input
-            type="text"
-            value={this.state.username}
-            name="username"
-            onChange={this.handleChange}
-            className="form-control"
-            id="username"
-          />
+      <>
+        <form onSubmit={this.onSubmit} className="loginForm">
+          <h2>Login</h2>
+          <div className="form-group">
+            <label>Username:</label>
+            <input
+              type="text"
+              value={this.state.username}
+              name="username"
+              onChange={this.handleChange}
+              className="form-control"
+              id="username"
+            />
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              value={this.state.password}
+              name="password"
+              onChange={this.handleChange}
+              className="form-control"
+              id="pwd"
+            />
+          </div>
+          <button type="submit" className="btn btn-default">
+            Submit
+          </button>
+          <Link to="/register" className="nav-link">
+            Register
+          </Link>
+        </form>
+        <br />
+        <h4>Or checkout these families:</h4>
+        <div style={this.flexStyle}>
+          <PublicTreeButton familyTreeName="Windsor" />
+          <PublicTreeButton familyTreeName="Jackson" />
+          <PublicTreeButton familyTreeName="Henry VIII" />
+          <PublicTreeButton familyTreeName="Some Japanese family" />
         </div>
-        <div className="form-group">
-          <label>Password:</label>
-          <input
-            type="password"
-            value={this.state.password}
-            name="password"
-            onChange={this.handleChange}
-            className="form-control"
-            id="pwd"
-          />
-        </div>
-        <button type="submit" className="btn btn-default">
-          Submit
-        </button>
-        <Link to="/register" className="nav-link">
-          Register
-        </Link>
-      </form>
+      </>
     );
   }
 }
