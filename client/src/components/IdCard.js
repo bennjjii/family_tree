@@ -44,17 +44,23 @@ class IdCard extends Component {
 
   async componentDidMount() {
     this._http = new CommonHttp(this.context.jwt);
-    this.setState(
-      {
+    if (this.context.showPublic.publicMode) {
+      console.log(this.context.showPublic.focal_member);
+      this.setState({
+        dataState: {
+          ...this.state.dataState,
+          uuid_family_member: this.context.showPublic.focal_member,
+        },
+      });
+    } else {
+      this.setState({
         dataState: {
           ...this.state.dataState,
           uuid_family_member: this.context.focus,
         },
-      }
-      // () => {
-      //   console.log(this.state);
-      // }
-    );
+      });
+    }
+    console.log(this.props.location);
   }
 
   async refreshPhoto(prevState) {

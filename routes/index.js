@@ -22,6 +22,7 @@ let { delete_marriage } = require("../controllers/delete_marriage");
 let { edit_family_member } = require("../controllers/edit_family_member");
 let { edit_marriage } = require("../controllers/edit_marriage");
 let { getSettings, setSettings } = require("../controllers/settings");
+let { find_public_tree } = require("../controllers/find_public_tree");
 
 router.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
@@ -60,5 +61,6 @@ router.post("/setSettings", setSettings);
 //accessing family trees that have been made public
 
 router.get("/public/:public_name");
+router.get("/find_public_tree/:publicTreeName", find_public_tree);
 
 module.exports = router;

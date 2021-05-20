@@ -5,7 +5,6 @@ class StateTemplate {
       first_name: "",
       middle_name: "",
       last_name: "",
-
       d_o_b: null,
       d_o_d: null,
       gender: null,
@@ -25,7 +24,6 @@ class StateTemplate {
       spouses: [],
     };
     this.UIstate = {
-      publicMode: false,
       editMode: false,
       editNewChild: false,
       editNewParent: false,

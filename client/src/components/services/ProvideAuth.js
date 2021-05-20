@@ -17,7 +17,9 @@ function useProvideAuth() {
   const [uuidFamilyTree, setUuidFamilyTree] = useState(null);
   const [jwt, setJwt] = useState(null);
   //here we can handle displaying public trees
-
+  const [showPublic, setShowPublic] = useState({
+    publicMode: false,
+  });
   //this needs to set a timeout to refresh the access token after x minutes
   const getAccessToken = async (context) => {
     axios
@@ -54,8 +56,11 @@ function useProvideAuth() {
         setUser(null);
         setUuidUser(null);
         setJwt(null);
+        setShowPublic({ publicMode: false });
       }
     });
+    //console.log(Object.keys(context));
+    //context.props.history.push("/login", { from: "App" });
   };
 
   return {
@@ -65,6 +70,8 @@ function useProvideAuth() {
     focus,
     setFocus,
     jwt,
+    showPublic,
+    setShowPublic,
     login,
     logout,
     getAccessToken,
