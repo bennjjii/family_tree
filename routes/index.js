@@ -14,6 +14,9 @@ let {
 } = require("../controllers/middleware/aws_pipe");
 let process_and_save_image = require("../controllers/middleware/process_and_save_image");
 let { get_target_data } = require("../controllers/get_target_data_2");
+let {
+  get_target_data_public,
+} = require("../controllers/get_target_data_public");
 let { create_new_child } = require("../controllers/create_new_child_2");
 let { create_new_parent } = require("../controllers/create_new_parent");
 let { create_new_spouse } = require("../controllers/create_new_spouse");
@@ -28,7 +31,7 @@ router.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 router.post("/get_target_data", authenticateToken, get_target_data);
-router.post("/get_target_data_public");
+router.post("/get_target_data_public", get_target_data_public);
 router.post("/create_new_child", authenticateToken, create_new_child);
 router.post("/create_new_parent", authenticateToken, create_new_parent);
 router.post("/create_new_spouse", authenticateToken, create_new_spouse);

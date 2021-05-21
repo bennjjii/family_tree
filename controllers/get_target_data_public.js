@@ -49,14 +49,24 @@ exports.get_target_data_public = async (req, res) => {
         })
       )
     );
-
-    let checkPublic = models.family_tree.findOne({
-      where: {
-        uuid_family_tree: target.uuid_family_tree,
-      },
-    });
-    console.log(checkPublic);
-
+    let isPublic = false;
+    try {
+      ({ isPublic } = await models.family_tree.findOne({
+        where: {
+          uuid_family_tree: target.uuid_family_tree,
+        },
+        raw: true,
+      }));
+      console.log("Found");
+      console.log(isPublic);
+    } catch (err) {
+      console.log("Not found");
+      console.log(err);
+      throw new Error("Family tree not found");
+    }
+    if (isPublic === false) {
+      throw new Error("Family tree not public");
+    }
     //need this to support edge case where we need to add a target's mother or father from their other siblings
     if (target.mothe) {
       target.siblingsViaMother = JSON.parse(

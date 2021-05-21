@@ -46,30 +46,33 @@ class IdCard extends Component {
     this._http = new CommonHttp(this.context.jwt);
     if (this.context.showPublic.publicMode) {
       console.log(this.context.showPublic.focal_member);
-      this.setState({
-        dataState: {
-          ...this.state.dataState,
-          uuid_family_member: this.context.showPublic.focal_member,
-        },
-      });
-      this.setState({
-        UIstate: {
-          ...this.state.UIstate,
-          getTargetDataUrl: "/get_target_data_public",
-        },
+
+      this.setState((prevState, prevProps) => {
+        return {
+          dataState: {
+            ...prevState.dataState,
+            uuid_family_member: this.context.showPublic.focal_member,
+          },
+
+          UIstate: {
+            ...prevState.UIstate,
+            getTargetDataUrl: "/get_target_data_public",
+          },
+        };
       });
     } else {
-      this.setState({
-        dataState: {
-          ...this.state.dataState,
-          uuid_family_member: this.context.focus,
-        },
-      });
-      this.setState({
-        UIstate: {
-          ...this.state.UIstate,
-          getTargetDataUrl: "/get_target_data",
-        },
+      this.setState((prevState, prevProps) => {
+        return {
+          dataState: {
+            ...prevState.dataState,
+            uuid_family_member: this.context.focus,
+          },
+
+          UIstate: {
+            ...prevState.UIstate,
+            getTargetDataUrl: "/get_target_data",
+          },
+        };
       });
     }
     console.log(this.props.location);
@@ -245,26 +248,17 @@ class IdCard extends Component {
         this.refreshData();
       }
     );
-
-    // this.setState(
-    //   {
-    //     UIstate: {
-    //       ...this.state.UIstate,
-    //       editNewChild: false,
-    //     },
-    //   },
-    //   () => {
-    //     this.refreshData();
-    //   }
-    // );
   }
 
   showNewParent(gender) {
-    this.setState({
-      UIstate: {
-        editNewParent: true,
-        newParentGender: gender,
-      },
+    this.setState((prevState, prevProps) => {
+      return {
+        UIstate: {
+          ...prevState.UIstate,
+          editNewParent: true,
+          newParentGender: gender,
+        },
+      };
     });
   }
 
@@ -272,11 +266,16 @@ class IdCard extends Component {
     await this._http.axios.post("/create_new_parent", newParentDetails);
 
     this.setState(
-      {
-        UIstate: {
-          editNewParent: false,
-        },
+      (prevState, prevProps) => {
+        return {
+          UIstate: {
+            ...prevState.UIstate,
+            editNewParent: false,
+            newParentGender: undefined,
+          },
+        };
       },
+
       () => {
         this.refreshData();
       }
@@ -284,8 +283,13 @@ class IdCard extends Component {
   }
 
   showNewSpouse() {
-    this.setState({
-      UIstate: { editNewSpouse: true },
+    this.setState((prevState, prevProps) => {
+      return {
+        UIstate: {
+          ...prevState.UIstate,
+          editNewSpouse: true,
+        },
+      };
     });
   }
 
@@ -294,11 +298,15 @@ class IdCard extends Component {
     await this._http.axios.post("/create_new_spouse", newSpouseDetails);
 
     this.setState(
-      {
-        UIstate: {
-          editNewSpouse: false,
-        },
+      (prevState, prevProps) => {
+        return {
+          UIstate: {
+            ...prevState.UIstate,
+            editNewSpouse: false,
+          },
+        };
       },
+
       () => {
         this.refreshData();
       }
@@ -311,26 +319,38 @@ class IdCard extends Component {
   }
 
   showEditFamilyMember(mode, UUID) {
-    this.setState({
-      UIstate: {
-        editFamilyMember: true,
-        editFamilyMemberMode: mode,
-        editFamilyMemberUUID: UUID,
-      },
+    this.setState((prevState, prevProps) => {
+      return {
+        UIstate: {
+          ...prevState.UIstate,
+          editFamilyMember: true,
+          editFamilyMemberMode: mode,
+          editFamilyMemberUUID: UUID,
+        },
+      };
     });
   }
 
   showEditMarriage(UUID) {
-    this.setState({
-      UIstate: { editMarriage: true, editMarriageUUID: UUID },
+    this.setState((prevState, prevProps) => {
+      return {
+        UIstate: {
+          ...prevState.UIstate,
+          editMarriage: true,
+          editMarriageUUID: UUID,
+        },
+      };
     });
   }
 
   showSettings(show) {
-    this.setState({
-      UIstate: {
-        showSettings: show,
-      },
+    this.setState((prevState, prevProps) => {
+      return {
+        UIstate: {
+          ...prevState.UIstate,
+          showSettings: show,
+        },
+      };
     });
   }
 
