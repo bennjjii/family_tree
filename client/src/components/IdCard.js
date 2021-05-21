@@ -52,11 +52,23 @@ class IdCard extends Component {
           uuid_family_member: this.context.showPublic.focal_member,
         },
       });
+      this.setState({
+        UIstate: {
+          ...this.state.UIstate,
+          getTargetDataUrl: "/get_target_data_public",
+        },
+      });
     } else {
       this.setState({
         dataState: {
           ...this.state.dataState,
           uuid_family_member: this.context.focus,
+        },
+      });
+      this.setState({
+        UIstate: {
+          ...this.state.UIstate,
+          getTargetDataUrl: "/get_target_data",
         },
       });
     }
@@ -104,20 +116,27 @@ class IdCard extends Component {
   }
 
   async refreshData(prevState) {
+    console.log(this.state);
     if (prevState) {
       if (
         this.state.dataState.uuid_family_member !==
         prevState.dataState.uuid_family_member
       ) {
         const request = { target: this.state.dataState.uuid_family_member };
-        const data = await this._http.axios.post("/get_target_data", request);
+        const data = await this._http.axios.post(
+          this.state.UIstate.getTargetDataUrl,
+          request
+        );
         this.setState({ dataState: data.data }, () => {
           this.context.setFocus(this.state.dataState.uuid_family_member);
         });
       }
     } else {
       const request = { target: this.state.dataState.uuid_family_member };
-      const data = await this._http.axios.post("/get_target_data", request);
+      const data = await this._http.axios.post(
+        this.state.UIstate.getTargetDataUrl,
+        request
+      );
       this.setState({ dataState: data.data }, () => {
         this.context.setFocus(this.state.dataState.uuid_family_member);
       });
@@ -195,10 +214,13 @@ class IdCard extends Component {
   showNewChild(parentGender) {
     console.log(parentGender);
     this.setState(
-      {
-        UIstate: {
-          editNewChild: true,
-        },
+      (prevState, prevProps) => {
+        return {
+          UIstate: {
+            ...prevState.UIstate,
+            editNewChild: true,
+          },
+        };
       },
       () => {
         console.log(this.state);
@@ -209,16 +231,32 @@ class IdCard extends Component {
   async submitNewChild(newChildDetails) {
     console.log(newChildDetails);
     await this._http.axios.post("/create_new_child", newChildDetails);
+
     this.setState(
-      {
-        UIstate: {
-          editNewChild: false,
-        },
+      (prevState, prevProps) => {
+        return {
+          UIstate: {
+            ...prevState.UIstate,
+            editNewChild: false,
+          },
+        };
       },
       () => {
         this.refreshData();
       }
     );
+
+    // this.setState(
+    //   {
+    //     UIstate: {
+    //       ...this.state.UIstate,
+    //       editNewChild: false,
+    //     },
+    //   },
+    //   () => {
+    //     this.refreshData();
+    //   }
+    // );
   }
 
   showNewParent(gender) {

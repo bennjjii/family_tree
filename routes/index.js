@@ -28,6 +28,7 @@ router.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 router.post("/get_target_data", authenticateToken, get_target_data);
+router.post("/get_target_data_public");
 router.post("/create_new_child", authenticateToken, create_new_child);
 router.post("/create_new_parent", authenticateToken, create_new_parent);
 router.post("/create_new_spouse", authenticateToken, create_new_spouse);
