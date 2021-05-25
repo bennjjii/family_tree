@@ -18,7 +18,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import { ProvideAuth, authContext } from "./components/services/ProvideAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
-import LoadPublicRoute from "./components/LoadPublicRoute";
+//import LoadPublicRoute from "./components/LoadPublicRoute";
 import LoadPublicRoute2 from "./components/LoadPublicRoute2";
 
 class App extends React.Component {

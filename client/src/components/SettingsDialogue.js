@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const SettingsDialogue = (props) => {
   const [formData, setFormData] = useState({
@@ -6,9 +6,17 @@ const SettingsDialogue = (props) => {
     publicName: undefined,
   });
 
+  useEffect(() => {
+    setFormData({
+      isPublic: props.isPublic,
+      publicName: props.publicName,
+    });
+    console.log(props);
+  }, [props]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.updateSettings(formData);
+    props.setSettings(formData);
   };
 
   return (
@@ -23,7 +31,7 @@ const SettingsDialogue = (props) => {
             onChange={(e) => {
               setFormData({
                 ...formData,
-                isPublic: !e.target.checked,
+                isPublic: e.target.checked,
               });
             }}
           />{" "}
@@ -35,6 +43,12 @@ const SettingsDialogue = (props) => {
             type="text"
             name="publicName"
             value={formData.publicName}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                publicName: e.target.value,
+              });
+            }}
           ></input>
         </label>
         <input type="submit" value="Save" />

@@ -11,18 +11,21 @@ const LoadPublicRoute2 = (props) => {
   const auth = useAuth();
   console.log(props.match.params.publicRoute);
 
-  useEffect(async () => {
-    try {
-      let res = await axios.get(
-        `/find_public_tree/${props.match.params.publicRoute}`
-      );
+  useEffect(() => {
+    async function publicRoute() {
+      try {
+        let res = await axios.get(
+          `/find_public_tree/${props.match.params.publicRoute}`
+        );
 
-      console.log(res.data);
-      auth.setShowPublic({ ...res.data, publicMode: true });
-      props.history.push("/app");
-    } catch (error) {
-      props.history.push("/login");
+        console.log(res.data);
+        auth.setShowPublic({ ...res.data, publicMode: true });
+        props.history.push("/app");
+      } catch (error) {
+        props.history.push("/login");
+      }
     }
+    publicRoute();
   }, [props]);
   return null;
 };

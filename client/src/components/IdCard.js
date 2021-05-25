@@ -78,6 +78,7 @@ class IdCard extends Component {
       });
     }
     console.log(this.props.location);
+    this.getSettings();
   }
 
   async refreshPhoto(prevState) {
@@ -151,6 +152,7 @@ class IdCard extends Component {
   componentDidUpdate(prevProps, prevState) {
     this.refreshData(prevState);
     this.refreshPhoto(prevState);
+
     console.log(this.state);
   }
 
@@ -356,9 +358,26 @@ class IdCard extends Component {
     });
   }
 
-  getSettings() {}
+  async getSettings() {
+    console.log("GettingSettings");
+    let settings = await this._http.axios.get("/get_settings");
+    console.log(settings);
+    this.setState((prevState, prevProps) => {
+      return {
+        isPublic: settings.data.isPublic,
+        publicName: settings.data.publicName,
+      };
+    });
+  }
 
-  setSettings() {}
+  async setSettings(formData) {
+    console.log(formData);
+    let updatedSettings = await this._http.axios.post(
+      "/set_settings",
+      formData
+    );
+    this.getSettings();
+  }
 
   render() {
     let newChildComponent;
@@ -416,7 +435,13 @@ class IdCard extends Component {
 
     let settingsComponent;
     if (this.state.UIstate.showSettings) {
-      settingsComponent = <SettingsDialogue />;
+      settingsComponent = (
+        <SettingsDialogue
+          isPublic={this.state.isPublic}
+          publicName={this.state.publicName}
+          setSettings={this.setSettings}
+        />
+      );
     }
 
     return (

@@ -13,17 +13,18 @@ exports.create_new_spouse = async (req, res) => {
             last_name: req.body.last_name,
             gender: req.body.target_gender === "Male" ? "Female" : "Male",
             d_o_b: req.body.d_o_b,
+            //this comes from the JWT and so protects cross account modifications
             uuid_family_tree: req.user.uuid_family_tree,
           })
         )
       );
+
       if (req.body.add_existing_children) {
         updatedChildren = await req.body.existing_children.map((child) => {
           return models.family_member.update(
             {
-              [req.body.target_gender === "Male"
-                ? "mother"
-                : "father"]: newSpouse.uuid_family_member,
+              [req.body.target_gender === "Male" ? "mother" : "father"]:
+                newSpouse.uuid_family_member,
             },
             {
               where: {
@@ -51,6 +52,7 @@ exports.create_new_spouse = async (req, res) => {
               ? req.body.selected_parent
               : newSpouse.uuid_family_member,
           d_o_mar: req.body.d_o_mar,
+          //this comes from the JWT and so protects cross account modifications
           uuid_family_tree: req.user.uuid_family_tree,
         })
       )

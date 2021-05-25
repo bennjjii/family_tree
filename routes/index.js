@@ -25,7 +25,7 @@ let { delete_family_member } = require("../controllers/delete_family_member");
 let { delete_marriage } = require("../controllers/delete_marriage");
 let { edit_family_member } = require("../controllers/edit_family_member");
 let { edit_marriage } = require("../controllers/edit_marriage");
-let { getSettings, setSettings } = require("../controllers/settings");
+let { get_settings, set_settings } = require("../controllers/settings");
 let { find_public_tree } = require("../controllers/find_public_tree");
 
 router.get("/", (req, res) => {
@@ -61,8 +61,8 @@ router.post("/edit_marriage", authenticateToken, edit_marriage);
 
 //account settings
 
-router.get("/getSettings", getSettings);
-router.post("/setSettings", setSettings);
+router.get("/get_settings", authenticateToken, get_settings);
+router.post("/set_settings", authenticateToken, set_settings);
 
 //accessing family trees that have been made public
 
