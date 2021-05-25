@@ -57,6 +57,7 @@ class IdCard extends Component {
           UIstate: {
             ...prevState.UIstate,
             getTargetDataUrl: "/get_target_data_public",
+            getTargetPhotoUrl: "/download_aws_public/",
           },
         };
       });
@@ -71,6 +72,7 @@ class IdCard extends Component {
           UIstate: {
             ...prevState.UIstate,
             getTargetDataUrl: "/get_target_data",
+            getTargetPhotoUrl: "/download_aws/",
           },
         };
       });
@@ -89,7 +91,7 @@ class IdCard extends Component {
           url:
             //process.env.REACT_APP_BASE_URL +
 
-            `/download_aws/${this.state.dataState.uuid_family_member}.jpeg`,
+            `${this.state.UIstate.getTargetPhotoUrl}${this.state.dataState.uuid_family_member}.jpeg`,
           method: "GET",
           responseType: "blob",
           headers: {

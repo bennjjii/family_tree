@@ -27,6 +27,8 @@ const getSettings = async (req, res) => {
 const setSettings = async (req, res) => {
   //how do we check if name is already taken?
   //it has unique constraint so just let it error out
+  //just because user gets past authenticate token
+  //doesn't mean they have the right to change family tree permissions
   try {
     console.log(req.body);
     //let { uuid_family_tree } = req.user;

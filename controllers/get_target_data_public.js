@@ -49,6 +49,9 @@ exports.get_target_data_public = async (req, res) => {
         })
       )
     );
+
+    //this checks whether the family tree is public and errors out if not
+
     let isPublic = false;
     try {
       ({ isPublic } = await models.family_tree.findOne({
@@ -213,7 +216,7 @@ exports.get_target_data_public = async (req, res) => {
     //console.log(target);
     res.json(target);
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     res.sendStatus(403);
   }
 };

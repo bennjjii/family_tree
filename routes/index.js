@@ -9,6 +9,7 @@ let {
 } = require("../controllers/upload_controller");
 let {
   download_aws,
+  download_aws_public,
   multerMiddleware,
   upload_aws,
 } = require("../controllers/middleware/aws_pipe");
@@ -43,6 +44,7 @@ router.post(
 ); //not used
 router.post("/upload_aws", authenticateToken, multerMiddleware, upload_aws);
 router.get("/download_aws/:name", authenticateToken, download_aws); //change to post - UUID sent as plaintext
+router.get("/download_aws_public/:name", download_aws_public); //change to post - UUID sent as plaintext
 
 router.get("/files", getListFiles); //redundant
 router.get("/files/:name", authenticateToken, download); //not used

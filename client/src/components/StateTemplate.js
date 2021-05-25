@@ -36,6 +36,7 @@ class StateTemplate {
       editMarriageUUID: undefined,
       showSettings: false,
       getTargetDataUrl: "/get_target_data",
+      getTargetPhotoUrl: "/download_aws/",
     };
     this.photo = undefined;
     this.photoUrl = undefined;
