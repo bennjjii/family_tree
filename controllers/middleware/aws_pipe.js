@@ -4,6 +4,7 @@ const maxSize = 2 * 4092 * 4092;
 const sharp = require("sharp");
 var fs = require("fs");
 const models = require("../../models");
+const validator = require("validator");
 
 // Configure aws
 const AWS = require("aws-sdk");
@@ -45,41 +46,72 @@ const download_aws = async (req, res) => {
 };
 
 const download_aws_public = async (req, res) => {
-  console.log(req.params.name);
-  console.log("Public aws request");
-  try {
-    let currentFamilyMember = await models.family_member.findOne({
-      where: {
-        uuid_family_member: req.params.name.split(".")[0],
-      },
-      raw: true,
-    });
-    console.log(currentFamilyMember);
-    let currentFamilyTree = await models.family_tree.findOne({
-      where: {
-        uuid_family_tree: currentFamilyMember.uuid_family_tree,
-      },
-      raw: true,
-    });
-    console.log(currentFamilyTree);
-    if (currentFamilyTree.isPublic === false) {
-      throw new Error("Family tree not public");
+  const getPublicPhoto = async (uuid) => {
+    console.log("Getting photo of" + uuid);
+    try {
+      let currentFamilyMember = await models.family_member.findOne({
+        where: {
+          uuid_family_member: uuid,
+        },
+        raw: true,
+      });
+      console.log(currentFamilyMember);
+      let currentFamilyTree = await models.family_tree.findOne({
+        where: {
+          uuid_family_tree: currentFamilyMember.uuid_family_tree,
+        },
+        raw: true,
+      });
+      console.log(currentFamilyTree);
+      if (currentFamilyTree.isPublic === false) {
+        throw new Error("Family tree not public");
+      }
+
+      let data = await s3
+        .getObject({
+          Bucket: "geneolos3bucket",
+          Key: `user_images/${uuid}.jpeg`,
+        })
+        .promise();
+      let file = Buffer.from(data.Body);
+
+      console.log(file);
+
+      res.send(file);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(404);
     }
-    let fName = req.params.name;
-    let data = await s3
-      .getObject({
-        Bucket: "geneolos3bucket",
-        Key: `user_images/${fName}`,
-      })
-      .promise();
-    let file = Buffer.from(data.Body);
+  };
 
-    console.log(file);
-
-    res.send(file);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(404);
+  console.log("Public aws request");
+  // console.log(req.params.name);
+  let fName = req.params.name;
+  let trimmedFname = fName.split(".")[0];
+  // console.log(fName);
+  // console.log(trimmedFname);
+  if (validator.isUUID(trimmedFname, 4)) {
+    console.log("UUID");
+    await getPublicPhoto(trimmedFname);
+  } else {
+    //get uuid and then etc etc
+    console.log("lookup");
+    console.log(fName);
+    try {
+      let res = await models.family_tree.findOne({
+        where: {
+          publicName: fName,
+        },
+        raw: true,
+      });
+      console.log(res);
+      if (res) {
+        await getPublicPhoto(res.focal_member);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    //await getPublicPhoto(focal_member);
   }
 };
 

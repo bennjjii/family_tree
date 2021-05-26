@@ -54,10 +54,22 @@ export class Login extends Component {
         <br />
         <br />
         <div style={this.flexStyle}>
-          <PublicTreeButton familyTreeName="Windsor" />
-          <PublicTreeButton familyTreeName="Jackson" />
-          <PublicTreeButton familyTreeName="Henry VIII" />
-          <PublicTreeButton familyTreeName="Some Japanese family" />
+          <PublicTreeButton
+            familyTreeName="House of Windsor"
+            familyTreeRoute="windsor"
+          />
+          <PublicTreeButton
+            familyTreeName="Jackson Family"
+            familyTreeRoute="jackson"
+          />
+          <PublicTreeButton
+            familyTreeName="House of Tudor"
+            familyTreeRoute="tudor"
+          />
+          <PublicTreeButton
+            familyTreeName="Japanese Imperial Family"
+            familyTreeRoute="japaneseimperialfamily"
+          />
         </div>
 
         <form onSubmit={this.onSubmit} className="loginForm">
