@@ -1,4 +1,3 @@
-import harold from "./harold.png";
 import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
