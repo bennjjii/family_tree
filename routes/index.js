@@ -29,9 +29,6 @@ let { edit_marriage } = require("../controllers/edit_marriage");
 let { get_settings, set_settings } = require("../controllers/settings");
 let { find_public_tree } = require("../controllers/find_public_tree");
 
-router.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
-});
 router.post("/get_target_data", authenticateToken, get_target_data);
 router.post("/get_target_data_public", get_target_data_public);
 router.post("/create_new_child", authenticateToken, create_new_child);
@@ -68,7 +65,11 @@ router.post("/set_settings", authenticateToken, set_settings);
 
 //accessing family trees that have been made public
 
-router.get("/public/:public_name");
+//router.get("/public/:public_name");
 router.get("/find_public_tree/:publicTreeName", find_public_tree);
+
+router.get("/*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 
 module.exports = router;
