@@ -32,7 +32,7 @@ class App extends React.Component {
       <ProvideAuth>
         <Router>
           <div className="App">
-            <Navbar ctx={this} />
+            <Navbar />
             <Switch>
               {/* <LoadPublicRoute
                 path="/public/:publicRoute"

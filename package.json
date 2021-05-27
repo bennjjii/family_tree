@@ -26,8 +26,7 @@
     "pug": "^3.0.2",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
-    "sharp": "^0.28.2",
-    "validator": "^13.6.0"
+    "sharp": "^0.28.2"
   },
   "devDependencies": {
     "concurrently": "^5.3.0"

@@ -40,15 +40,15 @@ function useProvideAuth() {
       })
       .catch((err) => console.log(err));
   };
-  const login = (loginDetails, context) => {
+  const login = (loginDetails, history) => {
     axios.post("/login", loginDetails).then((resp) => {
       if (resp.data.auth) {
-        context.props.history.push("/app", { from: "Login" });
+        history.push("/app", { from: "Login" });
       }
     });
   };
 
-  const logout = async (context) => {
+  const logout = async (history) => {
     console.log("Logout clicked");
     await axios.post("/logout", { username: user }).then((resp) => {
       console.log(resp);
@@ -57,6 +57,7 @@ function useProvideAuth() {
         setUuidUser(null);
         setJwt(null);
         setShowPublic({ publicMode: false });
+        history.push("/login");
       }
     });
     //console.log(Object.keys(context));

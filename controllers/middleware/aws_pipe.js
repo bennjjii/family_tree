@@ -4,7 +4,6 @@ const maxSize = 2 * 4092 * 4092;
 const sharp = require("sharp");
 var fs = require("fs");
 const models = require("../../models");
-const validator = require("validator");
 
 // Configure aws
 const AWS = require("aws-sdk");
@@ -25,7 +24,7 @@ const multerFilter = (req, file, cb) => {
 const multerMemoryStorage = multer.memoryStorage();
 
 const download_aws = async (req, res) => {
-  console.log(req.params.name);
+  //console.log(req.params.name);
   try {
     let fName = req.params.name;
     let data = await s3
@@ -46,72 +45,77 @@ const download_aws = async (req, res) => {
 };
 
 const download_aws_public = async (req, res) => {
-  const getPublicPhoto = async (uuid) => {
-    console.log("Getting photo of" + uuid);
-    try {
-      let currentFamilyMember = await models.family_member.findOne({
-        where: {
-          uuid_family_member: uuid,
-        },
-        raw: true,
-      });
-      console.log(currentFamilyMember);
-      let currentFamilyTree = await models.family_tree.findOne({
-        where: {
-          uuid_family_tree: currentFamilyMember.uuid_family_tree,
-        },
-        raw: true,
-      });
-      console.log(currentFamilyTree);
-      if (currentFamilyTree.isPublic === false) {
-        throw new Error("Family tree not public");
-      }
-
-      let data = await s3
-        .getObject({
-          Bucket: "geneolos3bucket",
-          Key: `user_images/${uuid}.jpeg`,
-        })
-        .promise();
-      let file = Buffer.from(data.Body);
-
-      console.log(file);
-
-      res.send(file);
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(404);
-    }
-  };
-
-  console.log("Public aws request");
-  // console.log(req.params.name);
   let fName = req.params.name;
-  let trimmedFname = fName.split(".")[0];
-  // console.log(fName);
-  // console.log(trimmedFname);
-  if (validator.isUUID(trimmedFname, 4)) {
-    console.log("UUID");
-    await getPublicPhoto(trimmedFname);
-  } else {
-    //get uuid and then etc etc
-    console.log("lookup");
-    console.log(fName);
-    try {
-      let res = await models.family_tree.findOne({
-        where: {
-          publicName: fName,
-        },
-        raw: true,
-      });
-      console.log(res);
-      if (res) {
-        await getPublicPhoto(res.focal_member);
-      }
-    } catch (err) {
-      console.log(err);
+  let uuid = fName.split(".")[0];
+
+  try {
+    let currentFamilyMember = await models.family_member.findOne({
+      where: {
+        uuid_family_member: uuid,
+      },
+      raw: true,
+    });
+    //console.log(currentFamilyMember);
+    let currentFamilyTree = await models.family_tree.findOne({
+      where: {
+        uuid_family_tree: currentFamilyMember.uuid_family_tree,
+      },
+      raw: true,
+    });
+    //console.log(currentFamilyTree);
+    if (currentFamilyTree.isPublic === false) {
+      throw new Error("Family tree not public");
     }
-    //await getPublicPhoto(focal_member);
+
+    let data = await s3
+      .getObject({
+        Bucket: "geneolos3bucket",
+        Key: `user_images/${uuid}.jpeg`,
+      })
+      .promise();
+    let file = Buffer.from(data.Body);
+
+    console.log(file);
+
+    res.send(file);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(404);
+  }
+};
+
+const get_button_thumbnail = async (req, res) => {
+  let publicName = req.params.public_name;
+  try {
+    let resp = await models.family_tree.findOne({
+      where: {
+        publicName,
+      },
+      raw: true,
+    });
+    //console.log("get_button_thumbnail: " + publicName);
+    //console.log(resp);
+    if (resp === null) {
+      throw new Error("Family tree not found");
+    }
+    if (resp.isPublic !== true) {
+      throw new Error("Family tree not public");
+    }
+
+    let data = await s3
+      .getObject({
+        Bucket: "geneolos3bucket",
+        Key: `user_images/${resp.focal_member}.jpeg`,
+      })
+      .promise();
+    let file = Buffer.from(data.Body);
+
+    console.log(file);
+
+    res.send(file);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(404);
   }
 };
 
@@ -154,6 +158,7 @@ const upload_aws = async (req, res) => {
 module.exports = {
   download_aws,
   download_aws_public,
+  get_button_thumbnail,
   multerMiddleware,
   upload_aws,
 };

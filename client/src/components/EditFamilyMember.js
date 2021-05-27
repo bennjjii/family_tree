@@ -42,6 +42,15 @@ const EditFamilyMember = (props) => {
           d_o_b: new Date(selectedChild.d_o_b),
         });
         break;
+      case "target":
+        setFormData({
+          uuid_family_member: props.state.uuid_family_member,
+          first_name: props.state.first_name,
+          middle_name: props.state.middle_name,
+          last_name: props.state.last_name,
+          d_o_b: new Date(props.state.d_o_b),
+        });
+        break;
     }
   }, []);
 

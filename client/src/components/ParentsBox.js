@@ -23,7 +23,7 @@ const ParentsBox = (props) => {
                 props.showSettings(true);
               }}
             >
-              <i class="fa fa-wrench" aria-hidden="true"></i>
+              <i className="fa fa-wrench" aria-hidden="true"></i>
             </button>
           )}
         </span>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
-import { Link, History } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { authContext } from "./services/ProvideAuth";
 import PublicTreeButton from "./PublicTreeButton";
 
@@ -43,7 +43,7 @@ export class Login extends Component {
       username: this.state.username,
       password: this.state.password,
     };
-    this.context.login(loginDetails, this);
+    this.context.login(loginDetails, this.props.history);
   }
 
   render() {

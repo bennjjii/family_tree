@@ -13,23 +13,31 @@ const PublicTreeButton = (props) => {
   const [imgUrl, setImgUrl] = useState(undefined);
 
   useEffect(() => {
+    let isMounted = true;
     async function getImg() {
       try {
         const imageBlob = await axios({
-          url: `/download_aws_public/${props.familyTreeRoute}`,
+          url: `/get_button_thumbnail/${props.familyTreeRoute}`,
           method: "GET",
           responseType: "blob",
         });
 
-        setImg(imageBlob.data);
+        if (isMounted && imageBlob.data) {
+          setImg(imageBlob.data);
+        }
       } catch (err) {
         console.log(err);
-        setImg(undefined);
-        setImgUrl(undefined);
+        if (isMounted) {
+          setImg(undefined);
+          setImgUrl(undefined);
+        }
       }
     }
     getImg();
-  }, [props]);
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (img) {
