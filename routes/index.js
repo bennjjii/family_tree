@@ -69,6 +69,7 @@ router.post("/set_settings", authenticateToken, set_settings);
 router.get("/find_public_tree/:publicTreeName", find_public_tree);
 
 router.get("/*", (req, res) => {
+  console.log("path hit");
   res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 
