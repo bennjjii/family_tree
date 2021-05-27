@@ -18,6 +18,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import { ProvideAuth, authContext } from "./components/services/ProvideAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
+//import LoadPublicRoute from "./components/LoadPublicRoute";
+import LoadPublicRoute2 from "./components/LoadPublicRoute2";
 
 class App extends React.Component {
   constructor(props) {
@@ -30,12 +32,23 @@ class App extends React.Component {
       <ProvideAuth>
         <Router>
           <div className="App">
-            <Navbar ctx={this} />
+            <Navbar />
             <Switch>
-              <Route path="/" exact component={Login} />
+              {/* <LoadPublicRoute
+                path="/public/:publicRoute"
+                exact
+                component={IdCard}
+              /> */}
+              <Route
+                path="/public/:publicRoute"
+                exact
+                component={LoadPublicRoute2}
+              />
+              <ProtectedRoute path="/app" exact component={IdCard} />
+              <ProtectedRoute path="/" exact component={IdCard} />
+              {/* <Route path="/" exact component={Login} /> */}
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={Register} />
-              <ProtectedRoute path="/app" exact component={IdCard} />
             </Switch>
           </div>
         </Router>

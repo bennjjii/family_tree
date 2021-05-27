@@ -1,6 +1,6 @@
 const models = require("../models");
 
-exports.edit_family_member = async (req, res) => {
+const edit_family_member = async (req, res) => {
   let { first_name, middle_name, last_name, d_o_b, uuid_family_member } =
     req.body.target_to_edit;
 
@@ -20,4 +20,8 @@ exports.edit_family_member = async (req, res) => {
   );
   console.log(editedFamilyMember);
   return res.sendStatus(200);
+};
+
+module.exports = {
+  edit_family_member,
 };

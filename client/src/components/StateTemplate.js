@@ -5,7 +5,6 @@ class StateTemplate {
       first_name: "",
       middle_name: "",
       last_name: "",
-
       d_o_b: null,
       d_o_d: null,
       gender: null,
@@ -35,9 +34,14 @@ class StateTemplate {
       editFamilyMemberUUID: undefined,
       editMarriage: false,
       editMarriageUUID: undefined,
+      showSettings: false,
+      getTargetDataUrl: "/get_target_data",
+      getTargetPhotoUrl: "/download_aws/",
     };
     this.photo = undefined;
     this.photoUrl = undefined;
+    this.isPublic = undefined;
+    this.publicName = undefined;
   }
 }
 

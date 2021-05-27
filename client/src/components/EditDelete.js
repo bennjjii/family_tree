@@ -6,6 +6,7 @@ const EditDelete = (props) => {
         className="edit-button"
         uuid={props.uuid}
         onClick={props.handleUpd}
+        disabled={props.disableEdit ? props.disableEdit : false}
       >
         <i className="far fa-edit"></i>
       </button>

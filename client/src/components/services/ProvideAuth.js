@@ -16,6 +16,10 @@ function useProvideAuth() {
   const [focus, setFocus] = useState(null);
   const [uuidFamilyTree, setUuidFamilyTree] = useState(null);
   const [jwt, setJwt] = useState(null);
+  //here we can handle displaying public trees
+  const [showPublic, setShowPublic] = useState({
+    publicMode: false,
+  });
   //this needs to set a timeout to refresh the access token after x minutes
   const getAccessToken = async (context) => {
     axios
@@ -36,15 +40,15 @@ function useProvideAuth() {
       })
       .catch((err) => console.log(err));
   };
-  const login = (loginDetails, context) => {
+  const login = (loginDetails, history) => {
     axios.post("/login", loginDetails).then((resp) => {
       if (resp.data.auth) {
-        context.props.history.push("/app", { from: "Login" });
+        history.push("/app", { from: "Login" });
       }
     });
   };
 
-  const logout = async (context) => {
+  const logout = async (history) => {
     console.log("Logout clicked");
     await axios.post("/logout", { username: user }).then((resp) => {
       console.log(resp);
@@ -52,8 +56,12 @@ function useProvideAuth() {
         setUser(null);
         setUuidUser(null);
         setJwt(null);
+        setShowPublic({ publicMode: false });
+        history.push("/login");
       }
     });
+    //console.log(Object.keys(context));
+    //context.props.history.push("/login", { from: "App" });
   };
 
   return {
@@ -63,6 +71,8 @@ function useProvideAuth() {
     focus,
     setFocus,
     jwt,
+    showPublic,
+    setShowPublic,
     login,
     logout,
     getAccessToken,
