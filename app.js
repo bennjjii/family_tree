@@ -34,7 +34,7 @@ app.use(
 app.use(express.static(path.resolve(__dirname, "./client/build")));
 
 //should match all routes here?
-app.use("/*", indexRouter);
+app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
