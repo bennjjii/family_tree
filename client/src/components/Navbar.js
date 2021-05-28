@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "./services/ProvideAuth";
 
 const Navbar = (props) => {
   const auth = useAuth();
+  const history = useHistory();
 
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -27,7 +28,7 @@ const Navbar = (props) => {
             <Link
               to="/login"
               className="nav-link"
-              onClick={() => auth.logout(props.ctx)}
+              onClick={() => auth.logout(history)}
             >
               Logout
             </Link>

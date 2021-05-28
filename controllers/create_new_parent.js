@@ -14,6 +14,7 @@ exports.create_new_parent = async (req, res) => {
             last_name: req.body.last_name,
             gender: req.body.gender,
             d_o_b: req.body.d_o_b,
+            //this comes from the JWT and so protects cross account modifications
             uuid_family_tree: req.user.uuid_family_tree,
           })
         )
@@ -35,9 +36,9 @@ exports.create_new_parent = async (req, res) => {
       JSON.stringify(
         await models.family_member.update(
           {
-            [parent.gender === "Male"
-              ? "father"
-              : "mother"]: parent.uuid_family_member,
+            [parent.gender === "Male" ? "father" : "mother"]:
+              parent.uuid_family_member,
+            //this comes from the JWT and so protects cross account modifications
             uuid_family_tree: req.user.uuid_family_tree,
           },
           {
@@ -54,6 +55,7 @@ exports.create_new_parent = async (req, res) => {
         JSON.stringify(
           await models.marriage.create({
             d_o_mar: req.body.d_o_mar,
+            //this comes from the JWT and so protects cross account modifications
             uuid_family_tree: req.user.uuid_family_tree,
             bride: req.body.bride ? req.body.bride : parent.uuid_family_member,
             groom: req.body.groom ? req.body.groom : parent.uuid_family_member,

@@ -3,6 +3,7 @@ const multer = require("multer");
 const maxSize = 2 * 4092 * 4092;
 const sharp = require("sharp");
 var fs = require("fs");
+const models = require("../../models");
 
 // Configure aws
 const AWS = require("aws-sdk");
@@ -23,13 +24,88 @@ const multerFilter = (req, file, cb) => {
 const multerMemoryStorage = multer.memoryStorage();
 
 const download_aws = async (req, res) => {
-  console.log(req.params.name);
+  //console.log(req.params.name);
   try {
     let fName = req.params.name;
     let data = await s3
       .getObject({
         Bucket: "geneolos3bucket",
         Key: `user_images/${fName}`,
+      })
+      .promise();
+    let file = Buffer.from(data.Body);
+
+    console.log(file);
+
+    res.send(file);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(404);
+  }
+};
+
+const download_aws_public = async (req, res) => {
+  let fName = req.params.name;
+  let uuid = fName.split(".")[0];
+
+  try {
+    let currentFamilyMember = await models.family_member.findOne({
+      where: {
+        uuid_family_member: uuid,
+      },
+      raw: true,
+    });
+    //console.log(currentFamilyMember);
+    let currentFamilyTree = await models.family_tree.findOne({
+      where: {
+        uuid_family_tree: currentFamilyMember.uuid_family_tree,
+      },
+      raw: true,
+    });
+    //console.log(currentFamilyTree);
+    if (currentFamilyTree.isPublic === false) {
+      throw new Error("Family tree not public");
+    }
+
+    let data = await s3
+      .getObject({
+        Bucket: "geneolos3bucket",
+        Key: `user_images/${uuid}.jpeg`,
+      })
+      .promise();
+    let file = Buffer.from(data.Body);
+
+    console.log(file);
+
+    res.send(file);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(404);
+  }
+};
+
+const get_button_thumbnail = async (req, res) => {
+  let publicName = req.params.public_name;
+  try {
+    let resp = await models.family_tree.findOne({
+      where: {
+        publicName,
+      },
+      raw: true,
+    });
+    //console.log("get_button_thumbnail: " + publicName);
+    //console.log(resp);
+    if (resp === null) {
+      throw new Error("Family tree not found");
+    }
+    if (resp.isPublic !== true) {
+      throw new Error("Family tree not public");
+    }
+
+    let data = await s3
+      .getObject({
+        Bucket: "geneolos3bucket",
+        Key: `user_images/${resp.focal_member}.jpeg`,
       })
       .promise();
     let file = Buffer.from(data.Body);
@@ -81,6 +157,8 @@ const upload_aws = async (req, res) => {
 
 module.exports = {
   download_aws,
+  download_aws_public,
+  get_button_thumbnail,
   multerMiddleware,
   upload_aws,
 };

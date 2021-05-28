@@ -30,7 +30,7 @@ const FamilyMemberPhoto = (props) => {
           <img src={props.photourl} alt="photograph" />
         </div>
       )}
-      {!props.photourl && (
+      {!props.photourl && !thisContext.showPublic.publicMode && (
         <div className="display-upload-form">
           <input type="file" accept="image/*" onChange={selectFile} />
 

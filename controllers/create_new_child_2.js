@@ -11,6 +11,7 @@ exports.create_new_child = async (req, res) => {
       d_o_b: req.body.d_o_b,
       father: req.body.father,
       mother: req.body.mother,
+      //this comes from the JWT and so protects cross account modifications
       uuid_family_tree: req.user.uuid_family_tree,
     });
     res.sendStatus(200);

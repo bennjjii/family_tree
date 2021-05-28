@@ -1,15 +1,37 @@
 import EditDelete from "./EditDelete";
-import { useEffect } from "react";
+import { useAuth } from "./services/ProvideAuth";
 
 //parent could have other children
 //so it's not enough to check that they just don't have any parents
 
 const ParentsBox = (props) => {
+  const thisContext = useAuth();
   return (
     <div className="parent_details">
-      <h5>Parents: </h5>
+      <h5>
+        Parents:{" "}
+        <span
+          style={{
+            float: "right",
+            marginRight: "5px",
+          }}
+        >
+          {!thisContext.showPublic.publicMode && (
+            <button
+              className="settings-button"
+              onClick={() => {
+                props.showSettings(true);
+              }}
+            >
+              <i className="fa fa-wrench" aria-hidden="true"></i>
+            </button>
+          )}
+        </span>
+      </h5>
+
       <div>
         <button
+          disabled={thisContext.showPublic.publicMode && !props.father}
           name="Male"
           className="nav-btn"
           uuid={
@@ -24,27 +46,35 @@ const ParentsBox = (props) => {
               props.father.middle_name +
               " " +
               props.father.last_name
-            : "Add father"}
+            : !thisContext.showPublic.publicMode
+            ? "Add father"
+            : "..."}
 
-          <EditDelete
-            source="father"
-            uuid={
-              (props.father || {}).uuid_family_member &&
-              props.father.uuid_family_member
-            }
-            permitDelete={
-              (props.dataState.fathe
-                ? !(props.dataState.fathe.fathe || props.dataState.fathe.mothe)
-                : false) &&
-              (props.dataState.siblingsViaFather
-                ? props.dataState.siblingsViaFather.length <= 1
-                : false)
-                ? true
-                : false
-            }
-          />
+          {!thisContext.showPublic.publicMode && (
+            <EditDelete
+              source="father"
+              uuid={
+                (props.father || {}).uuid_family_member &&
+                props.father.uuid_family_member
+              }
+              disableEdit={props.dataState.fathe ? false : true}
+              permitDelete={
+                (props.dataState.fathe
+                  ? !(
+                      props.dataState.fathe.fathe || props.dataState.fathe.mothe
+                    )
+                  : false) &&
+                (props.dataState.siblingsViaFather
+                  ? props.dataState.siblingsViaFather.length <= 1
+                  : false)
+                  ? true
+                  : false
+              }
+            />
+          )}
         </button>
         <button
+          disabled={thisContext.showPublic.publicMode && !props.mother}
           name="Female"
           className="nav-btn"
           uuid={
@@ -59,26 +89,33 @@ const ParentsBox = (props) => {
               props.mother.middle_name +
               " " +
               props.mother.last_name
-            : "Add mother"}
+            : !thisContext.showPublic.publicMode
+            ? "Add mother"
+            : "..."}
           {}
 
-          <EditDelete
-            source="mother"
-            uuid={
-              (props.mother || {}).uuid_family_member &&
-              props.mother.uuid_family_member
-            }
-            permitDelete={
-              (props.dataState.mothe
-                ? !(props.dataState.mothe.fathe || props.dataState.mothe.mothe)
-                : false) &&
-              (props.dataState.siblingsViaMother
-                ? props.dataState.siblingsViaMother.length <= 1
-                : false)
-                ? true
-                : false
-            }
-          />
+          {!thisContext.showPublic.publicMode && (
+            <EditDelete
+              source="mother"
+              uuid={
+                (props.mother || {}).uuid_family_member &&
+                props.mother.uuid_family_member
+              }
+              disableEdit={props.dataState.mothe ? false : true}
+              permitDelete={
+                (props.dataState.mothe
+                  ? !(
+                      props.dataState.mothe.fathe || props.dataState.mothe.mothe
+                    )
+                  : false) &&
+                (props.dataState.siblingsViaMother
+                  ? props.dataState.siblingsViaMother.length <= 1
+                  : false)
+                  ? true
+                  : false
+              }
+            />
+          )}
         </button>
       </div>
     </div>

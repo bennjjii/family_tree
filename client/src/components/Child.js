@@ -1,36 +1,10 @@
 import { useState } from "react";
 import EditDelete from "./EditDelete";
 import _fn from "./fullName";
+import { useAuth } from "./services/ProvideAuth";
 
 const Child = (props) => {
-  // const [editMode, setEditMode] = useState(false);
-  // const [inputStyle, setInputStyle] = useState({
-  //   display: "none",
-  // });
-  // const [textStyle, setTextStyle] = useState({
-  //   display: "inline-block",
-  // });
-
-  // const handleClick = (e) => {
-  //   console.log(e);
-  //   if (editMode === false) {
-  //     setEditMode(true);
-  //     setInputStyle({
-  //       display: "inline-block",
-  //     });
-  //     setTextStyle({
-  //       display: "none",
-  //     });
-  //   } else {
-  //     setEditMode(false);
-  //     setInputStyle({
-  //       display: "none",
-  //     });
-  //     setTextStyle({
-  //       display: "inline-block",
-  //     });
-  //   }
-  // };
+  const thisContext = useAuth();
 
   return (
     <div key={props.child.uuid_family_member + "child"}>
@@ -41,16 +15,18 @@ const Child = (props) => {
         uuid={props.child.uuid_family_member}
       >
         {_fn(props.child)}
-        Children: {props.child.children.length}
+        {/* Children: {props.child.children.length} */}
         <br />
         {props.child.d_o_b}
         <br />
-        {props.child.gender}
-        <EditDelete
-          source="child"
-          uuid={props.child.uuid_family_member}
-          permitDelete={!props.child.children.length}
-        />
+        {/* {props.child.gender} */}
+        {!thisContext.showPublic.publicMode && (
+          <EditDelete
+            source="child"
+            uuid={props.child.uuid_family_member}
+            permitDelete={!props.child.children.length}
+          />
+        )}
       </button>
 
       <br />

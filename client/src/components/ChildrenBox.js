@@ -1,11 +1,15 @@
 import Child from "./Child";
+import { useAuth } from "./services/ProvideAuth";
 
 const ChildrenBox = (props) => {
+  const thisContext = useAuth();
   return (
     <div className="children_box">
-      <button className="plus_button" onClick={props.showNewChild}>
-        +
-      </button>
+      {!thisContext.showPublic.publicMode && (
+        <button className="plus_button" onClick={props.showNewChild}>
+          +
+        </button>
+      )}
       <h5>Children:</h5>
       {props.dataState.children.map((child, index) => {
         return (

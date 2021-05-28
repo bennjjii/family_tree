@@ -16,6 +16,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
+    isPublic: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
+    },
+    publicName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
+    },
   });
 
   family_tree.associate = (models) => {
