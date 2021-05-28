@@ -26,15 +26,22 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+//app.use(express.static(path.join(__dirname, "public")));
 app.use(
   "/images",
   express.static(path.join(__dirname, "resources/static/assets/uploads"))
 );
-app.use(express.static(path.resolve(__dirname, "./client/build")));
 
 //should match all routes here?
-app.use("/", indexRouter);
+app.use(indexRouter);
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+app.get("/*", (req, res) => {
+  console.log("path hit");
+  console.log(req.originalUrl);
+  console.log(req.baseUrl);
+  console.log(__dirname);
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

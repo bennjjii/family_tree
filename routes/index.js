@@ -1,4 +1,5 @@
 var express = require("express");
+var path = require("path");
 var router = express.Router();
 let api = require("../controllers/api");
 let authenticateToken = require("../controllers/middleware/auth");
@@ -68,9 +69,14 @@ router.post("/set_settings", authenticateToken, set_settings);
 //router.get("/public/:public_name");
 router.get("/find_public_tree/:publicTreeName", find_public_tree);
 
-router.get("/*", (req, res) => {
-  console.log("path hit");
-  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
-});
+//app.use(express.static(path.resolve(__dirname, "./client/build")));
+// router.get("/", (req, res) => {
+//   console.log("path hit");
+//   console.log(req.originalUrl);
+//   console.log(req.baseUrl);
+//   console.log(__dirname);
+//   res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+// });
+//router.use(express.static(path.resolve(__dirname, "./client/build")));
 
 module.exports = router;

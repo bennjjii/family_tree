@@ -40,7 +40,7 @@ class App extends React.Component {
                 component={IdCard}
               /> */}
               <Route
-                path="/public/:publicRoute"
+                path="/public_tree/:publicRoute"
                 exact
                 component={LoadPublicRoute2}
               />

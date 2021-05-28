@@ -52,7 +52,7 @@ const PublicTreeButton = (props) => {
       <button
         className="public-tree-button"
         onClick={() => {
-          history.push(`/public/${props.familyTreeRoute}`);
+          history.push(`/public_tree/${props.familyTreeRoute}`);
         }}
       >
         <img src={imgUrl} style={imgStyle} />
