@@ -7,6 +7,11 @@ const PublicTreeButton = (props) => {
     width: "60px",
     height: "60px",
   };
+  const boxStyle = {
+    width: "100px",
+    marginBottom: "10px",
+    padding: "5px",
+  };
   const history = useHistory();
   const [img, setImg] = useState(undefined);
   const [imgUrl, setImgUrl] = useState(undefined);
@@ -50,7 +55,8 @@ const PublicTreeButton = (props) => {
   return (
     <>
       <button
-        className="public-tree-button"
+        className="highlight-card shadow-sm"
+        style={boxStyle}
         onClick={() => {
           history.push(`/public_tree/${props.familyTreeRoute}`);
         }}

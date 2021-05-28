@@ -31,7 +31,7 @@ class App extends React.Component {
     return (
       <ProvideAuth>
         <Router>
-          <div className="App">
+          <div className="app">
             <Navbar />
             <Switch>
               {/* <LoadPublicRoute

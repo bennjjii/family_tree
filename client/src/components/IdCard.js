@@ -445,7 +445,7 @@ class IdCard extends Component {
     }
 
     return (
-      <div className="IdCard">
+      <div className="idcard transparent-bg transparent-card">
         {newChildComponent}
         {newParentComponent}
         {newSpouseComponent}
@@ -453,7 +453,7 @@ class IdCard extends Component {
         {editMarriageComponent}
         {settingsComponent}
 
-        <div className="top_sect">
+        <div className="idcard-sect">
           <ParentsBox
             handleUpd={this.updateTarget}
             mother={this.state.dataState.mothe}
@@ -462,7 +462,7 @@ class IdCard extends Component {
             showSettings={this.showSettings}
           />
         </div>
-        <div className="mid_sect">
+        <div className="idcard-sect ">
           <FamilyMemberPhoto
             photourl={this.state.photoUrl}
             target={this.state.dataState.uuid_family_member}
@@ -484,7 +484,7 @@ class IdCard extends Component {
             </form>
           </div> */}
         </div>
-        <div className="btm_sect">
+        <div className="idcard-sect">
           <MarriedBox
             spouses={this.state.dataState.spouses}
             handleUpd={this.updateTarget}

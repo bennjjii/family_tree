@@ -1,4 +1,4 @@
-.IdCard {
+.IdCardx {
   position: relative;
   /* top: 50%;
   left: 50%; */
@@ -14,14 +14,8 @@
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
 }
 
-.IdCard h4 {
+.IdCardx h4 {
   padding-top: 10px;
-}
-
-.top_sect {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
 .new-person-form {
@@ -58,12 +52,6 @@
   background-color: var(--blue-green);
   padding: 10px;
   flex-grow: 1;
-}
-
-.mid_sect {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
 .family-member-photo {
@@ -113,11 +101,6 @@
   padding: 20px;
   flex-grow: 1;
   flex-basis: 300px;
-}
-
-.btm_sect {
-  display: flex;
-  flex-wrap: wrap;
 }
 
 .married_box {
