@@ -116,7 +116,7 @@
   flex-grow: 1;
 }
 
-.nav-btn {
+/* .nav-btn {
   font-size: 1.25rem;
   border-style: none;
   background-color: var(--star-command-blue);
@@ -139,7 +139,7 @@
   transform: translateY(4px);
   border-style: none;
   outline: none;
-}
+} */
 
 .children_box {
   margin: 5px;

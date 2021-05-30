@@ -131,7 +131,7 @@ const NewChild = (props) => {
   };
 
   return (
-    <div className="new-child">
+    <div className="idcard-form translucent-card">
       <h3>Add child</h3>
       <form onSubmit={handleSubmit}>
         <label>

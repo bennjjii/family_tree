@@ -4,9 +4,9 @@ import { useAuth } from "./services/ProvideAuth";
 const ChildrenBox = (props) => {
   const thisContext = useAuth();
   return (
-    <div className="children_box">
+    <div className="idcard-component transparent-card shadow-sm">
       {!thisContext.showPublic.publicMode && (
-        <button className="plus_button" onClick={props.showNewChild}>
+        <button className="plus-button" onClick={props.showNewChild}>
           +
         </button>
       )}

@@ -158,9 +158,10 @@ class IdCard extends Component {
 
   updateTarget(e) {
     //this is the entry point for all UI navigation actions
+    console.log(e.target.id);
     e.preventDefault();
     switch (true) {
-      case e.target.className === "nav-btn" && !!e.target.getAttribute("uuid"):
+      case e.target.id === "nav-btn" && !!e.target.getAttribute("uuid"):
         this.setState({
           dataState: {
             ...this.state.dataState,
@@ -169,7 +170,7 @@ class IdCard extends Component {
         });
 
         break;
-      case e.target.className === "nav-btn":
+      case e.target.id === "nav-btn":
         this.showNewParent(e.target.getAttribute("name"));
         break;
       case e.target.className === "edit-button" &&

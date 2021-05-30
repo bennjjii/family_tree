@@ -83,7 +83,7 @@ const EditFamilyMember = (props) => {
   };
 
   return (
-    <div className="edit-family-member">
+    <div className="idcard-form translucent-card">
       <form onSubmit={handleSubmit}>
         <h3>Edit</h3>
 

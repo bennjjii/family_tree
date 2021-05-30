@@ -5,11 +5,11 @@ import { useAuth } from "./services/ProvideAuth";
 function MarriedBox(props) {
   const thisContext = useAuth();
   return (
-    <div className="married_box">
+    <div className="idcard-component transparent-card shadow-sm">
       {!thisContext.showPublic.publicMode && (
         <button
           disabled={thisContext.showPublic.publicMode}
-          className="plus_button"
+          className="plus-button"
           onClick={props.showNewSpouse}
         >
           +
@@ -27,7 +27,8 @@ function MarriedBox(props) {
               }
             >
               <button
-                className="nav-btn"
+                id="nav-btn"
+                className="idcard-button transparent-card transparent-bg shadow-sm"
                 uuid={
                   spouse.brid
                     ? spouse.brid.uuid_family_member

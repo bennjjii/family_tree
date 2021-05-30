@@ -218,7 +218,7 @@ const NewSpouse = (props) => {
   };
 
   return (
-    <div className="new-spouse">
+    <div className="idcard-form translucent-card">
       <h3>Add spouse</h3>
       <form onSubmit={handleSubmit}>
         <div

@@ -31,6 +31,7 @@ const ParentsBox = (props) => {
 
       <div>
         <button
+          id="nav-btn"
           disabled={thisContext.showPublic.publicMode && !props.father}
           name="Male"
           className="idcard-button transparent-card transparent-bg shadow-sm"
@@ -74,6 +75,7 @@ const ParentsBox = (props) => {
           )}
         </button>
         <button
+          id="nav-btn"
           disabled={thisContext.showPublic.publicMode && !props.mother}
           name="Female"
           className="idcard-button transparent-card transparent-bg shadow-sm"
