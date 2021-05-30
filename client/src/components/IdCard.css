@@ -1,9 +1,5 @@
-.IdCardx {
+/* .IdCardx {
   position: relative;
-  /* top: 50%;
-  left: 50%; */
-  /* -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%); */
   text-align: left;
   border: grey;
   border-width: 3px;
@@ -12,20 +8,20 @@
   background-color: var(--star-command-blue);
   border-radius: 15px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
-}
+} */
 
-.IdCardx h4 {
+/* .IdCardx h4 {
   padding-top: 10px;
-}
+} */
 
-.new-person-form {
+/* .new-person-form {
   margin: 5px;
   border-radius: 15px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
   background-color: var(--blue-green);
   padding: 10px;
-}
-
+} */
+/* 
 .new-child,
 .new-spouse,
 .upload-dialog,
@@ -42,9 +38,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
-}
+} */
 
-.parent_details {
+/* .parent_details {
   margin: 5px;
   float: left;
   border-radius: 15px;
@@ -52,21 +48,21 @@
   background-color: var(--blue-green);
   padding: 10px;
   flex-grow: 1;
-}
+} */
 
-.family-member-photo {
+/* .family-member-photo {
   width: 240px;
   height: 240px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
-  /* display: inline-block; */
+   display: inline-block; 
   background-color: var(--blue-green);
   margin: 5px;
   flex-shrink: 0;
   overflow: hidden;
-}
+} */
 
-.family-member-photo img {
+/* .family-member-photo img {
   object-fit: cover;
   width: 240px;
   height: 240px;
@@ -77,9 +73,9 @@
   position: absolute;
   width: 240px;
   height: 240px;
-}
+} */
 
-.person_details {
+/* .person_details {
   margin: 5px;
   float: left;
 
@@ -101,9 +97,9 @@
   padding: 20px;
   flex-grow: 1;
   flex-basis: 300px;
-}
+} */
 
-.married_box {
+/* .married_box {
   margin: 5px;
   border: grey;
   border-width: 3px;
@@ -114,7 +110,7 @@
   background-color: var(--blue-green);
 
   flex-grow: 1;
-}
+} */
 
 /* .nav-btn {
   font-size: 1.25rem;
@@ -141,7 +137,7 @@
   outline: none;
 } */
 
-.children_box {
+/* .children_box {
   margin: 5px;
   border: grey;
   border-width: 3px;
@@ -150,9 +146,9 @@
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
   background-color: var(--blue-green);
   flex-grow: 1;
-}
+} */
 
-.plus_button {
+/* .plus_button {
   color: var(--blue3);
   background-color: yellowgreen;
   text-align: center;
@@ -165,7 +161,7 @@
   box-shadow: 1px 1px 3px hsl(0, 0%, 20%);
   transform: translate(0, -5px);
   float: right;
-}
+} */
 
 .public-tree-button {
   color: var(--blue3);

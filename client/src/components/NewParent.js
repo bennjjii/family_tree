@@ -174,7 +174,7 @@ export const NewParent = (props) => {
   };
 
   return (
-    <div className="new-child">
+    <div className="idcard-form translucent-card">
       <h3>Add parent</h3>
       {/* {formData.existing_parent} */}
       <form onSubmit={handleSubmit}>
