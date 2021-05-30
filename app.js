@@ -16,6 +16,8 @@ app.use(
   })
 );
 
+let x = 1;
+
 global.__basedir = __dirname;
 
 // view engine setup

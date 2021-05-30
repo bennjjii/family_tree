@@ -55,7 +55,7 @@ const PublicTreeButton = (props) => {
   return (
     <>
       <button
-        className="highlight-card shadow-sm"
+        className="transparent-card shadow-sm"
         style={boxStyle}
         onClick={() => {
           history.push(`/public_tree/${props.familyTreeRoute}`);
