@@ -37,9 +37,6 @@ function MarriedBox(props) {
                 }
                 onClick={props.handleUpd}
               >
-                {spouse.brid ? spouse.brid.first_name : spouse.groo.first_name}
-                <br />
-                {spouse.d_o_mar}
                 {!thisContext.showPublic.publicMode && (
                   <EditDelete
                     source={"marriage"}
@@ -52,6 +49,9 @@ function MarriedBox(props) {
                     permitDelete={true}
                   />
                 )}
+                {spouse.brid ? spouse.brid.first_name : spouse.groo.first_name}
+                <br />
+                {spouse.d_o_mar}
               </button>
               <br />
             </div>
