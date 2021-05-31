@@ -9,17 +9,12 @@ const Child = (props) => {
   return (
     <div key={props.child.uuid_family_member + "child"}>
       <button
-        className="nav-btn"
+        id="nav-btn"
+        className="idcard-button transparent-card transparent-bg shadow-sm"
         name={props.child.first_name}
         onClick={props.updateTarget}
         uuid={props.child.uuid_family_member}
       >
-        {_fn(props.child)}
-        {/* Children: {props.child.children.length} */}
-        <br />
-        {props.child.d_o_b}
-        <br />
-        {/* {props.child.gender} */}
         {!thisContext.showPublic.publicMode && (
           <EditDelete
             source="child"
@@ -27,6 +22,12 @@ const Child = (props) => {
             permitDelete={!props.child.children.length}
           />
         )}
+        {_fn(props.child)}
+        {/* Children: {props.child.children.length} */}
+        <br />
+        {props.child.d_o_b}
+        <br />
+        {/* {props.child.gender} */}
       </button>
 
       <br />

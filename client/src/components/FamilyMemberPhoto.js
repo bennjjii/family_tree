@@ -24,7 +24,7 @@ const FamilyMemberPhoto = (props) => {
   };
 
   return (
-    <div className="family-member-photo">
+    <div className="idcard-image transparent-card shadow-sm">
       {props.photourl && (
         <div id="display-photo">
           <img src={props.photourl} alt="photograph" />

@@ -5,17 +5,18 @@ import { useAuth } from "./services/ProvideAuth";
 function MarriedBox(props) {
   const thisContext = useAuth();
   return (
-    <div className="married_box">
+    <div className="idcard-component transparent-card shadow-sm">
       {!thisContext.showPublic.publicMode && (
         <button
           disabled={thisContext.showPublic.publicMode}
-          className="plus_button"
+          className="bubble-button"
           onClick={props.showNewSpouse}
         >
           +
         </button>
       )}
       <h5>Married:</h5>
+      <br />
       {props.spouses &&
         props.spouses.map((spouse) => {
           return (
@@ -27,7 +28,8 @@ function MarriedBox(props) {
               }
             >
               <button
-                className="nav-btn"
+                id="nav-btn"
+                className="idcard-button transparent-card transparent-bg shadow-sm"
                 uuid={
                   spouse.brid
                     ? spouse.brid.uuid_family_member
@@ -35,9 +37,6 @@ function MarriedBox(props) {
                 }
                 onClick={props.handleUpd}
               >
-                {spouse.brid ? spouse.brid.first_name : spouse.groo.first_name}
-                <br />
-                {spouse.d_o_mar}
                 {!thisContext.showPublic.publicMode && (
                   <EditDelete
                     source={"marriage"}
@@ -50,6 +49,9 @@ function MarriedBox(props) {
                     permitDelete={true}
                   />
                 )}
+                {spouse.brid ? spouse.brid.first_name : spouse.groo.first_name}
+                <br />
+                {spouse.d_o_mar}
               </button>
               <br />
             </div>

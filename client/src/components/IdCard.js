@@ -158,9 +158,10 @@ class IdCard extends Component {
 
   updateTarget(e) {
     //this is the entry point for all UI navigation actions
+    console.log(e.target.id);
     e.preventDefault();
     switch (true) {
-      case e.target.className === "nav-btn" && !!e.target.getAttribute("uuid"):
+      case e.target.id === "nav-btn" && !!e.target.getAttribute("uuid"):
         this.setState({
           dataState: {
             ...this.state.dataState,
@@ -169,7 +170,7 @@ class IdCard extends Component {
         });
 
         break;
-      case e.target.className === "nav-btn":
+      case e.target.id === "nav-btn":
         this.showNewParent(e.target.getAttribute("name"));
         break;
       case e.target.className === "edit-button" &&
@@ -445,7 +446,7 @@ class IdCard extends Component {
     }
 
     return (
-      <div className="IdCard">
+      <div className="idcard transparent-bg transparent-card">
         {newChildComponent}
         {newParentComponent}
         {newSpouseComponent}
@@ -453,7 +454,7 @@ class IdCard extends Component {
         {editMarriageComponent}
         {settingsComponent}
 
-        <div className="top_sect">
+        <div className="idcard-sect">
           <ParentsBox
             handleUpd={this.updateTarget}
             mother={this.state.dataState.mothe}
@@ -462,7 +463,7 @@ class IdCard extends Component {
             showSettings={this.showSettings}
           />
         </div>
-        <div className="mid_sect">
+        <div className="idcard-sect ">
           <FamilyMemberPhoto
             photourl={this.state.photoUrl}
             target={this.state.dataState.uuid_family_member}
@@ -484,7 +485,7 @@ class IdCard extends Component {
             </form>
           </div> */}
         </div>
-        <div className="btm_sect">
+        <div className="idcard-sect">
           <MarriedBox
             spouses={this.state.dataState.spouses}
             handleUpd={this.updateTarget}

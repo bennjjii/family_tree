@@ -20,7 +20,7 @@ const SettingsDialogue = (props) => {
   };
 
   return (
-    <div className="settings-dialogue">
+    <div className="idcard-form translucent-card">
       <form onSubmit={handleSubmit}>
         <h3>Settings</h3>
         <label>

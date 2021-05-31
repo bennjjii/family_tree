@@ -7,7 +7,7 @@ import { useAuth } from "./services/ProvideAuth";
 const ParentsBox = (props) => {
   const thisContext = useAuth();
   return (
-    <div className="parent_details">
+    <div className="idcard-component transparent-card shadow-sm">
       <h5>
         Parents:{" "}
         <span
@@ -29,16 +29,26 @@ const ParentsBox = (props) => {
         </span>
       </h5>
 
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+        }}
+      >
         <button
+          id="nav-btn"
           disabled={thisContext.showPublic.publicMode && !props.father}
           name="Male"
-          className="nav-btn"
+          className="idcard-button transparent-card transparent-bg shadow-sm"
           uuid={
             (props.father || {}).uuid_family_member &&
             props.father.uuid_family_member
           }
           onClick={props.handleUpd}
+          style={{
+            flexBasis: "200px",
+            flexGrow: "1",
+          }}
         >
           {props.father
             ? props.father.first_name +
@@ -74,14 +84,19 @@ const ParentsBox = (props) => {
           )}
         </button>
         <button
+          id="nav-btn"
           disabled={thisContext.showPublic.publicMode && !props.mother}
           name="Female"
-          className="nav-btn"
+          className="idcard-button transparent-card transparent-bg shadow-sm"
           uuid={
             (props.mother || {}).uuid_family_member &&
             props.mother.uuid_family_member
           }
           onClick={props.handleUpd}
+          style={{
+            flexBasis: "200px",
+            flexGrow: "1",
+          }}
         >
           {props.mother
             ? props.mother.first_name +
