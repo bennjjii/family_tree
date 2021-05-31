@@ -61,7 +61,7 @@ const PublicTreeButton = (props) => {
           history.push(`/public_tree/${props.familyTreeRoute}`);
         }}
       >
-        <img src={imgUrl} style={imgStyle} />
+        <img src={imgUrl} style={imgStyle} className="idcard-thumbnail" />
         <h6>{props.familyTreeName}</h6>
       </button>
     </>

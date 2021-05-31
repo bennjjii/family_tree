@@ -12,9 +12,6 @@ const TargetBox = (props) => {
       style={compStyle}
       className="idcard-component transparent-card shadow-sm"
     >
-      <h4>{_fn(props.target)}</h4>
-      <h6>Born: {props.target.d_o_b}</h6>
-      <h6>Gender: {props.target.gender}</h6>
       {!thisContext.showPublic.publicMode && (
         <EditDelete
           handleUpd={props.handleUpd}
@@ -23,6 +20,9 @@ const TargetBox = (props) => {
           uuid={props.target.uuid_family_member}
         />
       )}
+      <h4>{_fn(props.target)}</h4>
+      <h6>Born: {props.target.d_o_b}</h6>
+      <h6>Gender: {props.target.gender}</h6>
     </div>
   );
 };

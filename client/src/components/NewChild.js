@@ -134,45 +134,36 @@ const NewChild = (props) => {
     <div className="idcard-form translucent-card">
       <h3>Add child</h3>
       <form onSubmit={handleSubmit}>
-        <label>
-          First name
-          <br />
-          <input
-            type="text"
-            name="first_name"
-            autoComplete="off"
-            value={formData.first_name}
-            onChange={handleChange}
-          ></input>
-        </label>
-        <br />
-        <label>
-          Middle name
-          <br />
-          <input
-            type="text"
-            autoComplete="no"
-            name="middle_name"
-            value={formData.middle_name}
-            onChange={handleChange}
-          ></input>
-        </label>
-        <br />
-        <label>
-          Last name
-          <br />
-          <input
-            type="text"
-            autoComplete="no"
-            name="last_name"
-            value={formData.last_name}
-            onChange={handleChange}
-          ></input>
-        </label>
-        <br />
+        <label>First name</label>
+        <input
+          type="text"
+          name="first_name"
+          autoComplete="off"
+          value={formData.first_name}
+          onChange={handleChange}
+        ></input>
+
+        <label>Middle name</label>
+        <input
+          type="text"
+          autoComplete="no"
+          name="middle_name"
+          value={formData.middle_name}
+          onChange={handleChange}
+        ></input>
+
+        <label>Last name</label>
+
+        <input
+          type="text"
+          autoComplete="no"
+          name="last_name"
+          value={formData.last_name}
+          onChange={handleChange}
+        ></input>
+
         <label htmlFor="birthday">Date of birth</label>
 
-        <br />
         <DatePicker
           id="birthday"
           shouldCloseOnSelect={true}
@@ -186,41 +177,34 @@ const NewChild = (props) => {
           selected={formData.d_o_b}
         />
         <br />
+        <label>Gender</label>
 
-        <label>
-          Gender
-          <br />
-          <select name="gender" value={formData.gender} onChange={handleChange}>
-            {" "}
-            <option value="" selected disabled hidden>
-              ---
-            </option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-        </label>
-        <br />
+        <select name="gender" value={formData.gender} onChange={handleChange}>
+          {" "}
+          <option value="" selected disabled hidden>
+            ---
+          </option>
+          <option>Male</option>
+          <option>Female</option>
+        </select>
 
-        <label>
-          {props.state.gender !== "Male" ? "Father" : "Mother"}
-          <br />
-          {/* //here gives you option to choose spouse or if another child exists  */}
-          <select
-            name={props.state.gender !== "Male" ? "father" : "mother"}
-            value={
-              props.state.gender !== "Male" ? formData.father : formData.mother
-            }
-            onChange={handleChange}
-          >
-            {reducedParents.map((parent) => {
-              return <option value={parent.uuid}>{parent.name}</option>;
-            })}
-            <option value={0}>No other parent</option>
-          </select>
-        </label>
-        <br />
-        <br />
-        <input type="submit" value="Save"></input>
+        <label>{props.state.gender !== "Male" ? "Father" : "Mother"}</label>
+
+        {/* //here gives you option to choose spouse or if another child exists  */}
+        <select
+          name={props.state.gender !== "Male" ? "father" : "mother"}
+          value={
+            props.state.gender !== "Male" ? formData.father : formData.mother
+          }
+          onChange={handleChange}
+        >
+          {reducedParents.map((parent) => {
+            return <option value={parent.uuid}>{parent.name}</option>;
+          })}
+          <option value={0}>No other parent</option>
+        </select>
+
+        <input type="submit" value="Save" className="bubble-button"></input>
       </form>
     </div>
   );

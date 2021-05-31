@@ -248,45 +248,35 @@ const NewSpouse = (props) => {
               : { display: "block" }
           }
         >
-          <label>
-            First name
-            <br />
-            <input
-              type="text"
-              name="first_name"
-              autoComplete="off"
-              value={formData.first_name}
-              onChange={handleChange}
-            ></input>
-          </label>
-          <br />
-          <label>
-            Middle name
-            <br />
-            <input
-              type="text"
-              autoComplete="no"
-              name="middle_name"
-              value={formData.middle_name}
-              onChange={handleChange}
-            ></input>
-          </label>
-          <br />
-          <label>
-            Last name
-            <br />
-            <input
-              type="text"
-              autoComplete="no"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-            ></input>
-          </label>
-          <br />
+          <label>First name</label>
+          <input
+            type="text"
+            name="first_name"
+            autoComplete="off"
+            value={formData.first_name}
+            onChange={handleChange}
+          ></input>
+
+          <label>Middle name</label>
+          <input
+            type="text"
+            autoComplete="no"
+            name="middle_name"
+            value={formData.middle_name}
+            onChange={handleChange}
+          ></input>
+
+          <label>Last name</label>
+          <input
+            type="text"
+            autoComplete="no"
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+          ></input>
+
           <label htmlFor="dob">Date of birth</label>
 
-          <br />
           <DatePicker
             id="dob"
             shouldCloseOnSelect={true}
@@ -299,8 +289,6 @@ const NewSpouse = (props) => {
             selected={formData.d_o_b}
             maxDate={new Date()}
           />
-          <br />
-          <br />
 
           {/* <label>
             Gender
@@ -318,11 +306,9 @@ const NewSpouse = (props) => {
               <option>Female</option>
             </select>
           </label> */}
-
-          <br />
         </div>
         <label htmlFor="marriageDate">Date of marriage</label>
-        <br />
+
         <DatePicker
           id="marriageDate"
           shouldCloseOnSelect={true}
@@ -335,7 +321,7 @@ const NewSpouse = (props) => {
           selected={formData.d_o_mar}
           maxDate={new Date()}
         />
-        <br /> <br />
+
         <div
           id="add-children"
           style={
@@ -356,8 +342,8 @@ const NewSpouse = (props) => {
             {props.state.first_name}?
           </label>
         </div>
-        <br /> <br />
-        <input type="submit" value="Save"></input>
+
+        <input type="submit" value="Save" className="bubble-button"></input>
       </form>
     </div>
   );

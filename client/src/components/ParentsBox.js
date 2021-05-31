@@ -29,7 +29,12 @@ const ParentsBox = (props) => {
         </span>
       </h5>
 
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+        }}
+      >
         <button
           id="nav-btn"
           disabled={thisContext.showPublic.publicMode && !props.father}
@@ -40,6 +45,10 @@ const ParentsBox = (props) => {
             props.father.uuid_family_member
           }
           onClick={props.handleUpd}
+          style={{
+            flexBasis: "200px",
+            flexGrow: "1",
+          }}
         >
           {props.father
             ? props.father.first_name +
@@ -84,6 +93,10 @@ const ParentsBox = (props) => {
             props.mother.uuid_family_member
           }
           onClick={props.handleUpd}
+          style={{
+            flexBasis: "200px",
+            flexGrow: "1",
+          }}
         >
           {props.mother
             ? props.mother.first_name +

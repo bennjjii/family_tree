@@ -9,13 +9,14 @@ function MarriedBox(props) {
       {!thisContext.showPublic.publicMode && (
         <button
           disabled={thisContext.showPublic.publicMode}
-          className="plus-button"
+          className="bubble-button"
           onClick={props.showNewSpouse}
         >
           +
         </button>
       )}
       <h5>Married:</h5>
+      <br />
       {props.spouses &&
         props.spouses.map((spouse) => {
           return (

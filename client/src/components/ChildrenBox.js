@@ -6,11 +6,12 @@ const ChildrenBox = (props) => {
   return (
     <div className="idcard-component transparent-card shadow-sm">
       {!thisContext.showPublic.publicMode && (
-        <button className="plus-button" onClick={props.showNewChild}>
+        <button className="bubble-button" onClick={props.showNewChild}>
           +
         </button>
       )}
       <h5>Children:</h5>
+      <br />
       {props.dataState.children.map((child, index) => {
         return (
           <Child
