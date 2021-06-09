@@ -1,12 +1,14 @@
 import _fn from "./fullName";
 import EditDelete from "./EditDelete";
 import { useAuth } from "./services/ProvideAuth";
+import moment from "moment";
 
 const TargetBox = (props) => {
   const compStyle = {
     flexBasis: "300px",
   };
   const thisContext = useAuth();
+
   return (
     <div
       style={compStyle}
@@ -21,8 +23,10 @@ const TargetBox = (props) => {
         />
       )}
       <h4>{_fn(props.target)}</h4>
-      <h6>Born: {props.target.d_o_b}</h6>
-      <h6>Gender: {props.target.gender}</h6>
+      <h6>
+        Born:{" "}
+        {moment(props.target.d_o_b, "YYYY-MM-DD").format("dddd, MMMM Do YYYY")}
+      </h6>
     </div>
   );
 };

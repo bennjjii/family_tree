@@ -1,6 +1,7 @@
 import React from "react";
 import EditDelete from "./EditDelete";
 import { useAuth } from "./services/ProvideAuth";
+import moment from "moment";
 
 function MarriedBox(props) {
   const thisContext = useAuth();
@@ -51,7 +52,7 @@ function MarriedBox(props) {
                 )}
                 {spouse.brid ? spouse.brid.first_name : spouse.groo.first_name}
                 <br />
-                {spouse.d_o_mar}
+                {moment(spouse.d_o_mar, "YYYY-MM-DD").format("Do MMMM YYYY")}
               </button>
               <br />
             </div>
