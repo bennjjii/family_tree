@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "./IdCard.css";
+//import "./IdCard.css";
 import ParentsBox from "./ParentsBox";
 import ChildrenBox from "./ChildrenBox";
 import MarriedBox from "./MarriedBox";

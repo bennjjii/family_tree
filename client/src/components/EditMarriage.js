@@ -62,7 +62,7 @@ const EditMarriage = (props) => {
           selected={formData.d_o_mar}
         />
 
-        <input type="submit" value="Save"></input>
+        <input className="bubble-button" type="submit" value="Save"></input>
       </form>
     </div>
   );
