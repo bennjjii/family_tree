@@ -45,10 +45,10 @@ const EditMarriage = (props) => {
   };
 
   return (
-    <div className="edit-family-member">
+    <div className="idcard-form translucent-card">
       <form onSubmit={handleSubmit}>
         <h3>Edit marriage</h3>
-
+        <label>Date of marriage:</label>
         <DatePicker
           id="marriage"
           shouldCloseOnSelect={true}
@@ -62,9 +62,7 @@ const EditMarriage = (props) => {
           selected={formData.d_o_mar}
         />
 
-        <br />
-        <br />
-        <input type="submit" value="Save"></input>
+        <input className="bubble-button" type="submit" value="Save"></input>
       </form>
     </div>
   );

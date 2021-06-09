@@ -7,7 +7,7 @@ const Navbar = (props) => {
   const history = useHistory();
 
   return (
-    <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+    <nav className="navbar navbar-light transparent-bg transparent-card shadow-sm navbar-expand-lg">
       <Link to="/" className="navbar-brand">
         Geneol0
       </Link>

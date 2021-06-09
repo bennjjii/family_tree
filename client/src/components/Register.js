@@ -155,8 +155,8 @@ const Login = (props) => {
             </select>
           </label>
         </div>
-        <button type="submit" className="btn btn-default">
-          Submit
+        <button type="submit" className="btn btn-default bubble-button-login">
+          Register
         </button>
       </form>
     </div>

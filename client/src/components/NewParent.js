@@ -174,7 +174,7 @@ export const NewParent = (props) => {
   };
 
   return (
-    <div className="new-child">
+    <div className="idcard-form translucent-card">
       <h3>Add parent</h3>
       {/* {formData.existing_parent} */}
       <form onSubmit={handleSubmit}>
@@ -184,21 +184,17 @@ export const NewParent = (props) => {
             reducedParents.length ? { display: "block" } : { display: "none" }
           }
         >
-          <label>
-            Parent
-            <br />
-            <select
-              name={"existing_parent"}
-              onChange={handleChange}
-              value={formData.existing_parent}
-            >
-              {reducedParents.map((parent) => {
-                return <option value={parent.uuid}>{parent.name}</option>;
-              })}
-              <option value={"new"}>New parent</option>
-            </select>
-          </label>
-          <br />
+          <label>Parent</label>
+          <select
+            name={"existing_parent"}
+            onChange={handleChange}
+            value={formData.existing_parent}
+          >
+            {reducedParents.map((parent) => {
+              return <option value={parent.uuid}>{parent.name}</option>;
+            })}
+            <option value={"new"}>New parent</option>
+          </select>
         </div>
         <div
           id="new-parent-details"
@@ -208,44 +204,34 @@ export const NewParent = (props) => {
               : { display: "none" }
           }
         >
-          <label>
-            First name
-            <br />
-            <input
-              type="text"
-              name="first_name"
-              autoComplete="off"
-              value={formData.first_name}
-              onChange={handleChange}
-            ></input>
-          </label>
-          <br />
-          <label>
-            Middle name
-            <br />
-            <input
-              type="text"
-              autoComplete="no"
-              name="middle_name"
-              value={formData.middle_name}
-              onChange={handleChange}
-            ></input>
-          </label>
-          <br />
-          <label>
-            Last name
-            <br />
-            <input
-              type="text"
-              autoComplete="no"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-            ></input>
-          </label>
-          <br />
+          <label>First name</label>
+          <input
+            type="text"
+            name="first_name"
+            autoComplete="off"
+            value={formData.first_name}
+            onChange={handleChange}
+          ></input>
+          <label>Middle name</label>
+          <input
+            type="text"
+            autoComplete="no"
+            name="middle_name"
+            value={formData.middle_name}
+            onChange={handleChange}
+          ></input>
+
+          <label>Last name</label>
+          <input
+            type="text"
+            autoComplete="no"
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+          ></input>
+
           <label htmlFor="birthday">Date of birth</label>
-          <br />
+
           <DatePicker
             id="birthday"
             shouldCloseOnSelect={true}
@@ -258,7 +244,7 @@ export const NewParent = (props) => {
             onChange={handleChangeBirth}
             selected={formData.d_o_b}
           />
-          <br /> <br />
+
           {formData.already_married_to_selected
             ? "Already married to" +
               props.state.first_name +
@@ -275,26 +261,29 @@ export const NewParent = (props) => {
               : { display: "none" }
           }
         >
-          <br />
-          <input
-            type="checkbox"
-            name="marriage_checked"
-            checked={formData.marriage_checked}
-            onChange={handleChange}
-          ></input>
-          &nbsp;
-          <label htmlFor="marriage_checked">
-            Married to&nbsp;
-            {props.state.fathe
-              ? props.state.fathe.first_name + " " + props.state.fathe.last_name
-              : props.state.mothe
-              ? props.state.mothe.first_name + " " + props.state.mothe.last_name
-              : ""}
-            ?
-          </label>
-          <br />
+          <hr />
+          <span>
+            <input
+              type="checkbox"
+              name="marriage_checked"
+              checked={formData.marriage_checked}
+              onChange={handleChange}
+            ></input>
+            <label htmlFor="marriage_checked">
+              Married to&nbsp;
+              {props.state.fathe
+                ? props.state.fathe.first_name +
+                  " " +
+                  props.state.fathe.last_name
+                : props.state.mothe
+                ? props.state.mothe.first_name +
+                  " " +
+                  props.state.mothe.last_name
+                : ""}
+              ?
+            </label>
+          </span>
           <label htmlFor="d_o_mar">Date of marriage</label>
-          <br />
           <DatePicker
             id="d_o_mar"
             shouldCloseOnSelect={true}
@@ -307,9 +296,8 @@ export const NewParent = (props) => {
             onChange={handleChangeMarriageDate}
             selected={formData.d_o_mar}
           />
-          <br /> <br />
         </div>
-        <input type="submit" value="Save"></input>
+        <input type="submit" value="Save" className="bubble-button"></input>
       </form>
     </div>
   );

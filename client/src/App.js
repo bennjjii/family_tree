@@ -1,6 +1,3 @@
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "react-datepicker/dist/react-datepicker.css";
 import React, { useContext, createContext, useState } from "react";
 import {
   BrowserRouter as Router,
@@ -31,7 +28,7 @@ class App extends React.Component {
     return (
       <ProvideAuth>
         <Router>
-          <div className="App">
+          <div className="app">
             <Navbar />
             <Switch>
               {/* <LoadPublicRoute

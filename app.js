@@ -16,6 +16,8 @@ app.use(
   })
 );
 
+let x = 1;
+
 global.__basedir = __dirname;
 
 // view engine setup
@@ -36,10 +38,6 @@ app.use(
 app.use(indexRouter);
 app.use(express.static(path.resolve(__dirname, "./client/build")));
 app.get("/*", (req, res) => {
-  console.log("path hit");
-  console.log(req.originalUrl);
-  console.log(req.baseUrl);
-  console.log(__dirname);
   res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 

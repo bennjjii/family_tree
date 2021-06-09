@@ -96,8 +96,8 @@ export class Login extends Component {
               id="pwd"
             />
           </div>
-          <button type="submit" className="btn btn-default">
-            Submit
+          <button type="submit" className="btn btn-default bubble-button-login">
+            Login
           </button>
           <Link to="/register" className="nav-link">
             Register

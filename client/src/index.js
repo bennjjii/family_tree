@@ -1,6 +1,10 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-datepicker/dist/react-datepicker.css";
+import "./index_new.css";
+//import "./normalize.css";
+
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
 
 require("dotenv").config();

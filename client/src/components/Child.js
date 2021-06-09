@@ -2,6 +2,7 @@ import { useState } from "react";
 import EditDelete from "./EditDelete";
 import _fn from "./fullName";
 import { useAuth } from "./services/ProvideAuth";
+import moment from "moment";
 
 const Child = (props) => {
   const thisContext = useAuth();
@@ -9,17 +10,12 @@ const Child = (props) => {
   return (
     <div key={props.child.uuid_family_member + "child"}>
       <button
-        className="nav-btn"
+        id="nav-btn"
+        className="idcard-button transparent-card transparent-bg shadow-sm"
         name={props.child.first_name}
         onClick={props.updateTarget}
         uuid={props.child.uuid_family_member}
       >
-        {_fn(props.child)}
-        {/* Children: {props.child.children.length} */}
-        <br />
-        {props.child.d_o_b}
-        <br />
-        {/* {props.child.gender} */}
         {!thisContext.showPublic.publicMode && (
           <EditDelete
             source="child"
@@ -27,6 +23,13 @@ const Child = (props) => {
             permitDelete={!props.child.children.length}
           />
         )}
+        {_fn(props.child)}
+        <br />
+
+        {moment(props.child.d_o_b, "YYYY-MM-DD").format("Do MMMM YYYY")}
+
+        <br />
+        {/* {props.child.gender} */}
       </button>
 
       <br />
