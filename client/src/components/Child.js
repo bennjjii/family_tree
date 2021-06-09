@@ -25,9 +25,7 @@ const Child = (props) => {
         )}
         {_fn(props.child)}
         <br />
-
         {moment(props.child.d_o_b, "YYYY-MM-DD").format("Do MMMM YYYY")}
-
         <br />
         {/* {props.child.gender} */}
       </button>

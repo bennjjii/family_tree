@@ -2,6 +2,7 @@ import React from "react";
 import EditDelete from "./EditDelete";
 import { useAuth } from "./services/ProvideAuth";
 import moment from "moment";
+import _fn from "./fullName";
 
 function MarriedBox(props) {
   const thisContext = useAuth();
@@ -16,7 +17,7 @@ function MarriedBox(props) {
           +
         </button>
       )}
-      <h5>Married:</h5>
+      <h5>married:</h5>
       <br />
       {props.spouses &&
         props.spouses.map((spouse) => {
@@ -50,7 +51,7 @@ function MarriedBox(props) {
                     permitDelete={true}
                   />
                 )}
-                {spouse.brid ? spouse.brid.first_name : spouse.groo.first_name}
+                {spouse.brid ? _fn(spouse.brid) : _fn(spouse.groo)}
                 <br />
                 {moment(spouse.d_o_mar, "YYYY-MM-DD").format("Do MMMM YYYY")}
               </button>
