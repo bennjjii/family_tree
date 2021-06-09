@@ -85,6 +85,12 @@ body {
   overflow: hidden;
 }
 
+.idcard-image img {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+}
+
 .idcard-thumbnail {
   margin: 5px;
   width: 240px;
@@ -181,6 +187,11 @@ body {
 }
 
 /* form styling */
+
+.upload-form {
+  position: absolute;
+  width: 240px;
+}
 
 input {
   background-color: #fff;

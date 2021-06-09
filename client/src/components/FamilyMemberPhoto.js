@@ -25,13 +25,8 @@ const FamilyMemberPhoto = (props) => {
 
   return (
     <div className="idcard-image transparent-card shadow-sm">
-      {props.photourl && (
-        <div id="display-photo">
-          <img src={props.photourl} alt="photograph" />
-        </div>
-      )}
       {!props.photourl && !thisContext.showPublic.publicMode && (
-        <div className="display-upload-form">
+        <div className="upload-form">
           <input type="file" accept="image/*" onChange={selectFile} />
 
           <button disabled={!currentFile} onClick={upload}>
@@ -39,9 +34,15 @@ const FamilyMemberPhoto = (props) => {
           </button>
         </div>
       )}
+      {props.photourl && (
+        <div id="display-photo">
+          <img src={props.photourl} alt="photograph" />
+        </div>
+      )}
+
       {previewImage && (
-        <div className="display-preview">
-          <img src={previewImage} className="display-preview-image" />
+        <div>
+          <img src={previewImage} />
         </div>
       )}
     </div>
