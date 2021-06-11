@@ -205,30 +205,6 @@ class IdCard extends Component {
     }
   }
 
-  async deleteFamilyMember(target_to_delete) {
-    console.log(target_to_delete);
-    await this._http.axios.post("/delete", { target_to_delete });
-    this.refreshData();
-  }
-
-  async deleteMarriage(target_to_delete) {
-    console.log(target_to_delete);
-    await this._http.axios.post("/delete_marriage", { target_to_delete });
-    this.refreshData();
-  }
-
-  async editFamilyMember(target_to_edit) {
-    console.log(target_to_edit);
-    await this._http.axios.post("/edit", { target_to_edit });
-    this.refreshData();
-  }
-
-  async editMarriage(target_to_edit) {
-    console.log(target_to_edit);
-    await this._http.axios.post("/edit_marriage", { target_to_edit });
-    this.refreshData();
-  }
-
   showNewChild(parentGender) {
     console.log(parentGender);
     this.setState(
@@ -346,6 +322,28 @@ class IdCard extends Component {
     });
   }
 
+  async editFamilyMember(target_to_edit) {
+    console.log(target_to_edit);
+    await this._http.axios.post("/edit", { target_to_edit });
+    this.setState((prevState, prevProps) => {
+      return {
+        UIstate: {
+          ...prevState.UIstate,
+          editFamilyMember: false,
+          editFamilyMemberMode: undefined,
+          editFamilyMemberUUID: undefined,
+        },
+      };
+    });
+    this.refreshData();
+  }
+
+  async deleteFamilyMember(target_to_delete) {
+    console.log(target_to_delete);
+    await this._http.axios.post("/delete", { target_to_delete });
+    this.refreshData();
+  }
+
   showEditMarriage(UUID) {
     this.setState((prevState, prevProps) => {
       return {
@@ -356,6 +354,27 @@ class IdCard extends Component {
         },
       };
     });
+  }
+
+  async editMarriage(target_to_edit) {
+    console.log(target_to_edit);
+    await this._http.axios.post("/edit_marriage", { target_to_edit });
+    this.setState((prevState, prevProps) => {
+      return {
+        UIstate: {
+          ...prevState.UIstate,
+          editMarriage: false,
+          editMarriageUUID: undefined,
+        },
+      };
+    });
+    this.refreshData();
+  }
+
+  async deleteMarriage(target_to_delete) {
+    console.log(target_to_delete);
+    await this._http.axios.post("/delete_marriage", { target_to_delete });
+    this.refreshData();
   }
 
   showSettings(show) {
