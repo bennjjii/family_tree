@@ -172,7 +172,7 @@ export const NewParent = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let newFormData = {
+    props.submitNewParent({
       ...formData,
       d_o_b: moment(
         `${formData.d_o_b.getFullYear()}-${
@@ -186,9 +186,7 @@ export const NewParent = (props) => {
         }-${formData.d_o_mar.getDate()}`,
         "YYYY-MM-DD"
       ).toISOString(),
-    };
-
-    props.submitNewParent(newFormData);
+    });
   };
 
   return (

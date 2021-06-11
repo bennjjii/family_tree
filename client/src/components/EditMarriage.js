@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
+import moment from "moment-timezone";
 
 const EditMarriage = (props) => {
   const [formData, setFormData] = useState({
     uuid_marriage: undefined,
     d_o_mar: undefined,
   });
+  moment.tz.setDefault("UTC");
 
   useEffect(() => {
     let selectedMarriage = props.state.spouses.filter((marriage) => {
@@ -41,7 +43,15 @@ const EditMarriage = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.submitEditedMarriageDetails(formData);
+    props.submitEditedMarriageDetails({
+      ...formData,
+      d_o_mar: moment(
+        `${formData.d_o_mar.getFullYear()}-${
+          formData.d_o_mar.getMonth() + 1
+        }-${formData.d_o_mar.getDate()}`,
+        "YYYY-MM-DD"
+      ).toISOString(),
+    });
   };
 
   return (

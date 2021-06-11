@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import _fn from "./fullName";
-
 import DatePicker from "react-datepicker";
+import moment from "moment-timezone";
 
 //this should allow the creation of a marriage to a partner who has already been
 //employed as a parent, or a new person
@@ -12,6 +12,7 @@ import DatePicker from "react-datepicker";
 //checkbox for add all children should hide if target has no children -- done
 
 const NewSpouse = (props) => {
+  moment.tz.setDefault("UTC");
   //so check children for other parents
   let allParents = [
     ...(props.state.children
@@ -214,7 +215,15 @@ const NewSpouse = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    props.submitNewSpouse(formData);
+    props.submitNewSpouse({
+      ...formData,
+      d_o_b: moment(
+        `${formData.d_o_b.getFullYear()}-${
+          formData.d_o_b.getMonth() + 1
+        }-${formData.d_o_b.getDate()}`,
+        "YYYY-MM-DD"
+      ).toISOString(),
+    });
   };
 
   return (

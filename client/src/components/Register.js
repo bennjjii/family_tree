@@ -13,21 +13,6 @@ const Login = (props) => {
   const [d_o_b, setDob] = useState(null);
   moment.tz.setDefault("UTC");
 
-  useEffect(() => {
-    console.log(d_o_b);
-    if (d_o_b) {
-      console.log(d_o_b.getFullYear());
-      console.log(d_o_b.getMonth());
-      console.log(d_o_b.getDate());
-      console.log(
-        moment(
-          `${d_o_b.getFullYear()}-${d_o_b.getMonth() + 1}-${d_o_b.getDate()}`,
-          "YYYY-MM-DD"
-        ).toISOString()
-      );
-    }
-  }, [d_o_b]);
-
   const onSubmit = (e) => {
     e.preventDefault();
     const userDetails = {

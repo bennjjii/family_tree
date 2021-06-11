@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import _fn from "./fullName";
-
 import DatePicker from "react-datepicker";
+import moment from "moment-timezone";
 
 //this should add a new person and d_o_b, with the target as one parent,
 // and an option of a married partner, or a partner who has already also been a parent of a sibling
@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 //and need to be able to choose to add a child without a mother even if one exists
 
 const NewChild = (props) => {
+  moment.tz.setDefault("UTC");
   //figure out possible mothers/fathers
 
   let reducedParents = null;
@@ -127,7 +128,15 @@ const NewChild = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.submitNewChild(formData);
+    props.submitNewChild({
+      ...formData,
+      d_o_b: moment(
+        `${formData.d_o_b.getFullYear()}-${
+          formData.d_o_b.getMonth() + 1
+        }-${formData.d_o_b.getDate()}`,
+        "YYYY-MM-DD"
+      ).toISOString(),
+    });
   };
 
   return (
