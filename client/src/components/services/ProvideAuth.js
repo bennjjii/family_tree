@@ -40,6 +40,23 @@ function useProvideAuth() {
       })
       .catch((err) => console.log(err));
   };
+
+  const refreshAccessToken = async (context) => {
+    console.log("refreshing access token");
+    axios
+      .post("/refresh")
+      .then((res) => {
+        console.log(res.data);
+        try {
+          setJwt(res.data);
+        } catch (err) {
+          console.log(err);
+        }
+      })
+      .catch((err) => console.log(err));
+    console.log(jwt);
+  };
+
   const login = (loginDetails, history) => {
     axios.post("/login", loginDetails).then((resp) => {
       if (resp.data.auth) {
@@ -76,6 +93,7 @@ function useProvideAuth() {
     login,
     logout,
     getAccessToken,
+    refreshAccessToken,
   };
 }
 

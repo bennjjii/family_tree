@@ -31,11 +31,6 @@ class App extends React.Component {
           <div className="app">
             <Navbar />
             <Switch>
-              {/* <LoadPublicRoute
-                path="/public/:publicRoute"
-                exact
-                component={IdCard}
-              /> */}
               <Route
                 path="/public_tree/:publicRoute"
                 exact
@@ -43,7 +38,6 @@ class App extends React.Component {
               />
               <ProtectedRoute path="/app" exact component={IdCard} />
               <ProtectedRoute path="/" exact component={IdCard} />
-              {/* <Route path="/" exact component={Login} /> */}
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={Register} />
             </Switch>

@@ -43,6 +43,14 @@ class IdCard extends Component {
   }
 
   async componentDidMount() {
+    if (this.context.jwt) {
+      console.log(this.context.jwt);
+      // setTimeout(() => {
+      //   console.log(this.context.jwt);
+      //   this.context.refreshAccessToken();
+      // }, 59 * 1 * 1000);
+    }
+
     this._http = new CommonHttp(this.context.jwt);
     if (this.context.showPublic.publicMode) {
       console.log(this.context.showPublic.focal_member);
@@ -80,6 +88,8 @@ class IdCard extends Component {
     console.log(this.props.location);
     this.getSettings();
   }
+
+  componentWillUnmount() {}
 
   async refreshPhoto(prevState) {
     if (

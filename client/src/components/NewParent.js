@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import _fn from "./fullName";
-
 import DatePicker from "react-datepicker";
+import moment from "moment-timezone";
 
 //this should add a new parent, d_o_b, and give the option to add a marriage if the other parent exists
 //it should also give the option to set a married person as the other parent
@@ -18,6 +18,7 @@ import DatePicker from "react-datepicker";
 //otherwise we create two of the same marriages
 
 export const NewParent = (props) => {
+  moment.tz.setDefault("UTC");
   //enumerate other possible parents
 
   let allParents = [
@@ -170,7 +171,24 @@ export const NewParent = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.submitNewParent(formData);
+
+    let newFormData = {
+      ...formData,
+      d_o_b: moment(
+        `${formData.d_o_b.getFullYear()}-${
+          formData.d_o_b.getMonth() + 1
+        }-${formData.d_o_b.getDate()}`,
+        "YYYY-MM-DD"
+      ).toISOString(),
+      d_o_mar: moment(
+        `${formData.d_o_mar.getFullYear()}-${
+          formData.d_o_mar.getMonth() + 1
+        }-${formData.d_o_mar.getDate()}`,
+        "YYYY-MM-DD"
+      ).toISOString(),
+    };
+
+    props.submitNewParent(newFormData);
   };
 
   return (
