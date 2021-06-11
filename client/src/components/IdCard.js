@@ -406,6 +406,7 @@ class IdCard extends Component {
       "/set_settings",
       formData
     );
+    this.showSettings(false);
     this.getSettings();
   }
 
