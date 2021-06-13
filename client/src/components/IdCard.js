@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-//import "./IdCard.css";
 import ParentsBox from "./ParentsBox";
 import ChildrenBox from "./ChildrenBox";
 import MarriedBox from "./MarriedBox";
@@ -11,7 +10,6 @@ import NewSpouse from "./NewSpouse";
 import StateTemplate from "./StateTemplate";
 import { authContext } from "./services/ProvideAuth";
 import FamilyMemberPhoto from "./FamilyMemberPhoto";
-import CommonHttp from "./services/CommonHttp";
 import EditFamilyMember from "./EditFamilyMember";
 import EditMarriage from "./EditMarriage";
 import SettingsDialogue from "./SettingsDialogue";
@@ -40,18 +38,25 @@ class IdCard extends Component {
     this.showSettings = this.showSettings.bind(this);
     this.getSettings = this.getSettings.bind(this);
     this.setSettings = this.setSettings.bind(this);
+    this._http = undefined;
+    this.intervalId = undefined;
   }
 
   async componentDidMount() {
+    //reset this to 15m
     if (this.context.jwt) {
-      console.log(this.context.jwt);
-      // setTimeout(() => {
-      //   console.log(this.context.jwt);
-      //   this.context.refreshAccessToken();
-      // }, 59 * 1 * 1000);
+      this.intervalId = setInterval(async () => {
+        this._http = await this.context.refreshAccessToken();
+      }, 60 * 14 * 1000);
     }
 
-    this._http = new CommonHttp(this.context.jwt);
+    this._http = axios.create({
+      baseURL: process.env.REACT_APP_BASE_URL,
+      headers: {
+        "Content-type": "application/json",
+        authorization: this.context.jwt,
+      },
+    });
     if (this.context.showPublic.publicMode) {
       console.log(this.context.showPublic.focal_member);
 
@@ -89,7 +94,9 @@ class IdCard extends Component {
     this.getSettings();
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
 
   async refreshPhoto(prevState) {
     if (
@@ -139,7 +146,7 @@ class IdCard extends Component {
         prevState.dataState.uuid_family_member
       ) {
         const request = { target: this.state.dataState.uuid_family_member };
-        const data = await this._http.axios.post(
+        const data = await this._http.post(
           this.state.UIstate.getTargetDataUrl,
           request
         );
@@ -149,7 +156,7 @@ class IdCard extends Component {
       }
     } else {
       const request = { target: this.state.dataState.uuid_family_member };
-      const data = await this._http.axios.post(
+      const data = await this._http.post(
         this.state.UIstate.getTargetDataUrl,
         request
       );
@@ -224,7 +231,7 @@ class IdCard extends Component {
 
   async submitNewChild(newChildDetails) {
     console.log(newChildDetails);
-    await this._http.axios.post("/create_new_child", newChildDetails);
+    await this._http.post("/create_new_child", newChildDetails);
 
     this.setState(
       (prevState, prevProps) => {
@@ -254,7 +261,7 @@ class IdCard extends Component {
   }
 
   async submitNewParent(newParentDetails) {
-    await this._http.axios.post("/create_new_parent", newParentDetails);
+    await this._http.post("/create_new_parent", newParentDetails);
 
     this.setState(
       (prevState, prevProps) => {
@@ -286,7 +293,7 @@ class IdCard extends Component {
 
   async submitNewSpouse(newSpouseDetails) {
     //total update
-    await this._http.axios.post("/create_new_spouse", newSpouseDetails);
+    await this._http.post("/create_new_spouse", newSpouseDetails);
 
     this.setState(
       (prevState, prevProps) => {
@@ -324,7 +331,7 @@ class IdCard extends Component {
 
   async editFamilyMember(target_to_edit) {
     console.log(target_to_edit);
-    await this._http.axios.post("/edit", { target_to_edit });
+    await this._http.post("/edit", { target_to_edit });
     this.setState((prevState, prevProps) => {
       return {
         UIstate: {
@@ -340,7 +347,7 @@ class IdCard extends Component {
 
   async deleteFamilyMember(target_to_delete) {
     console.log(target_to_delete);
-    await this._http.axios.post("/delete", { target_to_delete });
+    await this._http.post("/delete", { target_to_delete });
     this.refreshData();
   }
 
@@ -358,7 +365,7 @@ class IdCard extends Component {
 
   async editMarriage(target_to_edit) {
     console.log(target_to_edit);
-    await this._http.axios.post("/edit_marriage", { target_to_edit });
+    await this._http.post("/edit_marriage", { target_to_edit });
     this.setState((prevState, prevProps) => {
       return {
         UIstate: {
@@ -373,7 +380,7 @@ class IdCard extends Component {
 
   async deleteMarriage(target_to_delete) {
     console.log(target_to_delete);
-    await this._http.axios.post("/delete_marriage", { target_to_delete });
+    await this._http.post("/delete_marriage", { target_to_delete });
     this.refreshData();
   }
 
@@ -390,7 +397,7 @@ class IdCard extends Component {
 
   async getSettings() {
     console.log("GettingSettings");
-    let settings = await this._http.axios.get("/get_settings");
+    let settings = await this._http.get("/get_settings");
     console.log(settings);
     this.setState((prevState, prevProps) => {
       return {
@@ -402,10 +409,7 @@ class IdCard extends Component {
 
   async setSettings(formData) {
     console.log(formData);
-    let updatedSettings = await this._http.axios.post(
-      "/set_settings",
-      formData
-    );
+    let updatedSettings = await this._http.post("/set_settings", formData);
     this.showSettings(false);
     this.getSettings();
   }
@@ -497,6 +501,7 @@ class IdCard extends Component {
           <FamilyMemberPhoto
             photourl={this.state.photoUrl}
             target={this.state.dataState.uuid_family_member}
+            authorizedHttpClient={this._http}
             submitPhoto={this.submitPhoto}
           />
           <TargetBox

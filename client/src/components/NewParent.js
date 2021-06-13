@@ -108,7 +108,7 @@ export const NewParent = (props) => {
     married_link_visible: props.state.mothe || props.state.fathe ? true : false,
     marriage_checked: props.state.mothe || props.state.fathe ? true : false,
     already_married_to_selected: false,
-    d_o_mar: null,
+    d_o_mar: undefined,
     bride: props.state.mothe ? props.state.mothe.uuid_family_member : null,
     groom: props.state.fathe ? props.state.fathe.uuid_family_member : null,
     existing_parent: reducedParents.length ? reducedParents[0].uuid : "new",
@@ -180,12 +180,14 @@ export const NewParent = (props) => {
         }-${formData.d_o_b.getDate()}`,
         "YYYY-MM-DD"
       ).toISOString(),
-      d_o_mar: moment(
-        `${formData.d_o_mar.getFullYear()}-${
-          formData.d_o_mar.getMonth() + 1
-        }-${formData.d_o_mar.getDate()}`,
-        "YYYY-MM-DD"
-      ).toISOString(),
+      d_o_mar: formData.d_o_mar
+        ? moment(
+            `${formData.d_o_mar.getFullYear()}-${
+              formData.d_o_mar.getMonth() + 1
+            }-${formData.d_o_mar.getDate()}`,
+            "YYYY-MM-DD"
+          ).toISOString()
+        : undefined,
     });
   };
 

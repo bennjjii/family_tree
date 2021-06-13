@@ -128,6 +128,7 @@ const multerMiddleware = util.promisify(
 );
 
 const upload_aws = async (req, res) => {
+  //not protected by JWT!!!!
   if (!req.file) {
     return res.sendStatus(400);
   }
