@@ -178,6 +178,7 @@ class IdCard extends Component {
     console.log(e.target.id);
     e.preventDefault();
     switch (true) {
+      //this just updates state so forcing a refresh from the server based on the focal UUID
       case e.target.id === "nav-btn" && !!e.target.getAttribute("uuid"):
         this.setState({
           dataState: {
@@ -187,8 +188,9 @@ class IdCard extends Component {
         });
 
         break;
+      //this loads new parent dialogue
       case e.target.id === "nav-btn":
-        this.showNewParent(e.target.getAttribute("name"));
+        this.showNewParent(true, e.target.getAttribute("name"));
         break;
       case e.target.className === "edit-button" &&
         e.target.getAttribute("source") !== "marriage":
@@ -248,13 +250,13 @@ class IdCard extends Component {
     );
   }
 
-  showNewParent(gender) {
+  showNewParent(show, gender) {
     this.setState((prevState, prevProps) => {
       return {
         UIstate: {
           ...prevState.UIstate,
-          editNewParent: true,
-          newParentGender: gender,
+          editNewParent: show,
+          newParentGender: gender ? gender : undefined,
         },
       };
     });
@@ -262,7 +264,7 @@ class IdCard extends Component {
 
   async submitNewParent(newParentDetails) {
     await this._http.post("/create_new_parent", newParentDetails);
-
+    // this.showNewParent(false);
     this.setState(
       (prevState, prevProps) => {
         return {

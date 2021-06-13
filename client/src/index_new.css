@@ -265,3 +265,9 @@ select {
 .fa-trash-alt:hover {
   color: grey;
 }
+
+.fa-times {
+  float: right;
+  padding: 2px;
+  color: grey;
+}
