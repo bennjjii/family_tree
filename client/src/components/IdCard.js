@@ -38,6 +38,7 @@ class IdCard extends Component {
     this.showSettings = this.showSettings.bind(this);
     this.getSettings = this.getSettings.bind(this);
     this.setSettings = this.setSettings.bind(this);
+    this.cancelDialogues = this.cancelDialogues.bind(this);
     this._http = undefined;
     this.intervalId = undefined;
   }
@@ -92,10 +93,18 @@ class IdCard extends Component {
     }
     console.log(this.props.location);
     this.getSettings();
+
+    //add event listener for escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        this.cancelDialogues();
+      }
+    });
   }
 
   componentWillUnmount() {
     clearInterval(this.intervalId);
+    document.removeEventListener("keydown");
   }
 
   async refreshPhoto(prevState) {
@@ -190,7 +199,7 @@ class IdCard extends Component {
         break;
       //this loads new parent dialogue
       case e.target.id === "nav-btn":
-        this.showNewParent(true, e.target.getAttribute("name"));
+        this.showNewParent(e.target.getAttribute("name"));
         break;
       case e.target.className === "edit-button" &&
         e.target.getAttribute("source") !== "marriage":
@@ -250,12 +259,12 @@ class IdCard extends Component {
     );
   }
 
-  showNewParent(show, gender) {
+  showNewParent(gender) {
     this.setState((prevState, prevProps) => {
       return {
         UIstate: {
           ...prevState.UIstate,
-          editNewParent: show,
+          editNewParent: true,
           newParentGender: gender ? gender : undefined,
         },
       };
@@ -416,6 +425,32 @@ class IdCard extends Component {
     this.getSettings();
   }
 
+  cancelDialogues() {
+    this.setState(
+      (prevState, prevProps) => {
+        return {
+          UIstate: {
+            ...prevState.UIstate,
+            editNewChild: false,
+            editNewParent: false,
+            editNewSpouse: false,
+            newParentGender: undefined,
+            editFamilyMember: false,
+            editFamilyMemberMode: undefined,
+            editFamilyMemberUUID: undefined,
+            editMarriage: false,
+            editMarriageUUID: undefined,
+            showSettings: false,
+          },
+        };
+      }
+
+      // () => {
+      //   this.refreshData();
+      // }
+    );
+  }
+
   render() {
     let newChildComponent;
     if (this.state.UIstate.editNewChild) {
@@ -423,6 +458,7 @@ class IdCard extends Component {
         <NewChild
           state={this.state.dataState}
           submitNewChild={this.submitNewChild}
+          cancel={this.cancelDialogues}
         />
       );
     }
@@ -434,6 +470,7 @@ class IdCard extends Component {
           state={this.state.dataState}
           UIstate={this.state.UIstate}
           submitNewParent={this.submitNewParent}
+          cancel={this.cancelDialogues}
         />
       );
     }
@@ -444,6 +481,7 @@ class IdCard extends Component {
         <NewSpouse
           state={this.state.dataState}
           submitNewSpouse={this.submitNewSpouse}
+          cancel={this.cancelDialogues}
         />
       );
     }
@@ -456,6 +494,7 @@ class IdCard extends Component {
           mode={this.state.UIstate.editFamilyMemberMode}
           UUID={this.state.UIstate.editFamilyMemberUUID}
           submitEditedFamilyMember={this.editFamilyMember}
+          cancel={this.cancelDialogues}
         />
       );
     }
@@ -466,6 +505,7 @@ class IdCard extends Component {
           state={this.state.dataState}
           UUID={this.state.UIstate.editMarriageUUID}
           submitEditedMarriageDetails={this.editMarriage}
+          cancel={this.cancelDialogues}
         />
       );
     }
@@ -477,6 +517,7 @@ class IdCard extends Component {
           isPublic={this.state.isPublic}
           publicName={this.state.publicName}
           setSettings={this.setSettings}
+          cancel={this.cancelDialogues}
         />
       );
     }

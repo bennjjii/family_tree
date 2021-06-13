@@ -228,6 +228,9 @@ const NewSpouse = (props) => {
 
   return (
     <div className="idcard-form translucent-card">
+      <button className="cancel-button" onClick={() => props.cancel()}>
+        <i className="fas fa-times" />
+      </button>
       <h3>Add spouse</h3>
       <form onSubmit={handleSubmit}>
         <div

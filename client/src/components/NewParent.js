@@ -193,7 +193,9 @@ export const NewParent = (props) => {
 
   return (
     <div className="idcard-form translucent-card">
-      <i className="fas fa-times" />
+      <button className="cancel-button" onClick={() => props.cancel()}>
+        <i className="fas fa-times" />
+      </button>
       <h3>Add parent</h3>
       {/* {formData.existing_parent} */}
       <form onSubmit={handleSubmit}>

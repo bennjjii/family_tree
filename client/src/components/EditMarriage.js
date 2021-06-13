@@ -56,6 +56,9 @@ const EditMarriage = (props) => {
 
   return (
     <div className="idcard-form translucent-card">
+      <button className="cancel-button" onClick={() => props.cancel()}>
+        <i className="fas fa-times" />
+      </button>
       <form onSubmit={handleSubmit}>
         <h3>Edit marriage</h3>
         <label>Date of marriage:</label>

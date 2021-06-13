@@ -24,11 +24,11 @@ class StateTemplate {
       spouses: [],
     };
     this.UIstate = {
-      editMode: false,
+      //editMode: false,
       editNewChild: false,
       editNewParent: false,
       editNewSpouse: false,
-      newParentGender: null,
+      newParentGender: undefined,
       editFamilyMember: false,
       editFamilyMemberMode: undefined,
       editFamilyMemberUUID: undefined,
