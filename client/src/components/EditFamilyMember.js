@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
+import moment from "moment-timezone";
 
 const EditFamilyMember = (props) => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const EditFamilyMember = (props) => {
     last_name: undefined,
     d_o_b: null,
   });
+  moment.tz.setDefault("UTC");
 
   useEffect(() => {
     switch (props.mode) {
@@ -79,11 +81,22 @@ const EditFamilyMember = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.submitEditedFamilyMember(formData);
+    props.submitEditedFamilyMember({
+      ...formData,
+      d_o_b: moment(
+        `${formData.d_o_b.getFullYear()}-${
+          formData.d_o_b.getMonth() + 1
+        }-${formData.d_o_b.getDate()}`,
+        "YYYY-MM-DD"
+      ).toISOString(),
+    });
   };
 
   return (
     <div className="idcard-form translucent-card">
+      <button className="cancel-button" onClick={() => props.cancel()}>
+        <i className="fas fa-times" />
+      </button>
       <form onSubmit={handleSubmit}>
         <h3>Edit</h3>
 

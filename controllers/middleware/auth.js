@@ -11,11 +11,12 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
     if (err) {
+      console.log("Access token error");
       console.log(err);
       return res.sendStatus(403);
     }
     req.user = result;
-
+    console.log("User authenticated");
     next();
   });
 };

@@ -40,6 +40,32 @@ function useProvideAuth() {
       })
       .catch((err) => console.log(err));
   };
+
+  const refreshAccessToken = async () => {
+    console.log("refreshing access token");
+    let httpClient = await axios
+      .post("/refresh")
+      .then((res) => {
+        console.log(res.data);
+        try {
+          setJwt(res.data);
+          console.log(jwt);
+          return axios.create({
+            baseURL: process.env.REACT_APP_BASE_URL,
+            headers: {
+              "Content-type": "application/json",
+              authorization: res.data,
+            },
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      })
+      .catch((err) => console.log(err));
+    return httpClient;
+    console.log(jwt);
+  };
+
   const login = (loginDetails, history) => {
     axios.post("/login", loginDetails).then((resp) => {
       if (resp.data.auth) {
@@ -76,6 +102,7 @@ function useProvideAuth() {
     login,
     logout,
     getAccessToken,
+    refreshAccessToken,
   };
 }
 

@@ -1,5 +1,6 @@
 import EditDelete from "./EditDelete";
 import { useAuth } from "./services/ProvideAuth";
+import _fn from "./fullName";
 
 //parent could have other children
 //so it's not enough to check that they just don't have any parents
@@ -9,7 +10,7 @@ const ParentsBox = (props) => {
   return (
     <div className="idcard-component transparent-card shadow-sm">
       <h5>
-        Parents:{" "}
+        parents:{" "}
         <span
           style={{
             float: "right",
@@ -51,11 +52,7 @@ const ParentsBox = (props) => {
           }}
         >
           {props.father
-            ? props.father.first_name +
-              " " +
-              props.father.middle_name +
-              " " +
-              props.father.last_name
+            ? _fn(props.father)
             : !thisContext.showPublic.publicMode
             ? "Add father"
             : "..."}
@@ -99,11 +96,7 @@ const ParentsBox = (props) => {
           }}
         >
           {props.mother
-            ? props.mother.first_name +
-              " " +
-              props.mother.middle_name +
-              " " +
-              props.mother.last_name
+            ? _fn(props.mother)
             : !thisContext.showPublic.publicMode
             ? "Add mother"
             : "..."}

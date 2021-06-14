@@ -9,19 +9,19 @@ const Navbar = (props) => {
   return (
     <nav className="navbar navbar-light transparent-bg transparent-card shadow-sm navbar-expand-lg">
       <Link to="/" className="navbar-brand">
-        Geneol0
+        geneolo
       </Link>
       <div className="collpase navbar-collapse">
         <ul className="navbar-nav mr-auto">
           <li className="navbar-item">
             <Link to="/app" className="nav-link">
-              App
+              app
             </Link>
           </li>
 
           <li className="navbar-item">
             <Link to="/account" className="nav-link">
-              Account
+              account
             </Link>
           </li>
           <li className="navbar-item">
@@ -30,7 +30,7 @@ const Navbar = (props) => {
               className="nav-link"
               onClick={() => auth.logout(history)}
             >
-              Logout
+              logout
             </Link>
           </li>
         </ul>

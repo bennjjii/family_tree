@@ -1,6 +1,7 @@
 import axios from "axios";
 import DatePicker from "react-datepicker";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import moment from "moment-timezone";
 
 const Login = (props) => {
   const [username, setUsername] = useState(null);
@@ -10,6 +11,7 @@ const Login = (props) => {
   const [name, setName] = useState(["", "", ""]);
   const [gender, setGender] = useState(null);
   const [d_o_b, setDob] = useState(null);
+  moment.tz.setDefault("UTC");
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +22,10 @@ const Login = (props) => {
       first_name: name[0],
       middle_name: name[1],
       last_name: name[2],
-      d_o_b: d_o_b,
+      d_o_b: moment(
+        `${d_o_b.getFullYear()}-${d_o_b.getMonth() + 1}-${d_o_b.getDate()}`,
+        "YYYY-MM-DD"
+      ).toISOString(),
       gender: gender,
       family_tree_name: familyTreeName,
     };
@@ -121,6 +126,7 @@ const Login = (props) => {
                 onChange={(date) => setDob(date)}
                 selected={d_o_b}
                 className="form-control"
+                utcOffset={0}
               />
             </div>
             <div className="form-group">

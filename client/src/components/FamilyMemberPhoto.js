@@ -7,7 +7,7 @@ const FamilyMemberPhoto = (props) => {
   const [currentFile, setCurrentFile] = useState(undefined);
   const [previewImage, setPreviewImage] = useState(undefined);
   const thisContext = useAuth();
-  const uploadService = new UploadService(thisContext.jwt);
+  const uploadService = new UploadService();
 
   //wipe state if the user navigates
   useEffect(() => {
@@ -20,7 +20,7 @@ const FamilyMemberPhoto = (props) => {
     setPreviewImage(URL.createObjectURL(e.target.files[0]));
   };
   const upload = () => {
-    uploadService.upload(currentFile, props.target, (e) => {});
+    uploadService.upload(currentFile, props.target, (e) => {}, thisContext.jwt);
   };
 
   return (

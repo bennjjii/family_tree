@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import _fn from "./fullName";
-
 import DatePicker from "react-datepicker";
+import moment from "moment-timezone";
 
 //this should add a new parent, d_o_b, and give the option to add a marriage if the other parent exists
 //it should also give the option to set a married person as the other parent
@@ -18,6 +18,7 @@ import DatePicker from "react-datepicker";
 //otherwise we create two of the same marriages
 
 export const NewParent = (props) => {
+  moment.tz.setDefault("UTC");
   //enumerate other possible parents
 
   let allParents = [
@@ -107,7 +108,7 @@ export const NewParent = (props) => {
     married_link_visible: props.state.mothe || props.state.fathe ? true : false,
     marriage_checked: props.state.mothe || props.state.fathe ? true : false,
     already_married_to_selected: false,
-    d_o_mar: null,
+    d_o_mar: undefined,
     bride: props.state.mothe ? props.state.mothe.uuid_family_member : null,
     groom: props.state.fathe ? props.state.fathe.uuid_family_member : null,
     existing_parent: reducedParents.length ? reducedParents[0].uuid : "new",
@@ -170,11 +171,31 @@ export const NewParent = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.submitNewParent(formData);
+
+    props.submitNewParent({
+      ...formData,
+      d_o_b: moment(
+        `${formData.d_o_b.getFullYear()}-${
+          formData.d_o_b.getMonth() + 1
+        }-${formData.d_o_b.getDate()}`,
+        "YYYY-MM-DD"
+      ).toISOString(),
+      d_o_mar: formData.d_o_mar
+        ? moment(
+            `${formData.d_o_mar.getFullYear()}-${
+              formData.d_o_mar.getMonth() + 1
+            }-${formData.d_o_mar.getDate()}`,
+            "YYYY-MM-DD"
+          ).toISOString()
+        : undefined,
+    });
   };
 
   return (
     <div className="idcard-form translucent-card">
+      <button className="cancel-button" onClick={() => props.cancel()}>
+        <i className="fas fa-times" />
+      </button>
       <h3>Add parent</h3>
       {/* {formData.existing_parent} */}
       <form onSubmit={handleSubmit}>

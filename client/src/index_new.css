@@ -265,3 +265,18 @@ select {
 .fa-trash-alt:hover {
   color: grey;
 }
+
+.cancel-button {
+  display: inline;
+  float: right;
+  padding: 2px;
+  padding-right: 5px;
+  background-color: Transparent;
+  border: none;
+  outline: none;
+  color: grey;
+}
+
+.cancel-button:hover {
+  color: black;
+}

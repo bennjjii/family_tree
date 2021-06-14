@@ -77,8 +77,10 @@ exports.getAccessToken = async (req, res) => {
           focal_member: focal_member,
         };
         const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
+          //reset to 15m
           expiresIn: "15m",
         });
+        console.log("New access token granted" + accessToken);
         res.json(accessToken);
       } else {
         res.sendStatus(401);

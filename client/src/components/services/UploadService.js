@@ -1,25 +1,25 @@
-import CommonHttp from "./CommonHttp";
+import axios from "axios";
 
 class UploadService {
-  constructor(jwt) {
-    this._http = new CommonHttp(jwt);
-  }
-  upload(file, target, onUploadProgress) {
+  constructor() {}
+  upload(file, target, onUploadProgress, jwt) {
     let formData = new FormData();
     let splitFilename = file.name.split(".");
     let extension = "." + splitFilename[splitFilename.length - 1];
     formData.append("file", file, target + extension);
 
-    return this._http.axios.post("/upload_aws", formData, {
+    return axios.post("/upload_aws", formData, {
+      baseURL: process.env.REACT_APP_BASE_URL,
       headers: {
         "Content-Type": "multipart/form-data",
+        authorization: jwt,
       },
       onUploadProgress,
     });
   }
 
   getFiles() {
-    return this._http.axios.get("/files");
+    return axios.get("/files");
   }
 }
 
