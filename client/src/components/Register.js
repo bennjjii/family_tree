@@ -13,6 +13,8 @@ const Login = (props) => {
   const [d_o_b, setDob] = useState(null);
   moment.tz.setDefault("UTC");
 
+  const validateForm = () => {};
+
   const onSubmit = (e) => {
     e.preventDefault();
     const userDetails = {
@@ -30,9 +32,14 @@ const Login = (props) => {
       family_tree_name: familyTreeName,
     };
 
-    axios.post("/register", userDetails).then((response) => {
-      props.history.push("/", { from: "Register" });
-    });
+    axios
+      .post("/register", userDetails)
+      .then((response) => {
+        props.history.push("/", { from: "Register" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     console.log(userDetails);
   };
