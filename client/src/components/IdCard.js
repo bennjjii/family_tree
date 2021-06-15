@@ -41,6 +41,7 @@ class IdCard extends Component {
     this.cancelDialogues = this.cancelDialogues.bind(this);
     this._http = undefined;
     this.intervalId = undefined;
+    this.eventListenerRef = this.eventListenerRef.bind(this);
   }
 
   async componentDidMount() {
@@ -95,16 +96,18 @@ class IdCard extends Component {
     this.getSettings();
 
     //add event listener for escape key
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        this.cancelDialogues();
-      }
-    });
+    document.addEventListener("keydown", this.eventListenerRef);
+  }
+
+  eventListenerRef(e) {
+    if (e.key === "Escape") {
+      this.cancelDialogues();
+    }
   }
 
   componentWillUnmount() {
     clearInterval(this.intervalId);
-    document.removeEventListener("keydown");
+    document.removeEventListener("keydown", this.eventListenerRef);
   }
 
   async refreshPhoto(prevState) {
