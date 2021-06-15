@@ -11,6 +11,7 @@ const Login = (props) => {
   const [name, setName] = useState(["", "", ""]);
   const [gender, setGender] = useState(null);
   const [d_o_b, setDob] = useState(null);
+  const [formErrors, setFormErrors] = useState([]);
   moment.tz.setDefault("UTC");
 
   const validateForm = () => {};
@@ -32,6 +33,8 @@ const Login = (props) => {
       family_tree_name: familyTreeName,
     };
 
+    validateForm(userDetails);
+
     axios
       .post("/register", userDetails)
       .then((response) => {
@@ -51,6 +54,7 @@ const Login = (props) => {
         <div className="registerForm">
           <div className="formcol-1">
             <div className="form-group">
+              {/* must be unique */}
               <label>Username:</label>
               <input
                 type="text"
@@ -62,6 +66,7 @@ const Login = (props) => {
               />
             </div>
             <div className="form-group">
+              {/* must be unique */}
               <label>Email address:</label>
               <input
                 type="email"
@@ -73,6 +78,7 @@ const Login = (props) => {
               />
             </div>
             <div className="form-group">
+              {/* must be 8 characters */}
               <label>Password:</label>
               <input
                 type="password"
@@ -84,6 +90,7 @@ const Login = (props) => {
               />
             </div>
             <div className="form-group">
+              {/* required */}
               <label>Your first name:</label>
               <input
                 type="text"
@@ -120,6 +127,7 @@ const Login = (props) => {
             </div>
 
             <label htmlFor="birthday">Date of birth</label>
+            {/* required */}
             <div className="form-group">
               <DatePicker
                 id="birthday"
@@ -138,6 +146,7 @@ const Login = (props) => {
             </div>
             <div className="form-group">
               <label>Family Tree Name:</label>
+              {/* required */}
               <input
                 type="text"
                 value={familyTreeName}
@@ -150,6 +159,7 @@ const Login = (props) => {
           </div>
         </div>{" "}
         <div className="form-group">
+          {/* required */}
           <label>
             Gender
             <br />
