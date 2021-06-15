@@ -43,11 +43,11 @@ function useProvideAuth() {
   };
 
   const refreshAccessToken = async () => {
-    console.log("refreshing access token");
+    //console.log("refreshing access token");
     let httpClient = await axios
       .post("/refresh")
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         try {
           setJwt(res.data);
           console.log(jwt);
@@ -64,7 +64,7 @@ function useProvideAuth() {
       })
       .catch((err) => console.log(err));
     return httpClient;
-    console.log(jwt);
+    //console.log(jwt);
   };
 
   const login = (loginDetails, history) => {
@@ -76,9 +76,10 @@ function useProvideAuth() {
   };
 
   const logout = async (history) => {
+    //something goes wrong here
     console.log("Logout clicked");
     await axios.post("/logout", { username: user }).then((resp) => {
-      console.log(resp);
+      //console.log(resp);
       if (resp.data.success) {
         setUser(null);
         setUuidUser(null);

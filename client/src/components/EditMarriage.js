@@ -6,15 +6,25 @@ import { useForm, Controller } from "react-hook-form";
 const EditMarriage = (props) => {
   const [formData, setFormData] = useState({
     uuid_marriage: undefined,
-    d_o_marr: undefined,
   });
   moment.tz.setDefault("UTC");
 
   const { register, handleSubmit, watch, formState, control, setValue } =
     useForm();
+
   const onSubmit = (data) => {
-    console.log(data);
-    console.log(formState);
+    // console.log(data.d_o_mar);
+    // console.log(formState);
+
+    props.submitEditedMarriageDetails({
+      ...formData,
+      d_o_mar: moment(
+        `${data.d_o_mar.getFullYear()}-${
+          data.d_o_mar.getMonth() + 1
+        }-${data.d_o_mar.getDate()}`,
+        "YYYY-MM-DD"
+      ).toISOString(),
+    });
   };
 
   useEffect(() => {
@@ -22,11 +32,12 @@ const EditMarriage = (props) => {
       return marriage.uuid_marriage === props.UUID;
     })[0];
     setFormData({
-      d_o_marr: new Date(selectedMarriage.d_o_mar),
       uuid_marriage: selectedMarriage.uuid_marriage,
     });
     setValue("d_o_mar", new Date(selectedMarriage.d_o_mar));
   }, []);
+
+  //console.log(formState.errors);
 
   // const handleChange = (e) => {
   //   const { name, value, checked, type } = e.target;
@@ -43,25 +54,25 @@ const EditMarriage = (props) => {
   //   }
   // };
 
-  const handleChangeMarriageDate = (date) => {
-    setFormData({
-      ...formData,
-      d_o_mar: date,
-    });
-  };
+  // const handleChangeMarriageDate = (date) => {
+  //   setFormData({
+  //     ...formData,
+  //     d_o_mar: date,
+  //   });
+  // };
 
-  const handleSubmit2 = (e) => {
-    e.preventDefault();
-    props.submitEditedMarriageDetails({
-      ...formData,
-      d_o_mar: moment(
-        `${formData.d_o_mar.getFullYear()}-${
-          formData.d_o_mar.getMonth() + 1
-        }-${formData.d_o_mar.getDate()}`,
-        "YYYY-MM-DD"
-      ).toISOString(),
-    });
-  };
+  // const handleSubmit2 = (e) => {
+  //   e.preventDefault();
+  //   props.submitEditedMarriageDetails({
+  //     ...formData,
+  //     d_o_mar: moment(
+  //       `${formData.d_o_mar.getFullYear()}-${
+  //         formData.d_o_mar.getMonth() + 1
+  //       }-${formData.d_o_mar.getDate()}`,
+  //       "YYYY-MM-DD"
+  //     ).toISOString(),
+  //   });
+  // };
 
   return (
     <div className="idcard-form translucent-card">
@@ -92,6 +103,7 @@ const EditMarriage = (props) => {
           )}
           rules={{ required: true }}
         />
+        {formState.errors.d_o_mar ? "Date required" : ""}
 
         <input className="bubble-button" type="submit" value="Save"></input>
       </form>
