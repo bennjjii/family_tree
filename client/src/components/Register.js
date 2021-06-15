@@ -1,6 +1,6 @@
 import axios from "axios";
 import DatePicker from "react-datepicker";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import moment from "moment-timezone";
 
 const Login = (props) => {
@@ -11,10 +11,7 @@ const Login = (props) => {
   const [name, setName] = useState(["", "", ""]);
   const [gender, setGender] = useState(null);
   const [d_o_b, setDob] = useState(null);
-  const [formErrors, setFormErrors] = useState([]);
   moment.tz.setDefault("UTC");
-
-  const validateForm = () => {};
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -32,8 +29,6 @@ const Login = (props) => {
       gender: gender,
       family_tree_name: familyTreeName,
     };
-
-    validateForm(userDetails);
 
     axios
       .post("/register", userDetails)
