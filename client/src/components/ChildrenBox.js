@@ -6,7 +6,11 @@ const ChildrenBox = (props) => {
   return (
     <div className="idcard-component transparent-card shadow-sm">
       {!thisContext.showPublic.publicMode && (
-        <button className="bubble-button" onClick={props.showNewChild}>
+        <button
+          className="bubble-button"
+          onClick={props.showNewChild}
+          disabled={thisContext.blockUI}
+        >
           +
         </button>
       )}

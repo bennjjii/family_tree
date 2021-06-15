@@ -24,7 +24,6 @@ class StateTemplate {
       spouses: [],
     };
     this.UIstate = {
-      //editMode: false,
       editNewChild: false,
       editNewParent: false,
       editNewSpouse: false,

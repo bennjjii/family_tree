@@ -20,6 +20,7 @@ function useProvideAuth() {
   const [showPublic, setShowPublic] = useState({
     publicMode: false,
   });
+  const [blockUI, setBlockUI] = useState(false);
   //this needs to set a timeout to refresh the access token after x minutes
   const getAccessToken = async (context) => {
     axios
@@ -103,6 +104,8 @@ function useProvideAuth() {
     logout,
     getAccessToken,
     refreshAccessToken,
+    blockUI,
+    setBlockUI,
   };
 }
 
