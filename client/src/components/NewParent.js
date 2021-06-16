@@ -49,12 +49,7 @@ export const NewParent = (props) => {
           if (sibling.fathe) {
             return total.concat({
               name: _fn(sibling.fathe),
-              // sibling.fathe.first_name +
-              // " " +
-              // sibling.fathe.middle_name +
-              // " " +
-              // sibling.fathe.last_name,
-              //this this should be sibling.fathe
+
               uuid: sibling.fathe.uuid_family_member,
             });
           } else {
@@ -67,11 +62,7 @@ export const NewParent = (props) => {
       ? props.state.fathersWife.map((marriage) => {
           return {
             name: _fn(marriage.brid),
-            // marriage.brid.first_name +
-            // " " +
-            // marriage.brid.middle_name +
-            // " " +
-            // marriage.brid.last_name,
+
             uuid: marriage.brid.uuid_family_member,
           };
         })
@@ -80,11 +71,6 @@ export const NewParent = (props) => {
       ? props.state.mothersHusband.map((marriage) => {
           return {
             name: _fn(marriage.groo),
-            // marriage.groo.first_name +
-            // " " +
-            // marriage.groo.middle_name +
-            // " " +
-            // marriage.groo.last_name,
             uuid: marriage.groo.uuid_family_member,
           };
         })
@@ -105,7 +91,7 @@ export const NewParent = (props) => {
     first_name: "",
     middle_name: "",
     last_name: "",
-    d_o_b: null,
+    d_o_b: undefined,
     gender: props.UIstate.newParentGender,
     uuid_target: props.state.uuid_family_member,
     //only shows if one other parent
@@ -120,7 +106,6 @@ export const NewParent = (props) => {
 
   useEffect(() => {
     //check here whether already married
-    //bloated and can be refactored but right now this works so do it later
     console.log(formData);
     let alreadyMarried = false;
 
@@ -159,48 +144,30 @@ export const NewParent = (props) => {
     }
   };
 
-  const handleChangeBirth = (date) => {
-    setFormData({
-      ...formData,
-      d_o_b: date,
-    });
-  };
-
-  const handleChangeMarriageDate = (date) => {
-    setFormData({
-      ...formData,
-      d_o_mar: date,
-    });
-  };
-
-  const handleSubmitOld = (e) => {
-    e.preventDefault();
-
-    props.submitNewParent({
-      ...formData,
-      d_o_b: formData.d_o_b
-        ? moment(
-            `${formData.d_o_b.getFullYear()}-${
-              formData.d_o_b.getMonth() + 1
-            }-${formData.d_o_b.getDate()}`,
-            "YYYY-MM-DD"
-          ).toISOString()
-        : undefined,
-      d_o_mar: formData.d_o_mar
-        ? moment(
-            `${formData.d_o_mar.getFullYear()}-${
-              formData.d_o_mar.getMonth() + 1
-            }-${formData.d_o_mar.getDate()}`,
-            "YYYY-MM-DD"
-          ).toISOString()
-        : undefined,
-    });
-  };
-
   const onSubmit = (data) => {
-    let finalData = {};
-    console.log(finalData);
-    console.log(data);
+    let finalData = {
+      ...formData,
+      first_name: data.first_name,
+      middle_name: data.middle_name,
+      last_name: data.last_name,
+      d_o_b: data.d_o_b
+        ? moment(
+            `${data.d_o_b.getFullYear()}-${
+              data.d_o_b.getMonth() + 1
+            }-${data.d_o_b.getDate()}`,
+            "YYYY-MM-DD"
+          ).toISOString()
+        : undefined,
+      d_o_mar: data.d_o_mar
+        ? moment(
+            `${data.d_o_mar.getFullYear()}-${
+              data.d_o_mar.getMonth() + 1
+            }-${data.d_o_mar.getDate()}`,
+            "YYYY-MM-DD"
+          ).toISOString()
+        : undefined,
+    };
+    props.submitNewParent(finalData);
   };
 
   return (
@@ -242,6 +209,14 @@ export const NewParent = (props) => {
           <div style={{ position: "relative" }}>
             <input
               {...register("first_name", {
+                validate: (v) => {
+                  if (formData.existing_parent !== "new") {
+                    return true;
+                  } else {
+                    console.log(v);
+                    return v.length > 0;
+                  }
+                },
                 pattern: /^[a-zA-Z0-9]*$/g,
               })}
               type="text"
@@ -259,36 +234,59 @@ export const NewParent = (props) => {
               {...register("middle_name", { pattern: /^[a-zA-Z0-9]*$/g })}
               type="text"
               autoComplete="no"
-
-              // value={formData.middle_name}
-              // onChange={handleChange}
             />{" "}
             {formState.errors.middle_name ? (
               <FormError message="no spaces allowed" />
             ) : null}
           </div>
           <label>Last name</label>
-          <input
-            {...register("last_name")}
-            type="text"
-            autoComplete="no"
-
-            // value={formData.last_name}
-            // onChange={handleChange}
-          />
+          <div style={{ position: "relative" }}>
+            <input
+              {...register("last_name", { pattern: /^[a-zA-Z0-9]*$/g })}
+              type="text"
+              autoComplete="no"
+            />
+            {formState.errors.last_name ? (
+              <FormError message="no spaces allowed" />
+            ) : null}
+          </div>
           <label htmlFor="birthday">Date of birth</label>
-          <DatePicker
-            id="birthday"
-            shouldCloseOnSelect={true}
-            dateFormat="dd/MM/yyyy"
-            showYearDropdown
-            scrollableYearDropdown
-            yearDropdownItemNumber={40}
-            maxDate={new Date()}
-            autoComplete="off"
-            onChange={handleChangeBirth}
-            selected={formData.d_o_b}
-          />
+
+          <div style={{ position: "relative" }}>
+            <Controller
+              control={control}
+              name="d_o_b"
+              render={({ field: { onChange, onBlur, value, ref } }) => (
+                <DatePicker
+                  shouldCloseOnSelect={true}
+                  dateFormat="dd/MM/yyyy"
+                  showYearDropdown
+                  scrollableYearDropdown
+                  yearDropdownItemNumber={40}
+                  maxDate={new Date()}
+                  autoComplete="off"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  selected={value}
+                  inputRef={ref}
+                />
+              )}
+              rules={{
+                validate: (v) => {
+                  if (formData.existing_parent !== "new") {
+                    return true;
+                  } else {
+                    console.log(v);
+                    return !!v;
+                  }
+                },
+              }}
+            />
+            {formState.errors.d_o_b ? (
+              <FormError message="required field" />
+            ) : null}
+          </div>
+
           {/* think this is wrong */}
           {formData.already_married_to_selected
             ? "Already married to" +
@@ -329,18 +327,45 @@ export const NewParent = (props) => {
             </label>
           </span>
           <label htmlFor="d_o_mar">Date of marriage</label>
-          <DatePicker
-            id="d_o_mar"
-            shouldCloseOnSelect={true}
-            dateFormat="dd/MM/yyyy"
-            showYearDropdown
-            scrollableYearDropdown
-            yearDropdownItemNumber={40}
-            maxDate={new Date()}
-            autoComplete="off"
-            onChange={handleChangeMarriageDate}
-            selected={formData.d_o_mar}
-          />
+          <div style={{ position: "relative" }}>
+            <Controller
+              control={control}
+              name="d_o_mar"
+              render={({ field: { onChange, onBlur, value, ref } }) => (
+                <DatePicker
+                  shouldCloseOnSelect={true}
+                  dateFormat="dd/MM/yyyy"
+                  showYearDropdown
+                  scrollableYearDropdown
+                  yearDropdownItemNumber={40}
+                  maxDate={new Date()}
+                  autoComplete="off"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  selected={value}
+                  inputRef={ref}
+                />
+              )}
+              rules={{
+                validate: (v) => {
+                  if (
+                    !formData.married_link_visible ||
+                    formData.already_married_to_selected
+                  ) {
+                    return true;
+                  } else if (formData.marriage_checked) {
+                    console.log(v);
+                    return !!v;
+                  } else {
+                    return true;
+                  }
+                },
+              }}
+            />
+            {formState.errors.d_o_mar ? (
+              <FormError message="required field" />
+            ) : null}
+          </div>
         </div>
         <input type="submit" value="Save" className="bubble-button"></input>
       </form>
