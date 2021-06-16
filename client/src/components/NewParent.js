@@ -53,8 +53,8 @@ export const NewParent = (props) => {
               // sibling.fathe.middle_name +
               // " " +
               // sibling.fathe.last_name,
-
-              uuid: sibling.mothe.uuid_family_member,
+              //this this should be sibling.fathe
+              uuid: sibling.fathe.uuid_family_member,
             });
           } else {
             return total;
@@ -172,17 +172,19 @@ export const NewParent = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmitOld = (e) => {
     e.preventDefault();
 
     props.submitNewParent({
       ...formData,
-      d_o_b: moment(
-        `${formData.d_o_b.getFullYear()}-${
-          formData.d_o_b.getMonth() + 1
-        }-${formData.d_o_b.getDate()}`,
-        "YYYY-MM-DD"
-      ).toISOString(),
+      d_o_b: formData.d_o_b
+        ? moment(
+            `${formData.d_o_b.getFullYear()}-${
+              formData.d_o_b.getMonth() + 1
+            }-${formData.d_o_b.getDate()}`,
+            "YYYY-MM-DD"
+          ).toISOString()
+        : undefined,
       d_o_mar: formData.d_o_mar
         ? moment(
             `${formData.d_o_mar.getFullYear()}-${
@@ -194,6 +196,12 @@ export const NewParent = (props) => {
     });
   };
 
+  const onSubmit = (data) => {
+    let finalData = {};
+    console.log(finalData);
+    console.log(data);
+  };
+
   return (
     <div className="idcard-form translucent-card">
       <button className="cancel-button" onClick={() => props.cancel()}>
@@ -201,7 +209,7 @@ export const NewParent = (props) => {
       </button>
       <h3>Add parent</h3>
       {/* {formData.existing_parent} */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmitOld}>
         <div
           id="new-parent-select"
           style={
@@ -268,7 +276,7 @@ export const NewParent = (props) => {
             onChange={handleChangeBirth}
             selected={formData.d_o_b}
           />
-
+          {/* think this is wrong */}
           {formData.already_married_to_selected
             ? "Already married to" +
               props.state.first_name +

@@ -151,7 +151,7 @@ class IdCard extends Component {
   }
 
   async refreshData(prevState) {
-    console.log(this.state);
+    //console.log(this.state);
     if (prevState) {
       if (
         this.state.dataState.uuid_family_member !==
@@ -164,6 +164,7 @@ class IdCard extends Component {
         );
         this.setState({ dataState: data.data }, () => {
           this.context.setFocus(this.state.dataState.uuid_family_member);
+          console.log(this.state.dataState);
         });
       }
     } else {
@@ -174,6 +175,7 @@ class IdCard extends Component {
       );
       this.setState({ dataState: data.data }, () => {
         this.context.setFocus(this.state.dataState.uuid_family_member);
+        console.log(this.state.dataState);
       });
     }
   }
@@ -181,13 +183,11 @@ class IdCard extends Component {
   componentDidUpdate(prevProps, prevState) {
     this.refreshData(prevState);
     this.refreshPhoto(prevState);
-
-    console.log(this.state);
   }
 
   updateTarget(e) {
     //this is the entry point for all UI navigation actions
-    console.log(e.target.id);
+    //console.log(e.target.id);
     e.preventDefault();
     switch (true) {
       //this just updates state so forcing a refresh from the server based on the focal UUID

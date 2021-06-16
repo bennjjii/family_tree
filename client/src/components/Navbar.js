@@ -9,7 +9,7 @@ const Navbar = (props) => {
   return (
     <nav className="navbar navbar-light transparent-bg transparent-card shadow-sm navbar-expand-lg">
       <Link to="/" className="navbar-brand">
-        family-tree-builder
+        family-tree-app
       </Link>
       <div className="collpase navbar-collapse">
         <ul className="navbar-nav mr-auto">

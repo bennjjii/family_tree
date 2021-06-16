@@ -8,7 +8,7 @@ import { useAuth } from "./services/ProvideAuth";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const auth = useAuth();
-  console.log(auth);
+  //console.log(auth);
   return (
     <Route
       {...rest}
