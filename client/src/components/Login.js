@@ -71,7 +71,7 @@ export class Login extends Component {
             familyTreeRoute="japaneseimperialfamily"
           />
         </div>
-
+        <br />
         <form onSubmit={this.onSubmit} className="loginForm">
           <h4>Or login and build your own</h4>
           <div className="form-group">

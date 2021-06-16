@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment-timezone";
 import { useForm, Controller } from "react-hook-form";
+import FormError from "./FormError";
 
 const EditMarriage = (props) => {
   const [formData, setFormData] = useState({
@@ -36,8 +37,6 @@ const EditMarriage = (props) => {
     });
     setValue("d_o_mar", new Date(selectedMarriage.d_o_mar));
   }, []);
-
-  //console.log(formState.errors);
 
   // const handleChange = (e) => {
   //   const { name, value, checked, type } = e.target;
@@ -82,28 +81,32 @@ const EditMarriage = (props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Edit marriage</h3>
         <label>Date of marriage:</label>
-        <Controller
-          control={control}
-          name="d_o_mar"
-          render={({ field: { onChange, onBlur, value, ref } }) => (
-            <DatePicker
-              id="marriage"
-              shouldCloseOnSelect={true}
-              dateFormat="dd/MM/yyyy"
-              showYearDropdown
-              scrollableYearDropdown
-              yearDropdownItemNumber={40}
-              maxDate={new Date()}
-              autoComplete="off"
-              onChange={onChange}
-              onBlur={onBlur}
-              selected={value}
-              inputRef={ref}
-            />
-          )}
-          rules={{ required: true }}
-        />
-        {formState.errors.d_o_mar ? "Date required" : ""}
+        <div style={{ position: "relative" }}>
+          <Controller
+            control={control}
+            name="d_o_mar"
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <DatePicker
+                id="marriage"
+                shouldCloseOnSelect={true}
+                dateFormat="dd/MM/yyyy"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={40}
+                maxDate={new Date()}
+                autoComplete="off"
+                onChange={onChange}
+                onBlur={onBlur}
+                selected={value}
+                inputRef={ref}
+              />
+            )}
+            rules={{ required: true }}
+          />
+          {formState.errors.d_o_mar ? (
+            <FormError message="date required" />
+          ) : null}
+        </div>
 
         <input className="bubble-button" type="submit" value="Save"></input>
       </form>

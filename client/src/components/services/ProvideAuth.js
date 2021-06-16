@@ -50,7 +50,7 @@ function useProvideAuth() {
         //console.log(res.data);
         try {
           setJwt(res.data);
-          console.log(jwt);
+          //console.log(jwt);
           return axios.create({
             baseURL: process.env.REACT_APP_BASE_URL,
             headers: {
