@@ -3,6 +3,7 @@ import _fn from "./fullName";
 import DatePicker from "react-datepicker";
 import moment from "moment-timezone";
 import { useForm, Controller } from "react-hook-form";
+import FormError from "./FormError";
 
 //this should add a new parent, d_o_b, and give the option to add a marriage if the other parent exists
 //it should also give the option to set a married person as the other parent
@@ -209,7 +210,7 @@ export const NewParent = (props) => {
       </button>
       <h3>Add parent</h3>
       {/* {formData.existing_parent} */}
-      <form onSubmit={handleSubmitOld}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div
           id="new-parent-select"
           style={
@@ -228,6 +229,7 @@ export const NewParent = (props) => {
             <option value={"new"}>New parent</option>
           </select>
         </div>
+        {/* determines whether to show new parent form */}
         <div
           id="new-parent-details"
           style={
@@ -237,33 +239,44 @@ export const NewParent = (props) => {
           }
         >
           <label>First name</label>
-          <input
-            type="text"
-            name="first_name"
-            autoComplete="off"
-            value={formData.first_name}
-            onChange={handleChange}
-          ></input>
+          <div style={{ position: "relative" }}>
+            <input
+              {...register("first_name", {
+                pattern: /^[a-zA-Z0-9]*$/g,
+              })}
+              type="text"
+              autoComplete="off"
+              // value={formData.first_name}
+              // onChange={handleChange}
+            />
+            {formState.errors.first_name ? (
+              <FormError message="required" />
+            ) : null}
+          </div>
           <label>Middle name</label>
-          <input
-            type="text"
-            autoComplete="no"
-            name="middle_name"
-            value={formData.middle_name}
-            onChange={handleChange}
-          ></input>
+          <div style={{ position: "relative" }}>
+            <input
+              {...register("middle_name", { pattern: /^[a-zA-Z0-9]*$/g })}
+              type="text"
+              autoComplete="no"
 
+              // value={formData.middle_name}
+              // onChange={handleChange}
+            />{" "}
+            {formState.errors.middle_name ? (
+              <FormError message="no spaces allowed" />
+            ) : null}
+          </div>
           <label>Last name</label>
           <input
+            {...register("last_name")}
             type="text"
             autoComplete="no"
-            name="last_name"
-            value={formData.last_name}
-            onChange={handleChange}
-          ></input>
 
+            // value={formData.last_name}
+            // onChange={handleChange}
+          />
           <label htmlFor="birthday">Date of birth</label>
-
           <DatePicker
             id="birthday"
             shouldCloseOnSelect={true}
