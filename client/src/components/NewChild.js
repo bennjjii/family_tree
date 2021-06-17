@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import _fn from "./fullName";
+import dateSanitiser from "./services/dateSanitiser";
 import DatePicker from "react-datepicker";
-import moment from "moment-timezone";
+import { useForm, Controller } from "react-hook-form";
+import FormError from "./FormError";
 
 //this should add a new person and d_o_b, with the target as one parent,
 // and an option of a married partner, or a partner who has already also been a parent of a sibling
@@ -11,7 +13,8 @@ import moment from "moment-timezone";
 //and need to be able to choose to add a child without a mother even if one exists
 
 const NewChild = (props) => {
-  moment.tz.setDefault("UTC");
+  const { register, handleSubmit, formState, control, setValue } = useForm();
+
   //figure out possible mothers/fathers
 
   let reducedParents = null;
@@ -47,7 +50,7 @@ const NewChild = (props) => {
     }),
   ];
 
-  console.log(allParents);
+  //console.log(allParents);
   //remove duplicates
   let t = {};
   for (let i = 0; i < allParents.length; i++) {
@@ -80,11 +83,6 @@ const NewChild = (props) => {
         : null,
   });
 
-  useEffect(() => {
-    console.log(formData);
-    console.log(reducedParents);
-  }, [formData]);
-
   const handleChange = (e) => {
     let { name, value } = e.target;
     //console.log(eval(value));
@@ -97,24 +95,36 @@ const NewChild = (props) => {
     });
   };
 
-  const handleChangeBirth = (date) => {
-    setFormData({
-      ...formData,
-      d_o_b: date,
-    });
-  };
+  // const handleChangeBirth = (date) => {
+  //   setFormData({
+  //     ...formData,
+  //     d_o_b: date,
+  //   });
+  // };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    props.submitNewChild({
-      ...formData,
-      d_o_b: moment(
-        `${formData.d_o_b.getFullYear()}-${
-          formData.d_o_b.getMonth() + 1
-        }-${formData.d_o_b.getDate()}`,
-        "YYYY-MM-DD"
-      ).toISOString(),
-    });
+  // const handleSubmit2 = (e) => {
+  //   e.preventDefault();
+  //   props.submitNewChild({
+  //     ...formData,
+  //     d_o_b: moment(
+  //       `${formData.d_o_b.getFullYear()}-${
+  //         formData.d_o_b.getMonth() + 1
+  //       }-${formData.d_o_b.getDate()}`,
+  //       "YYYY-MM-DD"
+  //     ).toISOString(),
+  //   });
+  // };
+
+  const onSubmit = (data) => {
+    console.log(data);
+    let finalForm = {
+      ...data,
+      d_o_b: dateSanitiser(data.d_o_b),
+      father: formData.father,
+      mother: formData.mother,
+    };
+    console.log(finalForm);
+    props.submitNewChild(finalForm);
   };
 
   return (
@@ -123,60 +133,105 @@ const NewChild = (props) => {
         <i className="fas fa-times" />
       </button>
       <h3>Add child</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label>First name</label>
-        <input
-          type="text"
-          name="first_name"
-          autoComplete="off"
-          value={formData.first_name}
-          onChange={handleChange}
-        ></input>
+        <div style={{ position: "relative" }}>
+          <input
+            {...register("first_name", {
+              required: true,
+              pattern: /^[a-zA-Z0-9]*$/g,
+            })}
+            type="text"
+            autoComplete="off"
+          />
+          {formState.errors.first_name &&
+            formState.errors.first_name.type === "required" && (
+              <FormError message="please enter a name :)" />
+            )}
+          {formState.errors.first_name &&
+            formState.errors.first_name.type === "pattern" && (
+              <FormError message="please do not use spaces" />
+            )}
+        </div>
 
         <label>Middle name</label>
-        <input
-          type="text"
-          autoComplete="no"
-          name="middle_name"
-          value={formData.middle_name}
-          onChange={handleChange}
-        ></input>
+        <div style={{ position: "relative" }}>
+          <input
+            {...register("middle_name", {
+              pattern: /^[a-zA-Z0-9]*$/g,
+            })}
+            type="text"
+            autoComplete="no"
+          />{" "}
+          {formState.errors.middle_name && (
+            <FormError message="please do not use spaces" />
+          )}
+        </div>
 
         <label>Last name</label>
-
-        <input
-          type="text"
-          autoComplete="no"
-          name="last_name"
-          value={formData.last_name}
-          onChange={handleChange}
-        ></input>
+        <div style={{ position: "relative" }}>
+          <input
+            {...register("last_name", {
+              pattern: /^[a-zA-Z0-9]*$/g,
+            })}
+            type="text"
+            autoComplete="no"
+          />{" "}
+          {formState.errors.last_name && (
+            <FormError message="please do not use spaces" />
+          )}
+        </div>
 
         <label htmlFor="birthday">Date of birth</label>
+        <div style={{ position: "relative" }}>
+          <Controller
+            control={control}
+            name="d_o_b"
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <DatePicker
+                shouldCloseOnSelect={true}
+                dateFormat="dd/MM/yyyy"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={40}
+                maxDate={new Date()}
+                autoComplete="off"
+                onChange={onChange}
+                onBlur={onBlur}
+                selected={value}
+                inputRef={ref}
+              />
+            )}
+            rules={{
+              required: true,
+            }}
+          />
 
-        <DatePicker
-          id="birthday"
-          shouldCloseOnSelect={true}
-          dateFormat="dd/MM/yyyy"
-          showYearDropdown
-          scrollableYearDropdown
-          yearDropdownItemNumber={40}
-          maxDate={new Date()}
-          autoComplete="off"
-          onChange={handleChangeBirth}
-          selected={formData.d_o_b}
-        />
+          {formState.errors.d_o_b && (
+            <FormError message="please enter a date" />
+          )}
+        </div>
         <br />
         <label>Gender</label>
-
-        <select name="gender" value={formData.gender} onChange={handleChange}>
-          {" "}
-          <option value="" selected disabled hidden>
-            ---
-          </option>
-          <option>Male</option>
-          <option>Female</option>
-        </select>
+        <div style={{ position: "relative" }}>
+          <select
+            {...register("gender", {
+              validate: (v) => {
+                return !!v;
+              },
+            })}
+          >
+            {" "}
+            <option value="" selected disabled hidden>
+              ---
+            </option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+          {formState.errors.gender && (
+            <FormError message="please select an option" />
+          )}
+        </div>
 
         <label>{props.state.gender !== "Male" ? "Father" : "Mother"}</label>
 

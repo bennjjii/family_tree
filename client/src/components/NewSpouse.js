@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import _fn from "./fullName";
+import dateSanitiser from "./services/dateSanitiser";
 import DatePicker from "react-datepicker";
-import moment from "moment-timezone";
+import { useForm, Controller } from "react-hook-form";
+import FormError from "./FormError";
 
 //this should allow the creation of a marriage to a partner who has already been
 //employed as a parent, or a new person
@@ -12,7 +14,8 @@ import moment from "moment-timezone";
 //checkbox for add all children should hide if target has no children -- done
 
 const NewSpouse = (props) => {
-  moment.tz.setDefault("UTC");
+  const { register, handleSubmit, formState, control, setValue } = useForm();
+
   //so check children for other parents
   let allParents = [
     ...(props.state.children
@@ -20,22 +23,14 @@ const NewSpouse = (props) => {
           if (props.state.gender === "Male" && child.mothe) {
             return acc.concat({
               name: _fn(child.mothe),
-              // child.mothe.first_name +
-              // " " +
-              // child.mothe.middle_name +
-              // " " +
-              // child.mothe.last_name,
+
               uuid: child.mothe.uuid_family_member,
             });
           }
           if (props.state.gender === "Female" && child.fathe) {
             return acc.concat({
               name: _fn(child.fathe),
-              // child.fathe.first_name +
-              // " " +
-              // child.fathe.middle_name +
-              // " " +
-              // child.fathe.last_name,
+
               uuid: child.fathe.uuid_family_member,
             });
           }
@@ -60,17 +55,6 @@ const NewSpouse = (props) => {
   let allSpouses = props.state.spouses.map((spouse) => {
     return {
       name: spouse.brid ? _fn(spouse.brid) : _fn(spouse.groo),
-
-      // spouse.brid.first_name +
-      //   " " +
-      //   spouse.brid.middle_name +
-      //   " " +
-      //   spouse.brid.last_name
-      // spouse.groo.first_name +
-      //   " " +
-      //   spouse.groo.middle_name +
-      //   " " +
-      //   spouse.groo.last_name,
 
       uuid: spouse.brid
         ? spouse.brid.uuid_family_member
@@ -164,10 +148,12 @@ const NewSpouse = (props) => {
     last_name: "",
     //gender convention here is opposite of new parent
     target_gender: props.state.gender,
-    d_o_b: null,
+    d_o_b: undefined,
     uuid_target: props.state.uuid_family_member,
-    d_o_mar: null,
-    selected_parent: filteredParents.length ? filteredParents[0].uuid : null,
+    d_o_mar: undefined,
+    selected_parent: filteredParents.length
+      ? filteredParents[0].uuid
+      : undefined,
     add_existing_children: false,
     existing_children: props.state.children.map((child) => {
       return child.uuid_family_member;
@@ -178,7 +164,8 @@ const NewSpouse = (props) => {
     //check here whether already married
     //bloated and can be refactored but right now this works so do it later
     console.log(formData);
-  }, [formData]);
+    console.log(formState.errors);
+  }, []);
 
   const handleChange = (e) => {
     let { name, value, checked, type } = e.target;
@@ -212,18 +199,28 @@ const NewSpouse = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit2 = (e) => {
     e.preventDefault();
 
     props.submitNewSpouse({
       ...formData,
-      d_o_b: moment(
-        `${formData.d_o_b.getFullYear()}-${
-          formData.d_o_b.getMonth() + 1
-        }-${formData.d_o_b.getDate()}`,
-        "YYYY-MM-DD"
-      ).toISOString(),
+      d_o_b: formData.d_o_b ? dateSanitiser(formData.d_o_b) : undefined,
+      d_o_mar: formData.d_o_mar ? dateSanitiser(formData.d_o_mar) : undefined,
     });
+  };
+
+  const onSubmit = (data) => {
+    // console.log(formState.errors);
+    // console.log(formData);
+    // console.log(data);
+    let finalForm = {
+      ...formData,
+      ...data,
+      d_o_b: dateSanitiser(data.d_o_b),
+      d_o_mar: dateSanitiser(data.d_o_mar),
+    };
+    console.log(finalForm);
+    props.submitNewSpouse(finalForm);
   };
 
   return (
@@ -232,7 +229,7 @@ const NewSpouse = (props) => {
         <i className="fas fa-times" />
       </button>
       <h3>Add spouse</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div
           id="select-existing-parent"
           style={
@@ -261,46 +258,93 @@ const NewSpouse = (props) => {
           }
         >
           <label>First name</label>
-          <input
-            type="text"
-            name="first_name"
-            autoComplete="off"
-            value={formData.first_name}
-            onChange={handleChange}
-          ></input>
+          <div style={{ position: "relative" }}>
+            <input
+              {...register("first_name", {
+                validate: (v) => {
+                  if (!formData.selected_parent) {
+                    return !!v;
+                  } else {
+                    return true;
+                  }
+                },
+                pattern: /^[a-zA-Z0-9]*$/g,
+              })}
+              type="text"
+              autoComplete="off"
+            />
+            {formState.errors.first_name &&
+              formState.errors.first_name.type === "validate" && (
+                <FormError message="please enter a name :)" />
+              )}
+            {formState.errors.first_name &&
+              formState.errors.first_name.type === "pattern" && (
+                <FormError message="please do not use spaces" />
+              )}
+          </div>
 
           <label>Middle name</label>
-          <input
-            type="text"
-            autoComplete="no"
-            name="middle_name"
-            value={formData.middle_name}
-            onChange={handleChange}
-          ></input>
+          <div style={{ position: "relative" }}>
+            <input
+              {...register("middle_name", {
+                pattern: /^[a-zA-Z0-9]*$/g,
+              })}
+              type="text"
+              autoComplete="no"
+            />
+            {formState.errors.middle_name && (
+              <FormError message="please do not use spaces" />
+            )}
+          </div>
 
           <label>Last name</label>
-          <input
-            type="text"
-            autoComplete="no"
-            name="last_name"
-            value={formData.last_name}
-            onChange={handleChange}
-          ></input>
+          <div style={{ position: "relative" }}>
+            <input
+              {...register("last_name", {
+                pattern: /^[a-zA-Z0-9]*$/g,
+              })}
+              type="text"
+              autoComplete="no"
+            />
+            {formState.errors.last_name && (
+              <FormError message="please do not use spaces" />
+            )}
+          </div>
 
           <label htmlFor="dob">Date of birth</label>
-
-          <DatePicker
-            id="dob"
-            shouldCloseOnSelect={true}
-            dateFormat="dd/MM/yyyy"
-            showYearDropdown
-            scrollableYearDropdown
-            yearDropdownItemNumber={40}
-            autoComplete="off"
-            onChange={handleChangeDob}
-            selected={formData.d_o_b}
-            maxDate={new Date()}
-          />
+          <div style={{ position: "relative" }}>
+            <Controller
+              control={control}
+              name="d_o_b"
+              render={({ field: { onChange, onBlur, value, ref } }) => (
+                <DatePicker
+                  shouldCloseOnSelect={true}
+                  dateFormat="dd/MM/yyyy"
+                  showYearDropdown
+                  scrollableYearDropdown
+                  yearDropdownItemNumber={40}
+                  autoComplete="off"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  selected={value}
+                  maxDate={new Date()}
+                  inputRef={ref}
+                />
+              )}
+              rules={{
+                validate: (v) => {
+                  if (!formData.selected_parent) {
+                    return !!v;
+                  } else {
+                    return true;
+                  }
+                },
+              }}
+            />
+            {formState.errors.d_o_b && (
+              <FormError message="please enter a date" />
+            )}
+          </div>
 
           {/* <label>
             Gender
@@ -321,18 +365,33 @@ const NewSpouse = (props) => {
         </div>
         <label htmlFor="marriageDate">Date of marriage</label>
 
-        <DatePicker
-          id="marriageDate"
-          shouldCloseOnSelect={true}
-          dateFormat="dd/MM/yyyy"
-          showYearDropdown
-          scrollableYearDropdown
-          yearDropdownItemNumber={40}
-          autoComplete="off"
-          onChange={handleChangeMarriageDate}
-          selected={formData.d_o_mar}
-          maxDate={new Date()}
-        />
+        <div style={{ position: "relative" }}>
+          <Controller
+            control={control}
+            name="d_o_mar"
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <DatePicker
+                shouldCloseOnSelect={true}
+                dateFormat="dd/MM/yyyy"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={40}
+                autoComplete="off"
+                onChange={onChange}
+                onBlur={onBlur}
+                selected={value}
+                maxDate={new Date()}
+                inputRef={ref}
+              />
+            )}
+            rules={{
+              required: true,
+            }}
+          />
+          {formState.errors.d_o_mar && (
+            <FormError message="please enter a date" />
+          )}
+        </div>
 
         <div
           id="add-children"

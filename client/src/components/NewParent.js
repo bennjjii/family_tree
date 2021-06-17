@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import moment from "moment-timezone";
 import { useForm, Controller } from "react-hook-form";
 import FormError from "./FormError";
+import dateSanitiser from "./services/dateSanitiser";
 
 //this should add a new parent, d_o_b, and give the option to add a marriage if the other parent exists
 //it should also give the option to set a married person as the other parent
@@ -19,9 +20,8 @@ import FormError from "./FormError";
 //this should grey out create marriage box if parents are already married
 //otherwise we create two of the same marriages
 
-export const NewParent = (props) => {
-  const { register, handleSubmit, watch, formState, control, setValue } =
-    useForm();
+const NewParent = (props) => {
+  const { register, handleSubmit, formState, control, setValue } = useForm();
   moment.tz.setDefault("UTC");
   //enumerate other possible parents
 
@@ -145,29 +145,15 @@ export const NewParent = (props) => {
   };
 
   const onSubmit = (data) => {
-    let finalData = {
+    let finalForm = {
       ...formData,
       first_name: data.first_name,
       middle_name: data.middle_name,
       last_name: data.last_name,
-      d_o_b: data.d_o_b
-        ? moment(
-            `${data.d_o_b.getFullYear()}-${
-              data.d_o_b.getMonth() + 1
-            }-${data.d_o_b.getDate()}`,
-            "YYYY-MM-DD"
-          ).toISOString()
-        : undefined,
-      d_o_mar: data.d_o_mar
-        ? moment(
-            `${data.d_o_mar.getFullYear()}-${
-              data.d_o_mar.getMonth() + 1
-            }-${data.d_o_mar.getDate()}`,
-            "YYYY-MM-DD"
-          ).toISOString()
-        : undefined,
+      d_o_b: dateSanitiser(data.d_o_b),
+      d_o_mar: dateSanitiser(data.d_o_mar),
     };
-    props.submitNewParent(finalData);
+    props.submitNewParent(finalForm);
   };
 
   return (
@@ -224,9 +210,14 @@ export const NewParent = (props) => {
               // value={formData.first_name}
               // onChange={handleChange}
             />
-            {formState.errors.first_name ? (
-              <FormError message="required" />
-            ) : null}
+            {formState.errors.first_name &&
+              formState.errors.first_name.type === "validate" && (
+                <FormError message="please enter a name :)" />
+              )}
+            {formState.errors.first_name &&
+              formState.errors.first_name.type === "pattern" && (
+                <FormError message="please do not use spaces" />
+              )}
           </div>
           <label>Middle name</label>
           <div style={{ position: "relative" }}>
@@ -236,7 +227,7 @@ export const NewParent = (props) => {
               autoComplete="no"
             />{" "}
             {formState.errors.middle_name ? (
-              <FormError message="no spaces allowed" />
+              <FormError message="please do not use spaces" />
             ) : null}
           </div>
           <label>Last name</label>
@@ -247,7 +238,7 @@ export const NewParent = (props) => {
               autoComplete="no"
             />
             {formState.errors.last_name ? (
-              <FormError message="no spaces allowed" />
+              <FormError message="please do not use spaces" />
             ) : null}
           </div>
           <label htmlFor="birthday">Date of birth</label>
@@ -283,7 +274,7 @@ export const NewParent = (props) => {
               }}
             />
             {formState.errors.d_o_b ? (
-              <FormError message="required field" />
+              <FormError message="please enter a date" />
             ) : null}
           </div>
 
@@ -363,7 +354,7 @@ export const NewParent = (props) => {
               }}
             />
             {formState.errors.d_o_mar ? (
-              <FormError message="required field" />
+              <FormError message="please enter a date" />
             ) : null}
           </div>
         </div>

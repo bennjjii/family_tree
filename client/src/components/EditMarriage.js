@@ -38,41 +38,6 @@ const EditMarriage = (props) => {
     setValue("d_o_mar", new Date(selectedMarriage.d_o_mar));
   }, []);
 
-  // const handleChange = (e) => {
-  //   const { name, value, checked, type } = e.target;
-  //   if (type === "checkbox") {
-  //     setFormData({
-  //       ...formData,
-  //       [name]: checked,
-  //     });
-  //   } else {
-  //     setFormData({
-  //       ...formData,
-  //       [name]: value,
-  //     });
-  //   }
-  // };
-
-  // const handleChangeMarriageDate = (date) => {
-  //   setFormData({
-  //     ...formData,
-  //     d_o_mar: date,
-  //   });
-  // };
-
-  // const handleSubmit2 = (e) => {
-  //   e.preventDefault();
-  //   props.submitEditedMarriageDetails({
-  //     ...formData,
-  //     d_o_mar: moment(
-  //       `${formData.d_o_mar.getFullYear()}-${
-  //         formData.d_o_mar.getMonth() + 1
-  //       }-${formData.d_o_mar.getDate()}`,
-  //       "YYYY-MM-DD"
-  //     ).toISOString(),
-  //   });
-  // };
-
   return (
     <div className="idcard-form translucent-card">
       <button className="cancel-button" onClick={() => props.cancel()}>
@@ -104,7 +69,7 @@ const EditMarriage = (props) => {
             rules={{ required: true }}
           />
           {formState.errors.d_o_mar ? (
-            <FormError message="date required" />
+            <FormError message="please enter a date" />
           ) : null}
         </div>
 
