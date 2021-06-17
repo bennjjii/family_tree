@@ -246,7 +246,7 @@ const NewSpouse = (props) => {
                   return <option value={parent.uuid}>{parent.name}</option>;
                 })
               : null}
-            <option value={0}>New parent</option>
+            <option value={0}>New spouse</option>
           </select>
         </div>
         <div
@@ -345,23 +345,6 @@ const NewSpouse = (props) => {
               <FormError message="please enter a date" />
             )}
           </div>
-
-          {/* <label>
-            Gender
-            <br />
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-            >
-              {" "}
-              <option value="" selected disabled hidden>
-                ---
-              </option>
-              <option>Male</option>
-              <option>Female</option>
-            </select>
-          </label> */}
         </div>
         <label htmlFor="marriageDate">Date of marriage</label>
 

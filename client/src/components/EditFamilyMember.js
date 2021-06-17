@@ -1,36 +1,34 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import moment from "moment-timezone";
+import dateSanitiser from "./services/dateSanitiser";
+import { useForm, Controller } from "react-hook-form";
+import FormError from "./FormError";
 
 const EditFamilyMember = (props) => {
+  const { register, handleSubmit, formState, control, setValue } = useForm();
   const [formData, setFormData] = useState({
     uuid_family_member: undefined,
-    first_name: undefined,
-    middle_name: undefined,
-    last_name: undefined,
-    d_o_b: null,
   });
-  moment.tz.setDefault("UTC");
 
   useEffect(() => {
     switch (props.mode) {
       case "father":
         setFormData({
           uuid_family_member: props.state.fathe.uuid_family_member,
-          first_name: props.state.fathe.first_name,
-          middle_name: props.state.fathe.middle_name,
-          last_name: props.state.fathe.last_name,
-          d_o_b: new Date(props.state.fathe.d_o_b),
         });
+        setValue("first_name", props.state.fathe.first_name);
+        setValue("middle_name", props.state.fathe.middle_name);
+        setValue("last_name", props.state.fathe.last_name);
+        setValue("d_o_b", new Date(props.state.fathe.d_o_b));
         break;
       case "mother":
         setFormData({
           uuid_family_member: props.state.mothe.uuid_family_member,
-          first_name: props.state.mothe.first_name,
-          middle_name: props.state.mothe.middle_name,
-          last_name: props.state.mothe.last_name,
-          d_o_b: new Date(props.state.mothe.d_o_b),
         });
+        setValue("first_name", props.state.mothe.first_name);
+        setValue("middle_name", props.state.mothe.middle_name);
+        setValue("last_name", props.state.mothe.last_name);
+        setValue("d_o_b", new Date(props.state.mothe.d_o_b));
         break;
       case "child":
         let selectedChild = props.state.children.filter((child) => {
@@ -38,58 +36,32 @@ const EditFamilyMember = (props) => {
         })[0];
         setFormData({
           uuid_family_member: selectedChild.uuid_family_member,
-          first_name: selectedChild.first_name,
-          middle_name: selectedChild.middle_name,
-          last_name: selectedChild.last_name,
-          d_o_b: new Date(selectedChild.d_o_b),
         });
+        setValue("first_name", selectedChild.first_name);
+        setValue("middle_name", selectedChild.middle_name);
+        setValue("last_name", selectedChild.last_name);
+        setValue("d_o_b", new Date(selectedChild.d_o_b));
         break;
       case "target":
         setFormData({
           uuid_family_member: props.state.uuid_family_member,
-          first_name: props.state.first_name,
-          middle_name: props.state.middle_name,
-          last_name: props.state.last_name,
-          d_o_b: new Date(props.state.d_o_b),
         });
+        setValue("first_name", props.state.first_name);
+        setValue("middle_name", props.state.middle_name);
+        setValue("last_name", props.state.last_name);
+        setValue("d_o_b", new Date(props.state.d_o_b));
         break;
     }
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value, checked, type } = e.target;
-    if (type === "checkbox") {
-      setFormData({
-        ...formData,
-        [name]: checked,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
-  };
+  const onSubmit = (data) => {
+    let finalForm = {
+      ...data,
+      uuid_family_member: formData.uuid_family_member,
+      d_o_b: dateSanitiser(data.d_o_b),
+    };
 
-  const handleChangeBirth = (date) => {
-    setFormData({
-      ...formData,
-      d_o_b: date,
-    });
-    console.log(formData.d_o_b);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    props.submitEditedFamilyMember({
-      ...formData,
-      d_o_b: moment(
-        `${formData.d_o_b.getFullYear()}-${
-          formData.d_o_b.getMonth() + 1
-        }-${formData.d_o_b.getDate()}`,
-        "YYYY-MM-DD"
-      ).toISOString(),
-    });
+    props.submitEditedFamilyMember(finalForm);
   };
 
   return (
@@ -97,66 +69,88 @@ const EditFamilyMember = (props) => {
       <button className="cancel-button" onClick={() => props.cancel()}>
         <i className="fas fa-times" />
       </button>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Edit</h3>
 
         <label>First name</label>
-        <input
-          type="text"
-          name="first_name"
-          autoComplete="off"
-          value={formData.first_name}
-          onChange={handleChange}
-        ></input>
+        <div style={{ position: "relative" }}>
+          <input
+            {...register("first_name", {
+              required: true,
+              pattern: /^[a-zA-Z0-9]*$/g,
+            })}
+            type="text"
+            autoComplete="off"
+          />{" "}
+          {formState.errors.first_name &&
+            formState.errors.first_name.type === "required" && (
+              <FormError message="please enter a name :)" />
+            )}
+          {formState.errors.first_name &&
+            formState.errors.first_name.type === "pattern" && (
+              <FormError message="please do not use spaces" />
+            )}
+        </div>
 
         <label>Middle name</label>
-        <input
-          type="text"
-          autoComplete="no"
-          name="middle_name"
-          value={formData.middle_name}
-          onChange={handleChange}
-        ></input>
+        <div style={{ position: "relative" }}>
+          <input
+            {...register("middle_name", {
+              pattern: /^[a-zA-Z0-9]*$/g,
+            })}
+            type="text"
+            autoComplete="no"
+          />
+          {formState.errors.middle_name && (
+            <FormError message="please do not use spaces" />
+          )}
+        </div>
 
         <label>Last name</label>
-        <input
-          type="text"
-          autoComplete="no"
-          name="last_name"
-          value={formData.last_name}
-          onChange={handleChange}
-        ></input>
+        <div style={{ position: "relative" }}>
+          <input
+            {...register("last_name", {
+              pattern: /^[a-zA-Z0-9]*$/g,
+            })}
+            type="text"
+            autoComplete="no"
+          />
+          {formState.errors.last_name && (
+            <FormError message="please do not use spaces" />
+          )}
+        </div>
 
         <label htmlFor="birthday">Date of birth</label>
+        <div style={{ position: "relative" }}>
+          <Controller
+            control={control}
+            name="d_o_b"
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <DatePicker
+                id="birthday"
+                shouldCloseOnSelect={true}
+                dateFormat="dd/MM/yyyy"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={40}
+                maxDate={new Date()}
+                autoComplete="off"
+                onChange={onChange}
+                onBlur={onBlur}
+                selected={value}
+                inputRef={ref}
+              />
+            )}
+            rules={{
+              required: true,
+            }}
+          />
+          {formState.errors.d_o_b && (
+            <FormError message="please enter a date" />
+          )}
+        </div>
 
-        <DatePicker
-          id="birthday"
-          shouldCloseOnSelect={true}
-          dateFormat="dd/MM/yyyy"
-          showYearDropdown
-          scrollableYearDropdown
-          yearDropdownItemNumber={40}
-          maxDate={new Date()}
-          autoComplete="off"
-          onChange={handleChangeBirth}
-          selected={formData.d_o_b}
-        />
-
-        {/* <label>
-          Gender
-          <br />
-          <select name="gender" value={formData.gender} onChange={handleChange}>
-            {" "}
-            <option value="" selected disabled hidden>
-              ---
-            </option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-        </label>
-        <br /> */}
-
-        <input type="submit" value="Save" className="bubble-button"></input>
+        <input type="submit" value="Save" className="bubble-button" />
       </form>
     </div>
   );

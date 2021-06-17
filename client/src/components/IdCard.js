@@ -433,7 +433,16 @@ class IdCard extends Component {
 
   async setSettings(formData) {
     console.log(formData);
-    let updatedSettings = await this._http.post("/set_settings", formData);
+    let updatedSettings;
+    try {
+      updatedSettings = await this._http.post("/set_settings", formData);
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+      //prevents the dialogue from closing...
+      return;
+    }
+    console.log(updatedSettings);
     this.showSettings(false);
     this.getSettings();
   }
