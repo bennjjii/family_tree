@@ -151,7 +151,7 @@ class IdCard extends Component {
   }
 
   async refreshData(prevState) {
-    console.log(this.state);
+    //console.log(this.state);
     if (prevState) {
       if (
         this.state.dataState.uuid_family_member !==
@@ -164,6 +164,7 @@ class IdCard extends Component {
         );
         this.setState({ dataState: data.data }, () => {
           this.context.setFocus(this.state.dataState.uuid_family_member);
+          console.log(this.state.dataState);
         });
       }
     } else {
@@ -174,6 +175,7 @@ class IdCard extends Component {
       );
       this.setState({ dataState: data.data }, () => {
         this.context.setFocus(this.state.dataState.uuid_family_member);
+        console.log(this.state.dataState);
       });
     }
   }
@@ -181,13 +183,11 @@ class IdCard extends Component {
   componentDidUpdate(prevProps, prevState) {
     this.refreshData(prevState);
     this.refreshPhoto(prevState);
-
-    console.log(this.state);
   }
 
   updateTarget(e) {
     //this is the entry point for all UI navigation actions
-    console.log(e.target.id);
+    //console.log(e.target.id);
     e.preventDefault();
     switch (true) {
       //this just updates state so forcing a refresh from the server based on the focal UUID
@@ -227,7 +227,7 @@ class IdCard extends Component {
   }
 
   showNewChild(parentGender) {
-    console.log(parentGender);
+    //console.log(parentGender);
     this.setState(
       (prevState, prevProps) => {
         return {
@@ -241,25 +241,26 @@ class IdCard extends Component {
         console.log(this.state);
       }
     );
+    this.context.setBlockUI(true);
   }
 
   async submitNewChild(newChildDetails) {
     console.log(newChildDetails);
     await this._http.post("/create_new_child", newChildDetails);
-
-    this.setState(
-      (prevState, prevProps) => {
-        return {
-          UIstate: {
-            ...prevState.UIstate,
-            editNewChild: false,
-          },
-        };
-      },
-      () => {
-        this.refreshData();
-      }
-    );
+    this.cancelDialogues();
+    // this.setState(
+    //   (prevState, prevProps) => {
+    //     return {
+    //       UIstate: {
+    //         ...prevState.UIstate,
+    //         editNewChild: false,
+    //       },
+    //     };
+    //   },
+    //   () => {
+    //     this.refreshData();
+    //   }
+    // );
   }
 
   showNewParent(gender) {
@@ -272,26 +273,28 @@ class IdCard extends Component {
         },
       };
     });
+    this.context.setBlockUI(true);
   }
 
   async submitNewParent(newParentDetails) {
     await this._http.post("/create_new_parent", newParentDetails);
+    this.cancelDialogues();
     // this.showNewParent(false);
-    this.setState(
-      (prevState, prevProps) => {
-        return {
-          UIstate: {
-            ...prevState.UIstate,
-            editNewParent: false,
-            newParentGender: undefined,
-          },
-        };
-      },
+    // this.setState(
+    //   (prevState, prevProps) => {
+    //     return {
+    //       UIstate: {
+    //         ...prevState.UIstate,
+    //         editNewParent: false,
+    //         newParentGender: undefined,
+    //       },
+    //     };
+    //   },
 
-      () => {
-        this.refreshData();
-      }
-    );
+    //   () => {
+    //     this.refreshData();
+    //   }
+    // );
   }
 
   showNewSpouse() {
@@ -303,26 +306,27 @@ class IdCard extends Component {
         },
       };
     });
+    this.context.setBlockUI(true);
   }
 
   async submitNewSpouse(newSpouseDetails) {
     //total update
     await this._http.post("/create_new_spouse", newSpouseDetails);
+    this.cancelDialogues();
+    // this.setState(
+    //   (prevState, prevProps) => {
+    //     return {
+    //       UIstate: {
+    //         ...prevState.UIstate,
+    //         editNewSpouse: false,
+    //       },
+    //     };
+    //   },
 
-    this.setState(
-      (prevState, prevProps) => {
-        return {
-          UIstate: {
-            ...prevState.UIstate,
-            editNewSpouse: false,
-          },
-        };
-      },
-
-      () => {
-        this.refreshData();
-      }
-    );
+    //   () => {
+    //     this.refreshData();
+    //   }
+    // );
   }
 
   async submitPhoto(image) {
@@ -341,22 +345,24 @@ class IdCard extends Component {
         },
       };
     });
+    this.context.setBlockUI(true);
   }
 
   async editFamilyMember(target_to_edit) {
     console.log(target_to_edit);
     await this._http.post("/edit", { target_to_edit });
-    this.setState((prevState, prevProps) => {
-      return {
-        UIstate: {
-          ...prevState.UIstate,
-          editFamilyMember: false,
-          editFamilyMemberMode: undefined,
-          editFamilyMemberUUID: undefined,
-        },
-      };
-    });
-    this.refreshData();
+    this.cancelDialogues();
+    // this.setState((prevState, prevProps) => {
+    //   return {
+    //     UIstate: {
+    //       ...prevState.UIstate,
+    //       editFamilyMember: false,
+    //       editFamilyMemberMode: undefined,
+    //       editFamilyMemberUUID: undefined,
+    //     },
+    //   };
+    // });
+    // this.refreshData();
   }
 
   async deleteFamilyMember(target_to_delete) {
@@ -375,21 +381,24 @@ class IdCard extends Component {
         },
       };
     });
+    this.context.setBlockUI(true);
   }
 
   async editMarriage(target_to_edit) {
     console.log(target_to_edit);
     await this._http.post("/edit_marriage", { target_to_edit });
-    this.setState((prevState, prevProps) => {
-      return {
-        UIstate: {
-          ...prevState.UIstate,
-          editMarriage: false,
-          editMarriageUUID: undefined,
-        },
-      };
-    });
-    this.refreshData();
+    this.cancelDialogues();
+
+    // this.setState((prevState, prevProps) => {
+    //   return {
+    //     UIstate: {
+    //       ...prevState.UIstate,
+    //       editMarriage: false,
+    //       editMarriageUUID: undefined,
+    //     },
+    //   };
+    // });
+    // this.refreshData();
   }
 
   async deleteMarriage(target_to_delete) {
@@ -407,6 +416,7 @@ class IdCard extends Component {
         },
       };
     });
+    this.context.setBlockUI(show);
   }
 
   async getSettings() {
@@ -423,12 +433,22 @@ class IdCard extends Component {
 
   async setSettings(formData) {
     console.log(formData);
-    let updatedSettings = await this._http.post("/set_settings", formData);
+    let updatedSettings;
+    try {
+      updatedSettings = await this._http.post("/set_settings", formData);
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+      //prevents the dialogue from closing...
+      return;
+    }
+    console.log(updatedSettings);
     this.showSettings(false);
     this.getSettings();
   }
 
   cancelDialogues() {
+    this.context.setBlockUI(false);
     this.setState(
       (prevState, prevProps) => {
         return {
@@ -446,11 +466,11 @@ class IdCard extends Component {
             showSettings: false,
           },
         };
-      }
+      },
 
-      // () => {
-      //   this.refreshData();
-      // }
+      () => {
+        this.refreshData();
+      }
     );
   }
 

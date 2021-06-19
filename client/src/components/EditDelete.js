@@ -1,4 +1,7 @@
+import { useAuth } from "./services/ProvideAuth";
+
 const EditDelete = (props) => {
+  const thisContext = useAuth();
   return (
     <div className={"edit-delete"}>
       <button
@@ -6,7 +9,7 @@ const EditDelete = (props) => {
         className="edit-button"
         uuid={props.uuid}
         onClick={props.handleUpd}
-        disabled={props.disableEdit ? props.disableEdit : false}
+        disabled={props.disableEdit ? props.disableEdit : thisContext.blockUI}
       >
         <i className="far fa-edit"></i>
       </button>
@@ -16,7 +19,7 @@ const EditDelete = (props) => {
           className="delete-button"
           uuid={props.uuid}
           onClick={props.handleUpd}
-          disabled={!props.permitDelete}
+          disabled={!props.permitDelete || thisContext.blockUI}
         >
           <i className="far fa-trash-alt"></i>
         </button>

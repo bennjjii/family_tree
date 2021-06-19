@@ -15,6 +15,7 @@ const Child = (props) => {
         name={props.child.first_name}
         onClick={props.updateTarget}
         uuid={props.child.uuid_family_member}
+        disabled={thisContext.blockUI}
       >
         {!thisContext.showPublic.publicMode && (
           <EditDelete

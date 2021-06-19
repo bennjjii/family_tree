@@ -10,7 +10,7 @@ const ParentsBox = (props) => {
   return (
     <div className="idcard-component transparent-card shadow-sm">
       <h5>
-        parents:{" "}
+        parents:
         <span
           style={{
             float: "right",
@@ -23,6 +23,7 @@ const ParentsBox = (props) => {
               onClick={() => {
                 props.showSettings(true);
               }}
+              disabled={thisContext.blockUI}
             >
               <i className="fa fa-wrench" aria-hidden="true"></i>
             </button>
@@ -38,7 +39,10 @@ const ParentsBox = (props) => {
       >
         <button
           id="nav-btn"
-          disabled={thisContext.showPublic.publicMode && !props.father}
+          disabled={
+            (thisContext.showPublic.publicMode && !props.father) ||
+            thisContext.blockUI
+          }
           name="Male"
           className="idcard-button transparent-card transparent-bg shadow-sm"
           uuid={
@@ -82,7 +86,10 @@ const ParentsBox = (props) => {
         </button>
         <button
           id="nav-btn"
-          disabled={thisContext.showPublic.publicMode && !props.mother}
+          disabled={
+            (thisContext.showPublic.publicMode && !props.mother) ||
+            thisContext.blockUI
+          }
           name="Female"
           className="idcard-button transparent-card transparent-bg shadow-sm"
           uuid={

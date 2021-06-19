@@ -10,7 +10,7 @@ function MarriedBox(props) {
     <div className="idcard-component transparent-card shadow-sm">
       {!thisContext.showPublic.publicMode && (
         <button
-          disabled={thisContext.showPublic.publicMode}
+          disabled={thisContext.showPublic.publicMode || thisContext.blockUI}
           className="bubble-button"
           onClick={props.showNewSpouse}
         >
@@ -38,6 +38,7 @@ function MarriedBox(props) {
                     : spouse.groo.uuid_family_member
                 }
                 onClick={props.handleUpd}
+                disabled={thisContext.blockUI}
               >
                 {!thisContext.showPublic.publicMode && (
                   <EditDelete
