@@ -1,34 +1,21 @@
 import { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-
+import { useForm } from "react-hook-form";
 import FormError from "./FormError";
 
 const SettingsDialogue = (props) => {
-  const { register, handleSubmit, formState, control, setValue, setError } =
-    useForm();
+  const { register, handleSubmit, formState, setValue, setError } = useForm();
 
   const [formData, setFormData] = useState({
     isPublic: undefined,
-    //publicName: undefined,
   });
 
   useEffect(() => {
     setFormData({
       isPublic: props.isPublic,
-      //publicName: props.publicName,
     });
     setValue("publicName", props.publicName);
     console.log(props);
   }, [props]);
-
-  const handleSubmit2 = (e) => {
-    e.preventDefault();
-    try {
-      props.setSettings(formData);
-    } catch (err) {
-      setError("isPublic");
-    }
-  };
 
   const onSubmit = async (data) => {
     try {
@@ -69,13 +56,31 @@ const SettingsDialogue = (props) => {
           Unique name <br />
           <div style={{ position: "relative" }}>
             <input
-              {...register("publicName")}
+              {...register("publicName", {
+                validate: (v) => {
+                  if (formData.isPublic) {
+                    return !!v;
+                  } else {
+                    return true;
+                  }
+                },
+                pattern: /^[a-zA-Z0-9]*$/g,
+              })}
               type="text"
               disabled={!formData.isPublic}
             />
-            {formState.errors.publicName && (
-              <FormError message="name already taken" />
-            )}
+            {formState.errors.publicName &&
+              formState.errors.publicName.type === "manual" && (
+                <FormError message="name already taken" />
+              )}
+            {formState.errors.publicName &&
+              formState.errors.publicName.type === "validate" && (
+                <FormError message="please enter a name" />
+              )}
+            {formState.errors.publicName &&
+              formState.errors.publicName.type === "pattern" && (
+                <FormError message="please avoid entering spaces" />
+              )}
           </div>
         </label>
         <input type="submit" value="Save" className="bubble-button" />

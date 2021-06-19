@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-
+import { useHistory } from "react-router";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -85,7 +85,7 @@ function useProvideAuth() {
         setUuidUser(null);
         setJwt(null);
         setShowPublic({ publicMode: false });
-        history.push("/login");
+        history.push("/");
       }
     });
     //console.log(Object.keys(context));

@@ -26,7 +26,7 @@ const Navbar = (props) => {
           </li>
           <li className="navbar-item">
             <Link
-              to="/login"
+              to="#"
               className="nav-link"
               onClick={() => auth.logout(history)}
             >

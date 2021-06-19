@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import _fn from "./fullName";
 import DatePicker from "react-datepicker";
-import moment from "moment-timezone";
 import { useForm, Controller } from "react-hook-form";
 import FormError from "./FormError";
 import dateSanitiser from "./services/dateSanitiser";
@@ -22,7 +21,7 @@ import dateSanitiser from "./services/dateSanitiser";
 
 const NewParent = (props) => {
   const { register, handleSubmit, formState, control, setValue } = useForm();
-  moment.tz.setDefault("UTC");
+
   //enumerate other possible parents
 
   let allParents = [
