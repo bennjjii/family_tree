@@ -21,7 +21,12 @@ function useProvideAuth() {
     publicMode: false,
   });
   const [blockUI, setBlockUI] = useState(false);
-  //this needs to set a timeout to refresh the access token after x minutes
+
+  const clearShowPublic = (history) => {
+    setShowPublic({ publicMode: false });
+    history.push("/");
+  };
+
   const getAccessToken = async (history) => {
     axios
       .post("/refresh")
@@ -110,6 +115,7 @@ function useProvideAuth() {
     refreshAccessToken,
     blockUI,
     setBlockUI,
+    clearShowPublic,
   };
 }
 
