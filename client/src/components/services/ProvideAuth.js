@@ -22,7 +22,7 @@ function useProvideAuth() {
   });
   const [blockUI, setBlockUI] = useState(false);
   //this needs to set a timeout to refresh the access token after x minutes
-  const getAccessToken = async (context) => {
+  const getAccessToken = async (history) => {
     axios
       .post("/refresh")
       .then((res) => {
@@ -34,7 +34,7 @@ function useProvideAuth() {
           setUuidFamilyTree(uuid_family_tree);
           setFocus(focal_member);
           setJwt(res.data);
-          context.props.history.push("/app", { from: "Login" });
+          history.push("/app", { from: "Login" });
         } catch (err) {
           console.log(err);
         }
@@ -43,14 +43,14 @@ function useProvideAuth() {
   };
 
   const refreshAccessToken = async () => {
-    console.log("refreshing access token");
+    //console.log("refreshing access token");
     let httpClient = await axios
       .post("/refresh")
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         try {
           setJwt(res.data);
-          console.log(jwt);
+          //console.log(jwt);
           return axios.create({
             baseURL: process.env.REACT_APP_BASE_URL,
             headers: {
@@ -64,27 +64,31 @@ function useProvideAuth() {
       })
       .catch((err) => console.log(err));
     return httpClient;
-    console.log(jwt);
+    //console.log(jwt);
   };
 
-  const login = (loginDetails, history) => {
-    axios.post("/login", loginDetails).then((resp) => {
+  const login = async (loginDetails, history) => {
+    try {
+      let resp = await axios.post("/login", loginDetails);
       if (resp.data.auth) {
         history.push("/app", { from: "Login" });
       }
-    });
+    } catch (err) {
+      throw new Error(err.response.status);
+    }
   };
 
   const logout = async (history) => {
+    //something goes wrong here
     console.log("Logout clicked");
     await axios.post("/logout", { username: user }).then((resp) => {
-      console.log(resp);
+      //console.log(resp);
       if (resp.data.success) {
         setUser(null);
         setUuidUser(null);
         setJwt(null);
         setShowPublic({ publicMode: false });
-        history.push("/login");
+        history.push("/");
       }
     });
     //console.log(Object.keys(context));

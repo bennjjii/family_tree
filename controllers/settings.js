@@ -54,7 +54,7 @@ const set_settings = async (req, res) => {
     // console.log("Error: " + err.name);
     // console.log(Object.keys(err));
     if (err.name === "SequelizeUniqueConstraintError") {
-      res.send("not_unique");
+      res.sendStatus(403);
     } else {
       res.sendStatus(404);
     }

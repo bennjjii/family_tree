@@ -8,43 +8,49 @@ exports.register = async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const tempFamilyTreeUuid = uuid.v4();
   const tempFamilyMemberUuid = uuid.v4();
-
-  const createdUser = await models.family_tree.create(
-    {
-      uuid_family_tree: tempFamilyTreeUuid,
-      family_tree_name: req.body.family_tree_name,
-      focal_member: tempFamilyMemberUuid,
-      use: {
-        username: req.body.username,
-        email: req.body.email,
-        hashed_password: hashedPassword,
-        super_user: false,
-      },
-    },
-    {
-      include: [
-        {
-          model: models.user,
-          as: "use",
+  try {
+    const createdUser = await models.family_tree.create(
+      {
+        uuid_family_tree: tempFamilyTreeUuid,
+        family_tree_name: req.body.family_tree_name,
+        focal_member: tempFamilyMemberUuid,
+        use: {
+          username: req.body.username,
+          email: req.body.email,
+          hashed_password: hashedPassword,
+          super_user: false,
         },
-      ],
+      },
+      {
+        include: [
+          {
+            model: models.user,
+            as: "use",
+          },
+        ],
+      }
+    );
+    const createdFamilyMember = await models.family_member.create({
+      d_o_b: req.body.d_o_b,
+      first_name: req.body.first_name,
+      middle_name: req.body.middle_name,
+      last_name: req.body.last_name,
+      gender: req.body.gender,
+      uuid_family_member: tempFamilyMemberUuid,
+      uuid_family_tree: tempFamilyTreeUuid,
+    });
+
+    //console.log(createdUser);
+    //console.log(createdFamilyMember);
+    res.json(createdUser);
+  } catch (err) {
+    console.log(err.errors);
+    if (err.name === "SequelizeUniqueConstraintError") {
+      res.status(403).json(err.errors);
+    } else {
+      res.sendStatus(404);
     }
-  );
-
-  const createdFamilyMember = await models.family_member.create({
-    d_o_b: req.body.d_o_b,
-
-    first_name: req.body.first_name,
-    middle_name: req.body.middle_name,
-    last_name: req.body.last_name,
-    gender: req.body.gender,
-    uuid_family_member: tempFamilyMemberUuid,
-    uuid_family_tree: tempFamilyTreeUuid,
-  });
-
-  console.log(createdUser);
-  console.log(createdFamilyMember);
-  res.json(createdUser);
+  }
 };
 
 exports.getAccessToken = async (req, res) => {
@@ -93,23 +99,17 @@ exports.getAccessToken = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  let user = null;
-
-  await models.user
-    .findOne({
+  let user = undefined;
+  try {
+    user = await models.user.findOne({
       where: {
         username: req.body.username,
       },
-    })
-    .then((resp) => {
-      user = resp.dataValues;
-    })
-    .catch((err) => {
-      console.log(err);
-      res.json(err);
+      raw: true,
     });
-
-  try {
+    if (!user) {
+      throw new Error("USER_NOT_FOUND");
+    }
     if (await bcrypt.compare(req.body.password, user.hashed_password)) {
       const userObj = { uuid_user: user.uuid_user, username: user.username };
       const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET);
@@ -132,10 +132,17 @@ exports.login = async (req, res) => {
       res.json({ auth: true });
     } else {
       console.log("Not Allowed");
+      throw new Error("INCORRECT_PASSWORD");
     }
   } catch (err) {
-    console.log(err);
-    res.status(500).send();
+    switch (err.message) {
+      case "USER_NOT_FOUND":
+        res.sendStatus(409);
+        break;
+      case "INCORRECT_PASSWORD":
+        res.sendStatus(401);
+        break;
+    }
   }
 };
 
