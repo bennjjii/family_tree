@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "./services/ProvideAuth";
 
@@ -11,7 +11,7 @@ const Navbar = (props) => {
       <Link to="/" className="navbar-brand">
         family-tree-app
       </Link>
-      <div className="collpase navbar-collapse">
+      <div className="navbar-collapse">
         <ul className="navbar-nav mr-auto">
           <li className="navbar-item">
             <Link to="/app" className="nav-link">

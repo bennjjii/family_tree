@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { useHistory } from "react-router";
+
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -22,7 +22,7 @@ function useProvideAuth() {
   });
   const [blockUI, setBlockUI] = useState(false);
   //this needs to set a timeout to refresh the access token after x minutes
-  const getAccessToken = async (context) => {
+  const getAccessToken = async (history) => {
     axios
       .post("/refresh")
       .then((res) => {
@@ -34,7 +34,7 @@ function useProvideAuth() {
           setUuidFamilyTree(uuid_family_tree);
           setFocus(focal_member);
           setJwt(res.data);
-          context.props.history.push("/app", { from: "Login" });
+          history.push("/app", { from: "Login" });
         } catch (err) {
           console.log(err);
         }
@@ -67,12 +67,15 @@ function useProvideAuth() {
     //console.log(jwt);
   };
 
-  const login = (loginDetails, history) => {
-    axios.post("/login", loginDetails).then((resp) => {
+  const login = async (loginDetails, history) => {
+    try {
+      let resp = await axios.post("/login", loginDetails);
       if (resp.data.auth) {
         history.push("/app", { from: "Login" });
       }
-    });
+    } catch (err) {
+      throw new Error(err.response.status);
+    }
   };
 
   const logout = async (history) => {

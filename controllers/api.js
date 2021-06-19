@@ -99,23 +99,17 @@ exports.getAccessToken = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  let user = null;
-
-  await models.user
-    .findOne({
+  let user = undefined;
+  try {
+    user = await models.user.findOne({
       where: {
         username: req.body.username,
       },
-    })
-    .then((resp) => {
-      user = resp.dataValues;
-    })
-    .catch((err) => {
-      console.log(err);
-      res.json(err);
+      raw: true,
     });
-
-  try {
+    if (!user) {
+      throw new Error("USER_NOT_FOUND");
+    }
     if (await bcrypt.compare(req.body.password, user.hashed_password)) {
       const userObj = { uuid_user: user.uuid_user, username: user.username };
       const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET);
@@ -138,10 +132,17 @@ exports.login = async (req, res) => {
       res.json({ auth: true });
     } else {
       console.log("Not Allowed");
+      throw new Error("INCORRECT_PASSWORD");
     }
   } catch (err) {
-    console.log(err);
-    res.status(500).send();
+    switch (err.message) {
+      case "USER_NOT_FOUND":
+        res.sendStatus(409);
+        break;
+      case "INCORRECT_PASSWORD":
+        res.sendStatus(401);
+        break;
+    }
   }
 };
 
