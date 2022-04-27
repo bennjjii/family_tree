@@ -48,7 +48,7 @@ const Login = (props) => {
   return (
     <>
       <br />
-      <h2>Checkout a house:</h2>
+      <h2>Check out a house:</h2>
       <br />
       <br />
       <div style={flexStyle}>
