@@ -48,7 +48,7 @@ const Login = (props) => {
   return (
     <>
       <br />
-      <h2>Checkout these families:</h2>
+      <h2>Checkout a house:</h2>
       <br />
       <br />
       <div style={flexStyle}>
@@ -57,7 +57,7 @@ const Login = (props) => {
           familyTreeRoute="windsor"
         />
         <PublicTreeButton
-          familyTreeName="Jackson Family"
+          familyTreeName="House of Jackson"
           familyTreeRoute="jackson"
         />
         <PublicTreeButton
@@ -65,13 +65,13 @@ const Login = (props) => {
           familyTreeRoute="tudor"
         />
         <PublicTreeButton
-          familyTreeName="Japanese Imperial Family"
+          familyTreeName="Imperial House of Japan"
           familyTreeRoute="japaneseimperialfamily"
         />
       </div>
       <br />
       <form onSubmit={handleSubmit(onSubmit)} className="loginForm">
-        <h4>Or login and build your own</h4>
+        <h4>Or build your own...</h4>
         <div className="form-group">
           <label>Username:</label>
           <div style={{ position: "relative" }}>
