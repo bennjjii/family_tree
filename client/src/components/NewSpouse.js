@@ -199,16 +199,6 @@ const NewSpouse = (props) => {
     });
   };
 
-  const handleSubmit2 = (e) => {
-    e.preventDefault();
-
-    props.submitNewSpouse({
-      ...formData,
-      d_o_b: formData.d_o_b ? dateSanitiser(formData.d_o_b) : undefined,
-      d_o_mar: formData.d_o_mar ? dateSanitiser(formData.d_o_mar) : undefined,
-    });
-  };
-
   const onSubmit = (data) => {
     // console.log(formState.errors);
     // console.log(formData);
@@ -218,6 +208,9 @@ const NewSpouse = (props) => {
       ...data,
       d_o_b: dateSanitiser(data.d_o_b),
       d_o_mar: dateSanitiser(data.d_o_mar),
+      selected_parent: formData.selected_parent
+        ? formData.selected_parent
+        : null,
     };
     console.log(finalForm);
     props.submitNewSpouse(finalForm);
@@ -332,18 +325,9 @@ const NewSpouse = (props) => {
                 />
               )}
               rules={{
-                validate: (v) => {
-                  if (!formData.selected_parent) {
-                    return !!v;
-                  } else {
-                    return true;
-                  }
-                },
+                required: false,
               }}
             />
-            {formState.errors.d_o_b && (
-              <FormError message="please enter a date" />
-            )}
           </div>
         </div>
         <label htmlFor="marriageDate">Date of marriage</label>
@@ -368,12 +352,9 @@ const NewSpouse = (props) => {
               />
             )}
             rules={{
-              required: true,
+              required: false,
             }}
           />
-          {formState.errors.d_o_mar && (
-            <FormError message="please enter a date" />
-          )}
         </div>
 
         <div

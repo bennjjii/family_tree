@@ -24,8 +24,11 @@ const TargetBox = (props) => {
       )}
       <h4>{_fn(props.target)}</h4>
       <h6>
-        Born:{" "}
-        {moment(props.target.d_o_b, "YYYY-MM-DD").format("dddd, MMMM Do YYYY")}
+        {props.target.d_o_b
+          ? `Born: ${moment(props.target.d_o_b, "YYYY-MM-DD").format(
+              "dddd, MMMM Do YYYY"
+            )}`
+          : ""}
       </h6>
     </div>
   );

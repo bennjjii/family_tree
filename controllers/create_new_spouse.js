@@ -1,7 +1,7 @@
 const models = require("../models");
 
 exports.create_new_spouse = async (req, res) => {
-  console.log(req.body);
+  console.log("Body,", req.body);
   let newSpouse, updatedChildren;
   try {
     if (req.body.selected_parent === null) {
@@ -18,6 +18,8 @@ exports.create_new_spouse = async (req, res) => {
           })
         )
       );
+
+      console.log(newSpouse);
 
       if (req.body.add_existing_children) {
         updatedChildren = await req.body.existing_children.map((child) => {
@@ -57,7 +59,6 @@ exports.create_new_spouse = async (req, res) => {
         })
       )
     );
-    console.log(newSpouse);
     console.log(updatedChildren);
     console.log(newMarriage);
     res.sendStatus(200);

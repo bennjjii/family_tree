@@ -19,7 +19,12 @@ const EditFamilyMember = (props) => {
         setValue("first_name", props.state.fathe.first_name);
         setValue("middle_name", props.state.fathe.middle_name);
         setValue("last_name", props.state.fathe.last_name);
-        setValue("d_o_b", new Date(props.state.fathe.d_o_b));
+        setValue(
+          "d_o_b",
+          props.state.fathe.d_o_b
+            ? new Date(props.state.fathe.d_o_b)
+            : undefined
+        );
         break;
       case "mother":
         setFormData({
@@ -28,7 +33,12 @@ const EditFamilyMember = (props) => {
         setValue("first_name", props.state.mothe.first_name);
         setValue("middle_name", props.state.mothe.middle_name);
         setValue("last_name", props.state.mothe.last_name);
-        setValue("d_o_b", new Date(props.state.mothe.d_o_b));
+        setValue(
+          "d_o_b",
+          props.state.mothe.d_o_b
+            ? new Date(props.state.mothe.d_o_b)
+            : undefined
+        );
         break;
       case "child":
         let selectedChild = props.state.children.filter((child) => {
@@ -40,7 +50,10 @@ const EditFamilyMember = (props) => {
         setValue("first_name", selectedChild.first_name);
         setValue("middle_name", selectedChild.middle_name);
         setValue("last_name", selectedChild.last_name);
-        setValue("d_o_b", new Date(selectedChild.d_o_b));
+        setValue(
+          "d_o_b",
+          selectedChild.d_o_b ? new Date(selectedChild.d_o_b) : undefined
+        );
         break;
       case "target":
         setFormData({
@@ -49,12 +62,16 @@ const EditFamilyMember = (props) => {
         setValue("first_name", props.state.first_name);
         setValue("middle_name", props.state.middle_name);
         setValue("last_name", props.state.last_name);
-        setValue("d_o_b", new Date(props.state.d_o_b));
+        setValue(
+          "d_o_b",
+          props.state.d_o_b ? new Date(props.state.d_o_b) : undefined
+        );
         break;
     }
   }, []);
 
   const onSubmit = (data) => {
+    console.log(dateSanitiser(data.d_o_b));
     let finalForm = {
       ...data,
       uuid_family_member: formData.uuid_family_member,
@@ -142,7 +159,7 @@ const EditFamilyMember = (props) => {
               />
             )}
             rules={{
-              required: true,
+              required: false,
             }}
           />
           {formState.errors.d_o_b && (

@@ -203,13 +203,9 @@ const NewChild = (props) => {
               />
             )}
             rules={{
-              required: true,
+              required: false,
             }}
           />
-
-          {formState.errors.d_o_b && (
-            <FormError message="please enter a date" />
-          )}
         </div>
         <br />
         <label>Gender</label>

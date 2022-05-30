@@ -54,7 +54,9 @@ function MarriedBox(props) {
                 )}
                 {spouse.brid ? _fn(spouse.brid) : _fn(spouse.groo)}
                 <br />
-                {moment(spouse.d_o_mar, "YYYY-MM-DD").format("Do MMMM YYYY")}
+                {spouse.d_o_mar
+                  ? moment(spouse.d_o_mar, "YYYY-MM-DD").format("Do MMMM YYYY")
+                  : " "}
               </button>
               <br />
             </div>

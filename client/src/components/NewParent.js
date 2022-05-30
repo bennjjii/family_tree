@@ -262,19 +262,9 @@ const NewParent = (props) => {
                 />
               )}
               rules={{
-                validate: (v) => {
-                  if (formData.existing_parent !== "new") {
-                    return true;
-                  } else {
-                    console.log(v);
-                    return !!v;
-                  }
-                },
+                required: false,
               }}
             />
-            {formState.errors.d_o_b ? (
-              <FormError message="please enter a date" />
-            ) : null}
           </div>
 
           {/* think this is wrong */}
@@ -337,24 +327,9 @@ const NewParent = (props) => {
                 />
               )}
               rules={{
-                validate: (v) => {
-                  if (
-                    !formData.married_link_visible ||
-                    formData.already_married_to_selected
-                  ) {
-                    return true;
-                  } else if (formData.marriage_checked) {
-                    console.log(v);
-                    return !!v;
-                  } else {
-                    return true;
-                  }
-                },
+                required: false,
               }}
             />
-            {formState.errors.d_o_mar ? (
-              <FormError message="please enter a date" />
-            ) : null}
           </div>
         </div>
         <input type="submit" value="Save" className="bubble-button"></input>

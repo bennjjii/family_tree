@@ -4,13 +4,13 @@ const edit_family_member = async (req, res) => {
   let { first_name, middle_name, last_name, d_o_b, uuid_family_member } =
     req.body.target_to_edit;
 
-  console.log(middle_name);
+  console.log(d_o_b);
   let editedFamilyMember = await models.family_member.update(
     {
       first_name,
       middle_name,
       last_name,
-      d_o_b,
+      d_o_b: d_o_b ? d_o_b : null,
     },
     {
       where: { uuid_family_member },

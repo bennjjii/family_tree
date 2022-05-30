@@ -248,11 +248,8 @@ const Login = (props) => {
                       className="form-control"
                     />
                   )}
-                  rules={{ required: true }}
+                  rules={{ required: false }}
                 />
-                {formState.errors.d_o_b && (
-                  <FormError message="please enter a date of birth" />
-                )}
               </div>
             </div>
             <div className="form-group">
