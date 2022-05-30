@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     d_o_mar: {
       type: DataTypes.DATEONLY,
-      allowNull: false,
+      allowNull: true,
     },
     d_o_div: {
       type: DataTypes.DATEONLY,
