@@ -105,7 +105,7 @@ const NewParent = (props) => {
 
   useEffect(() => {
     //check here whether already married
-    console.log(formData);
+    // console.log(formData);
     let alreadyMarried = false;
 
     if (props.state.fathersWife) {
@@ -198,7 +198,7 @@ const NewParent = (props) => {
                   if (formData.existing_parent !== "new") {
                     return true;
                   } else {
-                    console.log(v);
+                    // console.log(v);
                     return v.length > 0;
                   }
                 },

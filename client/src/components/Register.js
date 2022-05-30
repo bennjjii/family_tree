@@ -57,12 +57,12 @@ const Login = (props) => {
       ...data,
       d_o_b: dateSanitiser(data.d_o_b),
     };
-    console.log(finalForm);
+    // console.log(finalForm);
     try {
       await axios.post("/register", finalForm);
       history.push("/", { from: "Register" });
     } catch (err) {
-      console.log(err.response);
+      // console.log(err.response);
       switch (err.response.data[0].path) {
         case "username":
           setError("username", {
@@ -79,7 +79,7 @@ const Login = (props) => {
       }
     }
   };
-  console.log(formState);
+  // console.log(formState);
 
   return (
     <div className="register-form">

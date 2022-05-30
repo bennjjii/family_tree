@@ -71,7 +71,7 @@ const EditFamilyMember = (props) => {
   }, []);
 
   const onSubmit = (data) => {
-    console.log(dateSanitiser(data.d_o_b));
+    //console.log(dateSanitiser(data.d_o_b));
     let finalForm = {
       ...data,
       uuid_family_member: formData.uuid_family_member,

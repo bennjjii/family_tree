@@ -28,10 +28,10 @@ const Login = (props) => {
     try {
       await auth.login(data, history);
     } catch (err) {
-      console.log(err.message);
+      //console.log(err.message);
       switch (err.message) {
         case "409":
-          console.log("object");
+          //console.log("object");
           setError("username", {
             type: "manual",
           });

@@ -160,12 +160,12 @@ const NewSpouse = (props) => {
     }),
   });
 
-  useEffect(() => {
-    //check here whether already married
-    //bloated and can be refactored but right now this works so do it later
-    console.log(formData);
-    console.log(formState.errors);
-  }, []);
+  // useEffect(() => {
+  //   //check here whether already married
+  //   //bloated and can be refactored but right now this works so do it later
+  //   console.log(formData);
+  //   console.log(formState.errors);
+  // }, []);
 
   const handleChange = (e) => {
     let { name, value, checked, type } = e.target;
@@ -212,7 +212,7 @@ const NewSpouse = (props) => {
         ? formData.selected_parent
         : null,
     };
-    console.log(finalForm);
+    // console.log(finalForm);
     props.submitNewSpouse(finalForm);
   };
 

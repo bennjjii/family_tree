@@ -60,7 +60,7 @@ class IdCard extends Component {
       },
     });
     if (this.context.showPublic.publicMode) {
-      console.log(this.context.showPublic.focal_member);
+      //console.log(this.context.showPublic.focal_member);
 
       this.setState((prevState, prevProps) => {
         return {
@@ -92,7 +92,7 @@ class IdCard extends Component {
         };
       });
     }
-    console.log(this.props.location);
+    //console.log(this.props.location);
     this.getSettings();
 
     //add event listener for escape key
@@ -164,7 +164,7 @@ class IdCard extends Component {
         );
         this.setState({ dataState: data.data }, () => {
           this.context.setFocus(this.state.dataState.uuid_family_member);
-          console.log(this.state.dataState);
+          //console.log(this.state.dataState);
         });
       }
     } else {
@@ -175,7 +175,7 @@ class IdCard extends Component {
       );
       this.setState({ dataState: data.data }, () => {
         this.context.setFocus(this.state.dataState.uuid_family_member);
-        console.log(this.state.dataState);
+        //console.log(this.state.dataState);
       });
     }
   }
@@ -238,14 +238,14 @@ class IdCard extends Component {
         };
       },
       () => {
-        console.log(this.state);
+        //console.log(this.state);
       }
     );
     this.context.setBlockUI(true);
   }
 
   async submitNewChild(newChildDetails) {
-    console.log(newChildDetails);
+    //console.log(newChildDetails);
     await this._http.post("/create_new_child", newChildDetails);
     this.cancelDialogues();
     // this.setState(
@@ -349,7 +349,7 @@ class IdCard extends Component {
   }
 
   async editFamilyMember(target_to_edit) {
-    console.log(target_to_edit);
+    //console.log(target_to_edit);
     await this._http.post("/edit", { target_to_edit });
     this.cancelDialogues();
     // this.setState((prevState, prevProps) => {
@@ -366,7 +366,7 @@ class IdCard extends Component {
   }
 
   async deleteFamilyMember(target_to_delete) {
-    console.log(target_to_delete);
+    //console.log(target_to_delete);
     await this._http.post("/delete", { target_to_delete });
     this.refreshData();
   }
@@ -385,7 +385,7 @@ class IdCard extends Component {
   }
 
   async editMarriage(target_to_edit) {
-    console.log(target_to_edit);
+    //console.log(target_to_edit);
     await this._http.post("/edit_marriage", { target_to_edit });
     this.cancelDialogues();
 
@@ -402,7 +402,7 @@ class IdCard extends Component {
   }
 
   async deleteMarriage(target_to_delete) {
-    console.log(target_to_delete);
+    //console.log(target_to_delete);
     await this._http.post("/delete_marriage", { target_to_delete });
     this.refreshData();
   }
@@ -420,9 +420,9 @@ class IdCard extends Component {
   }
 
   async getSettings() {
-    console.log("GettingSettings");
+    // console.log("GettingSettings");
     let settings = await this._http.get("/get_settings");
-    console.log(settings);
+    // console.log(settings);
     this.setState((prevState, prevProps) => {
       return {
         isPublic: settings.data.isPublic,
@@ -432,17 +432,17 @@ class IdCard extends Component {
   }
 
   async setSettings(formData) {
-    console.log(formData);
+    // console.log(formData);
     let updatedSettings;
     try {
       updatedSettings = await this._http.post("/set_settings", formData);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       throw new Error(err);
       //prevents the dialogue from closing...
       return;
     }
-    console.log(updatedSettings);
+    // console.log(updatedSettings);
     this.showSettings(false);
     this.getSettings();
   }

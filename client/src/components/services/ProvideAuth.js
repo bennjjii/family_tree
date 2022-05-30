@@ -85,7 +85,7 @@ function useProvideAuth() {
 
   const logout = async (history) => {
     //something goes wrong here
-    console.log("Logout clicked");
+    // console.log("Logout clicked");
     await axios.post("/logout", { username: user }).then((resp) => {
       //console.log(resp);
       if (resp.data.success) {

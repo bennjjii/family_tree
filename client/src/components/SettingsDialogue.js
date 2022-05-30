@@ -14,7 +14,7 @@ const SettingsDialogue = (props) => {
       isPublic: props.isPublic,
     });
     setValue("publicName", props.publicName);
-    console.log(props);
+    // console.log(props);
   }, [props]);
 
   const onSubmit = async (data) => {
@@ -24,12 +24,12 @@ const SettingsDialogue = (props) => {
         publicName: formData.isPublic ? data.publicName : null,
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setError("publicName", { type: "manual", message: "name already taken" });
     }
   };
 
-  console.log(formState.errors);
+  // console.log(formState.errors);
 
   return (
     <div className="idcard-form translucent-card">

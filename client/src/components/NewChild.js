@@ -116,14 +116,14 @@ const NewChild = (props) => {
   // };
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     let finalForm = {
       ...data,
       d_o_b: dateSanitiser(data.d_o_b),
       father: formData.father,
       mother: formData.mother,
     };
-    console.log(finalForm);
+    // console.log(finalForm);
     props.submitNewChild(finalForm);
   };
 

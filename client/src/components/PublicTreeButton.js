@@ -30,7 +30,7 @@ const PublicTreeButton = (props) => {
           setImg(imageBlob.data);
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         if (isMounted) {
           setImg(undefined);
           setImgUrl(undefined);
@@ -45,7 +45,7 @@ const PublicTreeButton = (props) => {
 
   useEffect(() => {
     if (img) {
-      console.log(img);
+      // console.log(img);
       const urlCreator = window.URL || window.webkitURL;
       const dynamicImgUrl = urlCreator.createObjectURL(img);
       setImgUrl(dynamicImgUrl);
