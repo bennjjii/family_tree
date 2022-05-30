@@ -35,7 +35,10 @@ const EditMarriage = (props) => {
     setFormData({
       uuid_marriage: selectedMarriage.uuid_marriage,
     });
-    setValue("d_o_mar", new Date(selectedMarriage.d_o_mar));
+    setValue(
+      "d_o_mar",
+      selectedMarriage.d_o_mar ? new Date(selectedMarriage.d_o_mar) : undefined
+    );
   }, []);
 
   return (
