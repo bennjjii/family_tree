@@ -112,6 +112,7 @@ exports.login = async (req, res) => {
     }
     if (await bcrypt.compare(req.body.password, user.hashed_password)) {
       const userObj = { uuid_user: user.uuid_user, username: user.username };
+      //this will silently fail if no refresh token secret is set
       const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET);
       let updatedUser = await models.user.update(
         {
