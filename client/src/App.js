@@ -16,7 +16,7 @@ import Register from "./components/Register";
 import { ProvideAuth } from "./components/services/ProvideAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
 //import LoadPublicRoute from "./components/LoadPublicRoute";
-import LoadPublicRoute2 from "./components/LoadPublicRoute2";
+import LoadPublicRoute from "./components/LoadPublicRoute";
 
 class App extends React.Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class App extends React.Component {
             <Route
               path="/public_tree/:publicRoute"
               exact
-              component={LoadPublicRoute2}
+              component={LoadPublicRoute}
             />
             <ProtectedRoute path="/app" exact component={IdCard} />
             <ProtectedRoute path="/" exact component={IdCard} />

@@ -7,43 +7,27 @@ import axios from "axios";
 //client could technically still view App view but they wouldn't have any data from the backend
 //so would just be an empty form
 
-const LoadPublicRoute = ({ component: Component, ...rest }) => {
-  console.log(rest.computedMatch.params.publicRoute);
-  let [treeData, setTreeData] = useState(true);
-  useEffect(async () => {
-    try {
-      let res = await axios.get(
-        `/find_public_tree/${rest.computedMatch.params.publicRoute}`
-      );
+const LoadPublicRoute = (props) => {
+  const auth = useAuth();
+  console.log(props.match.params.publicRoute);
 
-      console.log(res);
-      setTreeData(true);
-    } catch (error) {
-      setTreeData(false);
-      console.log(error);
+  useEffect(() => {
+    async function publicRoute() {
+      try {
+        let res = await axios.get(
+          `/find_public_tree/${props.match.params.publicRoute}`
+        );
+
+        console.log(res.data);
+        auth.setShowPublic({ ...res.data, publicMode: true });
+        props.history.push("/app");
+      } catch (error) {
+        props.history.push("/login");
+      }
     }
-  }, [rest]);
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        if (treeData) {
-          return <Component {...props} />;
-        } else {
-          return (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: {
-                  from: props.location,
-                },
-              }}
-            />
-          );
-        }
-      }}
-    />
-  );
+    publicRoute();
+  }, [props]);
+  return null;
 };
 
 export default LoadPublicRoute;
