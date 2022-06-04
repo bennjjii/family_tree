@@ -13,7 +13,7 @@ const Navbar = (props) => {
         className="navbar-brand"
         onClick={() => auth.clearShowPublic(history)}
       >
-        HouseOfMe
+        HouseofMe
       </Link>
       <div className="navbar-collapse">
         <ul className="navbar-nav ml-auto">
