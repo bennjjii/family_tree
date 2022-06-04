@@ -74,13 +74,19 @@ const Login = (props) => {
         <h4>Or build your own...</h4>
         <div className="form-group">
           <label>Username:</label>
-          <div style={{ position: "relative" }}>
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <input
               {...register("username", {
                 required: true,
               })}
               type="text"
-              className="form-control"
+              className="form-control login-field"
               id="username"
             />
             {formState.errors.username &&
@@ -95,13 +101,19 @@ const Login = (props) => {
         </div>
         <div className="form-group">
           <label>Password:</label>
-          <div style={{ position: "relative" }}>
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <input
               {...register("password", {
                 required: true,
               })}
               type="password"
-              className="form-control"
+              className="form-control login-field"
               id="pwd"
             />
             {formState.errors.password &&

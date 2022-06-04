@@ -297,3 +297,7 @@ select {
 .cancel-button:hover {
   color: black;
 }
+
+.login-field {
+  /* max-width: 400px; */
+}
