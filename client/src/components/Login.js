@@ -48,7 +48,7 @@ const Login = (props) => {
   return (
     <>
       <br />
-      <h2>Check out a house:</h2>
+      <h2>Explore these fascinating family trees...</h2>
       <br />
       <br />
       <div style={flexStyle}>
@@ -71,7 +71,7 @@ const Login = (props) => {
       </div>
       <br />
       <form onSubmit={handleSubmit(onSubmit)} className="loginForm">
-        <h4>Or build your own...</h4>
+        <h4>Or claim your own little kingdom...</h4>
         <div className="form-group">
           <label>Username:</label>
           <div
